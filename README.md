@@ -24,6 +24,11 @@
 - Customer users can see their buying profile showing all the coupons they bought and how much money they saved with respect to the regular price (the vendor is required to provide the regular price when creating a coupon)
 
 
+## Wireframes
+
+[Click here](http://htmlpreview.github.io/?https://github.com/weibeld/Deals-Wireframes/blob/master/Mockplus/Deals/index.html)
+
+
 ## Video Walkthrough
 
 Here's a walkthrough of implemented user stories:
