@@ -17,6 +17,10 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
+    dataBinding {
+        enabled = true
+    }
 }
 
 dependencies {
@@ -30,6 +34,10 @@ dependencies {
     // Firebase
     compile 'com.google.firebase:firebase-database:10.2.0'
     compile 'com.google.firebase:firebase-storage:10.2.0'
+    compile 'com.google.firebase:firebase-auth:10.2.0'
+
+    // For "sign in with Google"
+    compile 'com.google.android.gms:play-services-auth:10.2.0'
 }
 
 apply plugin: 'com.google.gms.google-services'
