@@ -4,18 +4,19 @@ package org.latefire.deals.models;
  * Created by dw on 19/03/17.
  */
 
-public class PrivateUserDealRelation {
+public class CustomerDealRelation {
 
     private String id;
-    private String privateUserId;
+    private String customerId;
     private String dealId;
+    //private Date dateOfRedemption  // null if deal has not been redeemed
 
-    public PrivateUserDealRelation() {
+    public CustomerDealRelation() {
     }
 
-    public PrivateUserDealRelation(String id, String privateUserId, String dealId) {
+    public CustomerDealRelation(String id, String customerId, String dealId) {
         this.id = id;
-        this.privateUserId = privateUserId;
+        this.customerId = customerId;
         this.dealId = dealId;
     }
 
@@ -27,12 +28,12 @@ public class PrivateUserDealRelation {
         this.id = id;
     }
 
-    public String getPrivateUserId() {
-        return privateUserId;
+    public String getCustomerId() {
+        return customerId;
     }
 
-    public void setPrivateUserId(String privateUserId) {
-        this.privateUserId = privateUserId;
+    public void setCustomerId(String customerId) {
+        this.customerId = customerId;
     }
 
     public String getDealId() {

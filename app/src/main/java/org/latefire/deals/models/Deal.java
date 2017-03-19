@@ -9,7 +9,7 @@ import java.util.Date;
 public class Deal {
 
     private String id;
-    private String businessUserId;
+    private String businessId;
     private String title;
     private String description;
     private String currency;
@@ -21,9 +21,9 @@ public class Deal {
     public Deal() {
     }
 
-    public Deal(String id, String businessUserId, String title, String description, String currency, double regularPrice, double dealPrice, Date beginValidity, Date endValidity) {
+    public Deal(String id, String businessId, String title, String description, String currency, double regularPrice, double dealPrice, Date beginValidity, Date endValidity) {
         this.id = id;
-        this.businessUserId = businessUserId;
+        this.businessId = businessId;
         this.title = title;
         this.description = description;
         this.currency = currency;
@@ -41,12 +41,12 @@ public class Deal {
         this.id = id;
     }
 
-    public String getBusinessUserId() {
-        return businessUserId;
+    public String getBusinessId() {
+        return businessId;
     }
 
-    public void setBusinessUserId(String businessUserId) {
-        this.businessUserId = businessUserId;
+    public void setBusinessId(String businessId) {
+        this.businessId = businessId;
     }
 
     public String getTitle() {

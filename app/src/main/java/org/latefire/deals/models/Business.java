@@ -4,7 +4,7 @@ package org.latefire.deals.models;
  * Created by dw on 19/03/17.
  */
 
-public class BusinessUser extends User {
+public class Business extends User {
 
     private String businessName;
     private String addressLine1;
@@ -13,10 +13,10 @@ public class BusinessUser extends User {
     private double locationLat;
     private double locationLong;
 
-    public BusinessUser() {
+    public Business() {
     }
 
-    public BusinessUser(String id, String email, String phone, String businessName, String addressLine1, String addressLine2, String city, double locationLat, double locationLong) {
+    public Business(String id, String email, String phone, String businessName, String addressLine1, String addressLine2, String city, double locationLat, double locationLong) {
         super(id, email, phone);
         this.businessName = businessName;
         this.addressLine1 = addressLine1;
