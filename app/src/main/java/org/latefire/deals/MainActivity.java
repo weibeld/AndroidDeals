@@ -2,12 +2,13 @@ package org.latefire.deals;
 
 import android.content.Context;
 import android.content.Intent;
+import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.auth.api.Auth;
@@ -15,13 +16,17 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import org.latefire.deals.databinding.ActivityMainBinding;
 import org.latefire.deals.managers.DatabaseManager;
-import org.latefire.deals.models.Customer;
 
 public class MainActivity extends AppCompatActivity {
 
     private static final String LOG_TAG = MainActivity.class.getSimpleName();
 
+    private ActivityMainBinding b;
+    private DealAdapter mAdapter;
+
+    // Backend
     private DatabaseManager mDatabaseManager;
     private FirebaseAuth mFirebaseAuth;
     private FirebaseUser mFirebaseUser;
@@ -33,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        b = DataBindingUtil.setContentView(this, R.layout.activity_main);
         mActivity = this;
 
         mFirebaseAuth = FirebaseAuth.getInstance();
@@ -49,26 +54,24 @@ public class MainActivity extends AppCompatActivity {
             finish();
             return;
         }
-
         getSupportActionBar().setSubtitle(String.format(getString(R.string.subtitle_main_activity), mFirebaseUser.getDisplayName()));
-
         // Needed for enabling sign out from Google account
         mGoogleApiClient = getGoogleApiClient();
 
         mDatabaseManager = DatabaseManager.getInstance();
-        Customer customer = new Customer("danielmweibel@gmail.com", "+41798310140", "Daniel", "Weibel");
-        String id = mDatabaseManager.saveCustomer(customer);
-        ((TextView) findViewById(R.id.tvHello)).setText(id);
-    }
+        mDatabaseManager.setNewDealListener(deal -> {
+            mAdapter.clear();
+            mAdapter.append(mDatabaseManager.getAllDeals());
+        });
 
-    private GoogleApiClient getGoogleApiClient() {
-        return new GoogleApiClient.Builder(this)
-                .enableAutoManage(this, connectionResult -> {
-                    Log.d(LOG_TAG, "Could not connect to Google for signing in");
-                    Toast.makeText(mActivity, "Could not connect to Google for signing in", Toast.LENGTH_SHORT).show();
-                })
-                .addApi(Auth.GOOGLE_SIGN_IN_API)
-                .build();
+        mAdapter = new DealAdapter(mDatabaseManager.getAllDeals());
+        b.recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        b.recyclerView.setAdapter(mAdapter);
+        b.swipeContainer.setOnRefreshListener(() -> {
+            mAdapter.clear();
+            mAdapter.append(mDatabaseManager.getAllDeals());
+            b.swipeContainer.setRefreshing(false);
+        });
     }
 
     @Override
@@ -86,8 +89,22 @@ public class MainActivity extends AppCompatActivity {
                 Auth.GoogleSignInApi.signOut(mGoogleApiClient);
                 startActivity(new Intent(this, SignInActivity.class));
                 return true;
+            case R.id.action_create_deal:
+                startActivity(new Intent(this, CreateDealActivity.class));
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
     }
+
+    private GoogleApiClient getGoogleApiClient() {
+        return new GoogleApiClient.Builder(this)
+                .enableAutoManage(this, connectionResult -> {
+                    Log.d(LOG_TAG, "Could not connect to Google for signing in");
+                    Toast.makeText(mActivity, "Could not connect to Google for signing in", Toast.LENGTH_SHORT).show();
+                })
+                .addApi(Auth.GOOGLE_SIGN_IN_API)
+                .build();
+    }
+
 }

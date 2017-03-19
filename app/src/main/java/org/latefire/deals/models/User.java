@@ -6,6 +6,7 @@ package org.latefire.deals.models;
 
 public abstract class User {
 
+    private String id;
     private String email;
     private String phone;
 
@@ -13,8 +14,17 @@ public abstract class User {
     }
 
     public User(String email, String phone) {
+        this.id = null;
         this.email = email;
         this.phone = phone;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getEmail() {

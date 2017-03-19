@@ -4,6 +4,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
+        android:id="@+id/action_create_deal"
+        android:title="@string/action_create_deal"
+        app:showAsAction="never"/>
+
+    <item
         android:id="@+id/action_sign_out"
         android:title="@string/action_sign_out"
         app:showAsAction="never"/>
