@@ -1,9 +1,12 @@
 package org.latefire.deals.managers;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 import org.latefire.deals.models.Business;
-import org.latefire.deals.models.Deal;
 import org.latefire.deals.models.Customer;
 import org.latefire.deals.models.CustomerDealRelation;
+import org.latefire.deals.models.Deal;
 import org.latefire.deals.models.User;
 
 import java.util.ArrayList;
@@ -16,6 +19,20 @@ public class DatabaseManager {
 
     private static DatabaseManager instance;
 
+    private DatabaseReference mDbRefCustomers;
+    private DatabaseReference mDbRefBusinesses;
+    private DatabaseReference mDbRefDeals;
+    private DatabaseReference mDbRefCustomerDealRelations;
+
+    private DatabaseManager() {
+        DatabaseReference rootDbRef = FirebaseDatabase.getInstance().getReference();
+        mDbRefCustomers = rootDbRef.child("customers");
+        mDbRefBusinesses = rootDbRef.child("businesses");
+        mDbRefDeals = rootDbRef.child("deals");
+        mDbRefCustomerDealRelations = rootDbRef.child("customerDealRelations");
+    }
+
+
     public static synchronized DatabaseManager getInstance() {
         if (instance == null) instance = new DatabaseManager();
         return instance;
@@ -25,13 +42,12 @@ public class DatabaseManager {
 
     }
 
-    public void saveUser(User user) {
-        if (user instanceof Customer) {
+    public String saveCustomer(Customer customer) {
+        return pushAndReturnKey(mDbRefCustomers, customer);
+    }
 
-        }
-        else if (user instanceof Business) {
-
-        }
+    public void saveBusiness(Business business) {
+        mDbRefBusinesses.push().setValue(business);
     }
 
     public void saveCustomerDealRelation(CustomerDealRelation relation) {
@@ -56,5 +72,11 @@ public class DatabaseManager {
 
     public ArrayList<Deal> getDealsOfBusiness(String businessId) {
         return null;
+    }
+
+    private String pushAndReturnKey(DatabaseReference ref, Object object) {
+        DatabaseReference newEntry = ref.push();
+        newEntry.setValue(object);
+        return newEntry.getKey();
     }
 }

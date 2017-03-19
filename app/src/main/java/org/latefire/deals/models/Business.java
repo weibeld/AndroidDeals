@@ -16,8 +16,8 @@ public class Business extends User {
     public Business() {
     }
 
-    public Business(String id, String email, String phone, String businessName, String addressLine1, String addressLine2, String city, double locationLat, double locationLong) {
-        super(id, email, phone);
+    public Business(String email, String phone, String businessName, String addressLine1, String addressLine2, String city, double locationLat, double locationLong) {
+        super(email, phone);
         this.businessName = businessName;
         this.addressLine1 = addressLine1;
         this.addressLine2 = addressLine2;
