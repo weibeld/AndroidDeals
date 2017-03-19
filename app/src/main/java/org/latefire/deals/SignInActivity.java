@@ -3,28 +3,23 @@ package org.latefire.deals;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.View;
 import android.widget.Toast;
 
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
-import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.GoogleAuthProvider;
 
 import org.latefire.deals.databinding.ActivitySignInBinding;
 
+// TODO: add sign-in method "Password/Email"
 /**
  * This activity is launched by other activities whenever there is no authenticated Firebase user.
  * It allows the user to sign in to an account (currently, Google), and then this account is used
@@ -54,24 +49,18 @@ public class SignInActivity extends AppCompatActivity {
                 .requestEmail()
                 .build();
         mGoogleApiClient = new GoogleApiClient.Builder(this)
-                .enableAutoManage(this, new GoogleApiClient.OnConnectionFailedListener() {
-                    @Override
-                    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-                        Log.d(LOG_TAG, "Could not connect to Google to sign in");
-                        Toast.makeText(mActivity, "Could not connect to Google to sign in", Toast.LENGTH_SHORT).show();
-                    }
+                .enableAutoManage(this, connectionResult -> {
+                    Log.d(LOG_TAG, "Could not connect to Google to sign in");
+                    Toast.makeText(mActivity, "Could not connect to Google to sign in", Toast.LENGTH_SHORT).show();
                 })
                 .addApi(Auth.GOOGLE_SIGN_IN_API, opts)
                 .build();
 
         // On clicking the Google Sign In button, sign in to Google
         b.btnSignInWithGoogle.setSize(SignInButton.SIZE_WIDE);
-        b.btnSignInWithGoogle.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
-                startActivityForResult(signInIntent, REQUEST_CODE_SIGN_IN);
-            }
+        b.btnSignInWithGoogle.setOnClickListener(v -> {
+            Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
+            startActivityForResult(signInIntent, REQUEST_CODE_SIGN_IN);
         });
 
     }
@@ -92,18 +81,15 @@ public class SignInActivity extends AppCompatActivity {
     // Authenticate to Firebase with an authenticated Google account
     private void authToFirebaseWithGoogleAccount(GoogleSignInAccount account) {
         AuthCredential credential = GoogleAuthProvider.getCredential(account.getIdToken(), null);
-        mFirebaseAuth.signInWithCredential(credential).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            startActivity(new Intent(mActivity, MainActivity.class));
-                            finish();
-                        }
-                        else {
-                            Log.w(LOG_TAG, "signInWithCredential", task.getException());
-                            Toast.makeText(mActivity, "Authentication to Firebase failed.", Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                });
+        mFirebaseAuth.signInWithCredential(credential).addOnCompleteListener(this, task -> {
+            if (task.isSuccessful()) {
+                startActivity(new Intent(mActivity, MainActivity.class));
+                finish();
+            }
+            else {
+                Log.w(LOG_TAG, "signInWithCredential", task.getException());
+                Toast.makeText(mActivity, "Authentication to Firebase failed.", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }

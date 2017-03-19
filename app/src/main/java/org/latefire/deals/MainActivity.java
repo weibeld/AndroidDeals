@@ -3,7 +3,6 @@ package org.latefire.deals;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
@@ -12,7 +11,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.auth.api.Auth;
-import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -60,12 +58,9 @@ public class MainActivity extends AppCompatActivity {
 
     private GoogleApiClient getGoogleApiClient() {
         return new GoogleApiClient.Builder(this)
-                .enableAutoManage(this, new GoogleApiClient.OnConnectionFailedListener() {
-                    @Override
-                    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-                        Log.d(LOG_TAG, "Could not connect to Google for signing in");
-                        Toast.makeText(mActivity, "Could not connect to Google for signing in", Toast.LENGTH_SHORT).show();
-                    }
+                .enableAutoManage(this, connectionResult -> {
+                    Log.d(LOG_TAG, "Could not connect to Google for signing in");
+                    Toast.makeText(mActivity, "Could not connect to Google for signing in", Toast.LENGTH_SHORT).show();
                 })
                 .addApi(Auth.GOOGLE_SIGN_IN_API)
                 .build();
