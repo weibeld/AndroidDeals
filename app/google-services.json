@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "13366778431",
+    "firebase_url": "https://deals-9a0f6.firebaseio.com",
+    "project_id": "deals-9a0f6",
+    "storage_bucket": "deals-9a0f6.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:13366778431:android:3b9007510f48390b",
+        "android_client_info": {
+          "package_name": "org.latefire.deals"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "13366778431-p9qfnm91ijr89d8hkpj7k1v1lcf05s16.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "org.latefire.deals",
+            "certificate_hash": "9411637d5e22c46b1ab86db04858517386152035"
+          }
+        },
+        {
+          "client_id": "13366778431-6675bhcogd033kkb89tetspkfmq5nkee.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD4I4m80AgYH7ntStP2eyZ_fWiLTdpE8-c"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "13366778431-6675bhcogd033kkb89tetspkfmq5nkee.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
