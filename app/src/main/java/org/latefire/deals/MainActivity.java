@@ -27,7 +27,8 @@ public class MainActivity extends AppCompatActivity {
     private FirebaseUser mFirebaseUser;
     private GoogleApiClient mGoogleApiClient;
     private Context mActivity;
-    private String mFirebaseUserName;
+
+    private FirebaseAuth.AuthStateListener mAuthStateListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,19 +39,23 @@ public class MainActivity extends AppCompatActivity {
         mFirebaseAuth = FirebaseAuth.getInstance();
         mFirebaseUser = mFirebaseAuth.getCurrentUser();
 
+        // For signing-in to Firebase anonymously (which allows to read and write the database),
+        // only the following line is needed (and all the Google sign in stuff is not needed)
+        //mFirebaseAuth.signInAnonymously();
+
         // Test if there's an authenticated Firebase user, if not, redirect the user to sign in
         if (mFirebaseUser == null) {
             startActivity(new Intent(this, SignInActivity.class));
             finish();
             return;
         }
-        mFirebaseUserName = mFirebaseUser.getDisplayName();
-        getSupportActionBar().setSubtitle(String.format(getString(R.string.subtitle_main_activity), mFirebaseUserName));
 
-        // Used for enabling sign out from Google account
+        getSupportActionBar().setSubtitle(String.format(getString(R.string.subtitle_main_activity), mFirebaseUser.getDisplayName()));
+
+        // Needed for enabling sign out from Google account
         mGoogleApiClient = getGoogleApiClient();
-        mDatabaseManager = DatabaseManager.getInstance();
 
+        mDatabaseManager = DatabaseManager.getInstance();
         Customer customer = new Customer("danielmweibel@gmail.com", "+41798310140", "Daniel", "Weibel");
         String id = mDatabaseManager.saveCustomer(customer);
         ((TextView) findViewById(R.id.tvHello)).setText(id);
