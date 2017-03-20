@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.Toast;
+
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
@@ -15,6 +16,7 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.GoogleAuthProvider;
+
 import org.latefire.deals.R;
 import org.latefire.deals.databinding.ActivitySignInBinding;
 
@@ -59,6 +61,11 @@ public class SignInActivity extends AppCompatActivity {
       Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
       startActivityForResult(signInIntent, REQUEST_CODE_SIGN_IN);
     });
+
+    b.btnSignInAnonymously.setOnClickListener(v -> {
+      mFirebaseAuth.signInAnonymously().addOnCompleteListener(task ->
+              startActivity(new Intent(mActivity, HomeActivity.class)));
+    });
   }
 
   @Override protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -68,7 +75,6 @@ public class SignInActivity extends AppCompatActivity {
       GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
       if (result.isSuccess()) {
         authToFirebaseWithGoogleAccount(result.getSignInAccount());
-        startActivity(new Intent(this,HomeActivity.class));
       } else {
         Log.e(LOG_TAG, "Google Sign-In failed.");
       }
@@ -80,7 +86,7 @@ public class SignInActivity extends AppCompatActivity {
     AuthCredential credential = GoogleAuthProvider.getCredential(account.getIdToken(), null);
     mFirebaseAuth.signInWithCredential(credential).addOnCompleteListener(this, task -> {
       if (task.isSuccessful()) {
-        startActivity(new Intent(mActivity, MainActivity.class));
+        startActivity(new Intent(mActivity, HomeActivity.class));
         finish();
       } else {
         Log.w(LOG_TAG, "signInWithCredential", task.getException());

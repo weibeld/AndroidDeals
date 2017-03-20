@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
 import org.latefire.deals.R;
-import org.latefire.deals.activity.MainActivity;
 import org.latefire.deals.databinding.ActivityCreateDealBinding;
 import org.latefire.deals.managers.DatabaseManager;
 import org.latefire.deals.models.Deal;
@@ -27,7 +26,7 @@ public class CreateDealActivity extends AppCompatActivity {
             Deal deal = new Deal();
             deal.setTitle(b.etTitle.getText().toString());
             mDatabaseManager.createDeal(deal);
-            startActivity(new Intent(this, MainActivity.class));
+            startActivity(new Intent(this, HomeActivity.class));
         });
 
 

@@ -9,16 +9,19 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
-import butterknife.BindView;
-import butterknife.ButterKnife;
+
 import com.github.florent37.materialviewpager.MaterialViewPager;
 import com.github.florent37.materialviewpager.header.HeaderDesign;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+
 import org.latefire.deals.R;
 import org.latefire.deals.adapters.DealListAdapter;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 /**
  * Created by phongnguyen on 3/19/17.
@@ -29,6 +32,7 @@ public class HomeActivity extends BaseActivity{
   private DealListAdapter adapter;
   private FirebaseAuth mFirebaseAuth;
   private GoogleApiClient mGoogleApiClient;
+  private FirebaseUser mFirebaseUser;
 
   @Override protected void onCreate(@Nullable Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -36,11 +40,16 @@ public class HomeActivity extends BaseActivity{
     ButterKnife.bind(this);
 
     mFirebaseAuth = FirebaseAuth.getInstance();
+    mFirebaseUser = mFirebaseAuth.getCurrentUser();
+
     mGoogleApiClient = getGoogleApiClient();
 
+    String userMsg = String.format(getString(R.string.current_user), mFirebaseUser.getDisplayName());
+    Toast.makeText(this, userMsg, Toast.LENGTH_LONG).show();
     final Toolbar toolbar = viewPager.getToolbar();
     if (toolbar != null) {
       setSupportActionBar(toolbar);
+      getSupportActionBar().setSubtitle(userMsg);
     }
 
     adapter = new DealListAdapter(getSupportFragmentManager());

@@ -48,15 +48,15 @@ public class MainActivity extends AppCompatActivity {
 
         // For signing-in to Firebase anonymously (which allows to read and write the database),
         // only the following line is needed (and all the Google sign in stuff is not needed)
-        //mFirebaseAuth.signInAnonymously();
+        mFirebaseAuth.signInAnonymously();
 
         // Test if there's an authenticated Firebase user, if not, redirect the user to sign in
-        if (mFirebaseUser == null) {
-            startActivity(new Intent(this, SignInActivity.class));
-            finish();
-            return;
-        }
-        getSupportActionBar().setSubtitle(String.format(getString(R.string.subtitle_main_activity), mFirebaseUser.getDisplayName()));
+//        if (mFirebaseUser == null) {
+//            startActivity(new Intent(this, SignInActivity.class));
+//            finish();
+//            return;
+//        }
+//        getSupportActionBar().setSubtitle(String.format(getString(R.string.subtitle_main_activity), mFirebaseUser.getDisplayName()));
         // Needed for enabling sign out from Google account
         mGoogleApiClient = getGoogleApiClient();
 

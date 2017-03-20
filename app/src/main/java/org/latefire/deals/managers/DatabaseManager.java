@@ -110,7 +110,7 @@ public class DatabaseManager {
     }
 
     public ArrayList<Deal> getAllDeals() {
-        Log.d(LOG_TAG, "Get all deals (" + mDeals.values().size() + ")");
+        Log.d(LOG_TAG, "getAllDeals: returning " + mDeals.values().size() + " deals");
         return new ArrayList<>(mDeals.values());
     }
 

@@ -2,6 +2,6 @@
     <string name="app_name">Deals</string>
     <string name="action_sign_out">Sign Out</string>
     <string name="title_sign_in_activity">Sign In</string>
-    <string name="subtitle_main_activity">Signed in to Firebase as %1$s</string>
+    <string name="current_user">Signed in to Firebase as %1$s</string>
     <string name="action_create_deal">Create Deal</string>
 </resources>
