@@ -15,14 +15,14 @@ public class Deal {
   private String currency;
   private double regularPrice;
   private double dealPrice;
-  private Date beginValidity;
-  private Date endValidity;
+  private String beginValidity;
+  private String endValidity;
 
   public Deal() {
   }
 
   public Deal(String id, String businessId, String title, String description, String currency,
-      double regularPrice, double dealPrice, Date beginValidity, Date endValidity) {
+      double regularPrice, double dealPrice, String beginValidity, String endValidity) {
     this.id = id;
     this.businessId = businessId;
     this.title = title;
@@ -90,19 +90,19 @@ public class Deal {
     this.dealPrice = dealPrice;
   }
 
-  public Date getBeginValidity() {
+  public String getBeginValidity() {
     return beginValidity;
   }
 
-  public void setBeginValidity(Date beginValidity) {
+  public void setBeginValidity(String beginValidity) {
     this.beginValidity = beginValidity;
   }
 
-  public Date getEndValidity() {
+  public String getEndValidity() {
     return endValidity;
   }
 
-  public void setEndValidity(Date endValidity) {
+  public void setEndValidity(String endValidity) {
     this.endValidity = endValidity;
   }
 }

@@ -4,4 +4,5 @@
     <string name="title_sign_in_activity">Sign In</string>
     <string name="current_user">Signed in to Firebase as %1$s</string>
     <string name="action_create_deal">Create Deal</string>
+    <string name="base_deal_price_text"><![CDATA[<strike><font color=#FF4081>%1$s</strike><b><font color=#FF4081>"\n"%2$s</b>]]></string>
 </resources>
