@@ -143,6 +143,10 @@ public class DatabaseManager {
     return null;
   }
 
+  public DatabaseReference getDealsReference() {
+    return mDbRefDeals;
+  }
+
   public interface NewDealListener {
     void newDeal(Deal deal);
   }

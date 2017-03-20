@@ -11,6 +11,7 @@ import com.github.florent37.materialviewpager.header.MaterialViewPagerHeaderDeco
 
 import org.latefire.deals.R;
 import org.latefire.deals.adapters.DealAdapter_NoBinding;
+import org.latefire.deals.adapters.DealFirebaseAdapter;
 import org.latefire.deals.controler.BaseControler;
 
 import butterknife.BindView;
@@ -45,10 +46,8 @@ public class ListHotDealFragment extends BaseFrament {
     ButterKnife.bind(this, rootView);
 
     rvDealList.setLayoutManager(new LinearLayoutManager(getContext()));
-    DealAdapter_NoBinding adapter_noBinding =
-        new DealAdapter_NoBinding(getContext(), BaseControler.getInstance().getAllDeals());
     rvDealList.addItemDecoration(new MaterialViewPagerHeaderDecorator());
-    rvDealList.setAdapter(adapter_noBinding);
+    rvDealList.setAdapter(new DealFirebaseAdapter());
     return rootView;
   }
 
