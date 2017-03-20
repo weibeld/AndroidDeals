@@ -12,23 +12,20 @@ import org.latefire.deals.models.Deal;
 
 public class CreateDealActivity extends AppCompatActivity {
 
-    ActivityCreateDealBinding b;
-    DatabaseManager mDatabaseManager;
+  ActivityCreateDealBinding b;
+  DatabaseManager mDatabaseManager;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        b = DataBindingUtil.setContentView(this, R.layout.activity_create_deal);
-        mDatabaseManager = DatabaseManager.getInstance();
-        getSupportActionBar().setTitle("Create Deal");
+  @Override protected void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    b = DataBindingUtil.setContentView(this, R.layout.activity_create_deal);
+    mDatabaseManager = DatabaseManager.getInstance();
+    getSupportActionBar().setTitle("Create Deal");
 
-        b.btnSave.setOnClickListener(v -> {
-            Deal deal = new Deal();
-            deal.setTitle(b.etTitle.getText().toString());
-            mDatabaseManager.createDeal(deal);
-            startActivity(new Intent(this, HomeActivity.class));
-        });
-
-
-    }
+    b.btnSave.setOnClickListener(v -> {
+      Deal deal = new Deal();
+      deal.setTitle(b.etTitle.getText().toString());
+      mDatabaseManager.createDeal(deal);
+      startActivity(new Intent(this, HomeActivity.class));
+    });
+  }
 }

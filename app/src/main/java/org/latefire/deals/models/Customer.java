@@ -6,31 +6,31 @@ package org.latefire.deals.models;
 
 public class Customer extends User {
 
-    private String firstName;
-    private String lastName;
+  private String firstName;
+  private String lastName;
 
-    public Customer() {
-    }
+  public Customer() {
+  }
 
-    public Customer(String email, String phone, String firstName, String lastName) {
-        super(email, phone);
-        this.firstName = firstName;
-        this.lastName = lastName;
-    }
+  public Customer(String email, String phone, String firstName, String lastName) {
+    super(email, phone);
+    this.firstName = firstName;
+    this.lastName = lastName;
+  }
 
-    public String getFirstName() {
-        return firstName;
-    }
+  public String getFirstName() {
+    return firstName;
+  }
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
+  public void setFirstName(String firstName) {
+    this.firstName = firstName;
+  }
 
-    public String getLastName() {
-        return lastName;
-    }
+  public String getLastName() {
+    return lastName;
+  }
 
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
+  public void setLastName(String lastName) {
+    this.lastName = lastName;
+  }
 }

@@ -44,11 +44,10 @@ public class HomeActivity extends BaseActivity{
 
     mGoogleApiClient = getGoogleApiClient();
 
-    String userMsg = String.format(getString(R.string.current_user), mFirebaseUser.getDisplayName());
-    Toast.makeText(this, userMsg, Toast.LENGTH_LONG).show();
     final Toolbar toolbar = viewPager.getToolbar();
     if (toolbar != null) {
       setSupportActionBar(toolbar);
+      String userMsg = String.format(getString(R.string.current_user), mFirebaseUser.getDisplayName());
       getSupportActionBar().setSubtitle(userMsg);
     }
 
