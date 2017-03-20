@@ -21,8 +21,6 @@
 
         <activity android:name=".activity.HomeActivity" android:theme="@style/AppThemeNoActionBar"/>
 
-        <activity android:name=".activity.MainActivity">
-        </activity>
         <activity
             android:name=".activity.CreateDealActivity"
             android:parentActivityName=".activity.HomeActivity">

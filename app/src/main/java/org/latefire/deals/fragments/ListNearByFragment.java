@@ -10,9 +10,7 @@ import android.view.ViewGroup;
 import com.github.florent37.materialviewpager.header.MaterialViewPagerHeaderDecorator;
 
 import org.latefire.deals.R;
-import org.latefire.deals.adapters.DealAdapter_NoBinding;
 import org.latefire.deals.adapters.DealFirebaseAdapter;
-import org.latefire.deals.controler.BaseControler;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
