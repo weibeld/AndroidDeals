@@ -2,23 +2,30 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="org.latefire.deals">
 
+    <uses-permission android:name="android.permission.INTERNET"/>
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity">
+        <activity android:name=".activity.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".SignInActivity" />
+        <activity android:name=".activity.SignInActivity" />
+
+        <activity android:name=".activity.HomeActivity" android:theme="@style/AppThemeNoActionBar"/>
+
+        <activity android:name=".activity.MainActivity"/>
+
         <activity
-            android:name=".CreateDealActivity"
-            android:parentActivityName=".MainActivity">
+            android:name=".activity.CreateDealActivity"
+            android:parentActivityName=".activity.MainActivity">
         </activity>
     </application>
 

@@ -1,10 +1,12 @@
-package org.latefire.deals;
+package org.latefire.deals.activity;
 
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
+import org.latefire.deals.R;
+import org.latefire.deals.activity.MainActivity;
 import org.latefire.deals.databinding.ActivityCreateDealBinding;
 import org.latefire.deals.managers.DatabaseManager;
 import org.latefire.deals.models.Deal;

@@ -1,4 +1,4 @@
-package org.latefire.deals;
+package org.latefire.deals.activity;
 
 import android.content.Context;
 import android.content.Intent;
@@ -16,6 +16,8 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import org.latefire.deals.adapters.DealAdapter;
+import org.latefire.deals.R;
 import org.latefire.deals.databinding.ActivityMainBinding;
 import org.latefire.deals.managers.DatabaseManager;
 

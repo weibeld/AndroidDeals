@@ -11,7 +11,7 @@
         android:paddingLeft="@dimen/activity_horizontal_margin"
         android:paddingRight="@dimen/activity_horizontal_margin"
         android:paddingTop="@dimen/activity_vertical_margin"
-        tools:context="org.latefire.deals.SignInActivity">
+        tools:context="org.latefire.deals.activity.SignInActivity">
 
         <!-- This class defines only the visual styling of the button, can use a normal button -->
         <com.google.android.gms.common.SignInButton

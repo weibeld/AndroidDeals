@@ -1,4 +1,4 @@
-package org.latefire.deals;
+package org.latefire.deals.adapters;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
