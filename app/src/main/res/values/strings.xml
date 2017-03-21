@@ -4,8 +4,7 @@
     <string name="title_sign_in_activity">Sign In</string>
     <string name="current_user">Signed in to Firebase as %1$s</string>
     <string name="action_create_deal">Create Deal</string>
-<<<<<<< HEAD
-  <string name="title">Title</string>
+    <string name="title">Title</string>
     <string name="description">Description</string>
     <string name="location">Location</string>
     <string name="save">Save</string>
@@ -16,9 +15,9 @@
     <string name="error_input_location">Please input location!</string>
     <string name="error_input_price">Please input price!</string>
     <string name="error_input_deal_price">Please input deal price!</string>
-  <string-array name="upload_deal_image">
-    <item>Take a Photo</item>
-    <item>Choose From Gallery</item>
-  </string-array>
+    <string-array name="upload_deal_image">
+      <item>Take a Photo</item>
+      <item>Choose From Gallery</item>
+    </string-array>
     <string name="base_deal_price_text"><![CDATA[<strike><font color=#FF4081>%1$s</strike><b><font color=#FF4081>"\n"%2$s</b>]]></string>
 </resources>
