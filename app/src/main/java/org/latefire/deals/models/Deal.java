@@ -17,6 +17,7 @@ public class Deal {
   private double dealPrice;
   private Date beginValidity;
   private Date endValidity;
+  private String location;
 
   public Deal() {
   }
@@ -104,5 +105,13 @@ public class Deal {
 
   public void setEndValidity(Date endValidity) {
     this.endValidity = endValidity;
+  }
+
+  public String getLocation() {
+    return location;
+  }
+
+  public void setLocation(String location) {
+    this.location = location;
   }
 }
