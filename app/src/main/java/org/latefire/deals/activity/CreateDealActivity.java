@@ -102,6 +102,7 @@ public class CreateDealActivity extends AppCompatActivity {
     mDeal.setRegularPrice(Double.parseDouble(b.etPrice.getText().toString()));
     mDeal.setDealPrice(Double.parseDouble(b.etDealPrice.getText().toString()));
     mDeal.setLocation(b.etLocation.getText().toString());
+    mDeal.setBusinessId("dummy-business");
     mDatabaseManager.createDeal(mDeal);
     //startActivity(new Intent(this, HomeActivity.class));
     finish();
