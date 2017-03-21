@@ -4,9 +4,8 @@ package org.latefire.deals.models;
  * Created by dw on 19/03/17.
  */
 
-public abstract class User {
+public abstract class User extends FirebaseModel {
 
-  private String id;
   private String email;
   private String phone;
 
@@ -14,17 +13,8 @@ public abstract class User {
   }
 
   public User(String email, String phone) {
-    this.id = null;
     this.email = email;
     this.phone = phone;
-  }
-
-  public String getId() {
-    return id;
-  }
-
-  public void setId(String id) {
-    this.id = id;
   }
 
   public String getEmail() {

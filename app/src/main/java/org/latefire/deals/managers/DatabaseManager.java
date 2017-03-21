@@ -1,20 +1,15 @@
 package org.latefire.deals.managers;
 
-import android.util.Log;
-import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.List;
 import org.latefire.deals.models.Business;
 import org.latefire.deals.models.Customer;
-import org.latefire.deals.models.CustomerDealRelation;
 import org.latefire.deals.models.Deal;
-import org.latefire.deals.models.User;
+import org.latefire.deals.models.FirebaseModel;
 
 /**
  * Created by dw on 19/03/17.
@@ -25,46 +20,17 @@ public class DatabaseManager {
   private static final String LOG_TAG = DatabaseManager.class.getSimpleName();
   private static DatabaseManager instance;
 
-  private NewDealListener mListener;
-
-  private DatabaseReference mDbRefCustomers;
-  private DatabaseReference mDbRefBusinesses;
-  private DatabaseReference mDbRefDeals;
-  private DatabaseReference mDbRefCustomerDealRelations;
-
-  private Map<String, Deal> mDeals;
+  private DatabaseReference mCustomersRef;
+  private DatabaseReference mBusinessesRef;
+  private DatabaseReference mDealsRef;
+  //private DatabaseReference mDbRefCustomerDealRelations;
 
   private DatabaseManager() {
-
     DatabaseReference rootDbRef = FirebaseDatabase.getInstance().getReference();
-
-    mDbRefCustomers = rootDbRef.child("customers");
-    mDbRefBusinesses = rootDbRef.child("businesses");
-
-    mDeals = new LinkedHashMap<>();
-    mDbRefDeals = rootDbRef.child("deals");
-    mDbRefDeals.orderByChild("title").addChildEventListener(new ChildEventListener() {
-      @Override public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-        Deal deal = dataSnapshot.getValue(Deal.class);
-        mDeals.put(dataSnapshot.getKey(), deal);
-        if (mListener != null) mListener.newDeal(deal);
-        Log.d(LOG_TAG, "Add deal: " + deal.getTitle());
-      }
-
-      @Override public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-      }
-
-      @Override public void onChildRemoved(DataSnapshot dataSnapshot) {
-      }
-
-      @Override public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-      }
-
-      @Override public void onCancelled(DatabaseError databaseError) {
-      }
-    });
-
-    mDbRefCustomerDealRelations = rootDbRef.child("customerDealRelations");
+    mCustomersRef = rootDbRef.child("customers");
+    mBusinessesRef = rootDbRef.child("businesses");
+    mDealsRef = rootDbRef.child("deals");
+    //mDbRefCustomerDealRelations = rootDbRef.child("customerDealRelations");
   }
 
   public static synchronized DatabaseManager getInstance() {
@@ -72,79 +38,76 @@ public class DatabaseManager {
     return instance;
   }
 
-  public void setNewDealListener(NewDealListener listener) {
-    mListener = listener;
+  // TODO: 21/03/17 handle the case that no object with the passed ID exists
+  public void getDeal(String id, QueryCallbackSingle callback) {
+    queryById(mDealsRef, id, callback, Deal.class);
+  }
+
+  public void getCustomer(String id, QueryCallbackSingle callback) {
+    queryById(mCustomersRef, id, callback, Customer.class);
+  }
+
+  public void getBusiness(String id, QueryCallbackSingle callback) {
+    queryById(mBusinessesRef, id, callback, Business.class);
+  }
+
+  private void queryById(DatabaseReference parentRef, String id, QueryCallbackSingle callback, Class<? extends FirebaseModel> cls) {
+    DatabaseReference itemRef = parentRef.child(id);
+    itemRef.addListenerForSingleValueEvent(new ValueEventListener() {
+      @Override public void onDataChange(DataSnapshot dataSnapshot) {
+        FirebaseModel result = dataSnapshot.getValue(cls);
+        callback.yourResult(result);
+      }
+      @Override public void onCancelled(DatabaseError databaseError) {}
+    });
   }
 
   public String createDeal(Deal deal) {
-    DatabaseReference child = mDbRefDeals.push();
-    String id = child.getKey();
-    deal.setId(id);
-    child.setValue(deal);
-    return id;
+    return pushAndReturnId(mDealsRef, deal);
   }
 
   public String createCustomer(Customer customer) {
-    DatabaseReference child = mDbRefCustomers.push();
-    String id = child.getKey();
-    customer.setId(id);
-    child.setValue(customer);
-    return id;
+    return pushAndReturnId(mCustomersRef, customer);
   }
 
   public String createBusiness(Business business) {
-    DatabaseReference child = mDbRefBusinesses.push();
+    return pushAndReturnId(mBusinessesRef, business);
+  }
+
+  private String pushAndReturnId(DatabaseReference ref, FirebaseModel model) {
+    DatabaseReference child = ref.push();
     String id = child.getKey();
-    business.setId(id);
-    child.setValue(business);
+    model.setId(id);
+    child.setValue(model);
     return id;
   }
 
-  public void createCustomerDealRelation(CustomerDealRelation relation) {
 
-  }
-
-  public Deal getDeal(String id) {
-    return mDeals.get(id);
-  }
-
-  public ArrayList<Deal> getAllDeals() {
-    ArrayList<Deal> deals = new ArrayList<>();
-    mDbRefDeals.addListenerForSingleValueEvent(new ValueEventListener() {
-      @Override public void onDataChange(DataSnapshot dataSnapshot) {
-        for (DataSnapshot dealSnapshot : dataSnapshot.getChildren()) {
-          deals.add(dealSnapshot.getValue(Deal.class));
-        }
-      }
-
-      @Override public void onCancelled(DatabaseError databaseError) {
-      }
-    });
-    Log.d(LOG_TAG, "getAllDeals: returning " + deals.size() + " deals");
-    return deals;
-  }
-
-  public User getUser(String id) {
-    return null;
-  }
-
-  public ArrayList<Deal> getDealsOfCustomer(String customerId) {
-    return null;
-  }
-
-  public ArrayList<User> getCustomersOfDeal(String dealId) {
-    return null;
-  }
-
-  public ArrayList<Deal> getDealsOfBusiness(String businessId) {
-    return null;
-  }
+  //public void createCustomerDealRelation(CustomerDealRelation relation) {
+  //}
+  //
+  //public ArrayList<Deal> getDealsOfCustomer(String customerId) {
+  //  return null;
+  //}
+  //
+  //public ArrayList<User> getCustomersOfDeal(String dealId) {
+  //  return null;
+  //}
+  //
+  //public ArrayList<Deal> getDealsOfBusiness(String businessId) {
+  //  return null;
+  //}
 
   public DatabaseReference getDealsReference() {
-    return mDbRefDeals;
+    return mDealsRef;
   }
 
-  public interface NewDealListener {
-    void newDeal(Deal deal);
+
+  public interface QueryCallbackList {
+    void yourResult(List<FirebaseModel> modelList);
+  }
+
+  public interface QueryCallbackSingle {
+    void yourResult(FirebaseModel model);
   }
 }

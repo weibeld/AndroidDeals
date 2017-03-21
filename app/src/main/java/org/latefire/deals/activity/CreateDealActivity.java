@@ -25,6 +25,8 @@ import org.latefire.deals.utils.ProcessBitmap;
 
 public class CreateDealActivity extends AppCompatActivity {
 
+  private static final String LOG_TAG = CreateDealActivity.class.getSimpleName();
+
   ActivityCreateDealBinding b;
   DatabaseManager mDatabaseManager;
   private File mImageFile;

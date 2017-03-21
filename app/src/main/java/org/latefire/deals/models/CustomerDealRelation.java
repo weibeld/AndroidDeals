@@ -4,6 +4,7 @@ package org.latefire.deals.models;
  * Created by dw on 19/03/17.
  */
 
+// TODO: 21/03/17 Delete this class
 public class CustomerDealRelation {
 
   private String id;

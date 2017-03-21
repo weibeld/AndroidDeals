@@ -25,7 +25,7 @@ public class BaseControler {
   }
 
   public List<Deal> getAllDeals() {
-    return databaseManager.getAllDeals();
+    return null;  // Not needed
   }
 
   public void createDeal(Deal deal){
