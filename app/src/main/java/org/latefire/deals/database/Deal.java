@@ -1,10 +1,10 @@
-package org.latefire.deals.models;
+package org.latefire.deals.database;
 
+// TODO: 21/03/17 Change type of dates to java.util.Date
 /**
  * Created by dw on 19/03/17.
  */
-
-public class Deal extends FirebaseModel {
+public class Deal extends AbsModel {
 
   private String businessId;
   private String title;

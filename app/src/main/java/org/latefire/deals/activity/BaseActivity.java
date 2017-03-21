@@ -4,7 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import org.latefire.deals.controler.BaseControler;
-import org.latefire.deals.managers.DatabaseManager;
+import org.latefire.deals.database.DatabaseManager;
 
 /**
  * Created by phongnguyen on 3/20/17.

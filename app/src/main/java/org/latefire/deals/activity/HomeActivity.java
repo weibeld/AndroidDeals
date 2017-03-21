@@ -51,14 +51,21 @@ public class HomeActivity extends BaseActivity{
       getSupportActionBar().setSubtitle(userMsg);
     }
 
-    //// For testing
+    // Testing
+    // *********************************************************************************************
     //String id = "-KfjF6oBnZSR02m4Oc3Z";
     //DatabaseManager.getInstance().getDeal(id, new DatabaseManager.QueryCallbackSingle() {
-    //  @Override public void yourResult(FirebaseModel model) {
+    //  @Override public void yourResult(AbsModel model) {
     //    Deal deal = (Deal) model;
     //    Log.d(LOG_TAG, "Result of getDeal ID " + id + ": " + deal.toString());
     //  }
     //});
+
+    //DatabaseManager mgr2 = DatabaseManager.getInstance();
+    //String businessID = mgr2.createBusiness(TestUtils.getDummyBusiness());
+    //String dealId = mgr2.createDeal(TestUtils.getDummyDeal(businessID));
+    //Log.d(LOG_TAG, "Test deal: " + dealId);
+    // *********************************************************************************************
 
     adapter = new DealListAdapter(getSupportFragmentManager());
     viewPager.getViewPager().setAdapter(adapter);

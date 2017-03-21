@@ -2,8 +2,8 @@ package org.latefire.deals.controler;
 
 import java.util.ArrayList;
 import java.util.List;
-import org.latefire.deals.managers.DatabaseManager;
-import org.latefire.deals.models.Deal;
+import org.latefire.deals.database.DatabaseManager;
+import org.latefire.deals.database.Deal;
 
 /**
  * Created by phongnguyen on 3/20/17.

@@ -1,18 +1,18 @@
-package org.latefire.deals.models;
+package org.latefire.deals.database;
 
 /**
  * Created by dw on 19/03/17.
  */
 
-public abstract class User extends FirebaseModel {
+abstract class AbsUser extends AbsModel {
 
   private String email;
   private String phone;
 
-  public User() {
+  AbsUser() {
   }
 
-  public User(String email, String phone) {
+  AbsUser(String email, String phone) {
     this.email = email;
     this.phone = phone;
   }
