@@ -1,10 +1,10 @@
-package org.latefire.deals.models;
+package org.latefire.deals.database;
 
 /**
  * Created by dw on 19/03/17.
  */
 
-public class Business extends User {
+public class Business extends AbsUser {
 
   private String businessName;
   private String addressLine1;

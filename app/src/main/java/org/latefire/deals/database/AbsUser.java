@@ -1,30 +1,20 @@
-package org.latefire.deals.models;
+package org.latefire.deals.database;
 
 /**
  * Created by dw on 19/03/17.
  */
 
-public abstract class User {
+abstract class AbsUser extends AbsModel {
 
-  private String id;
   private String email;
   private String phone;
 
-  public User() {
+  AbsUser() {
   }
 
-  public User(String email, String phone) {
-    this.id = null;
+  AbsUser(String email, String phone) {
     this.email = email;
     this.phone = phone;
-  }
-
-  public String getId() {
-    return id;
-  }
-
-  public void setId(String id) {
-    this.id = id;
   }
 
   public String getEmail() {

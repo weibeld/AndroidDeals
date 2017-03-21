@@ -3,7 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <data>
-        <variable name="deal" type="org.latefire.deals.models.Deal"/>
+        <variable name="deal" type="org.latefire.deals.database.Deal"/>
     </data>
 
     <LinearLayout

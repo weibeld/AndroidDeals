@@ -1,14 +1,11 @@
-package org.latefire.deals.models;
+package org.latefire.deals.database;
 
-import java.util.Date;
-
+// TODO: 21/03/17 Change type of dates to java.util.Date
 /**
  * Created by dw on 19/03/17.
  */
+public class Deal extends AbsModel {
 
-public class Deal {
-
-  private String id;
   private String businessId;
   private String title;
   private String description;
@@ -22,9 +19,8 @@ public class Deal {
   public Deal() {
   }
 
-  public Deal(String id, String businessId, String title, String description, String currency,
+  public Deal(String businessId, String title, String description, String currency,
       double regularPrice, double dealPrice, String beginValidity, String endValidity, String location) {
-    this.id = id;
     this.businessId = businessId;
     this.title = title;
     this.description = description;
@@ -34,14 +30,6 @@ public class Deal {
     this.beginValidity = beginValidity;
     this.endValidity = endValidity;
     this.location = location;
-  }
-
-  public String getId() {
-    return id;
-  }
-
-  public void setId(String id) {
-    this.id = id;
   }
 
   public String getBusinessId() {

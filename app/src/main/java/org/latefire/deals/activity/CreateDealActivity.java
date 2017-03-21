@@ -15,15 +15,17 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import java.io.File;
 import org.latefire.deals.R;
+import org.latefire.deals.database.DatabaseManager;
 import org.latefire.deals.databinding.ActivityCreateDealBinding;
-import org.latefire.deals.managers.DatabaseManager;
-import org.latefire.deals.models.Deal;
+import org.latefire.deals.database.Deal;
 import org.latefire.deals.utils.AlertDialogUtils;
 import org.latefire.deals.utils.Constant;
 import org.latefire.deals.utils.DeviceUtils;
 import org.latefire.deals.utils.ProcessBitmap;
 
 public class CreateDealActivity extends AppCompatActivity {
+
+  private static final String LOG_TAG = CreateDealActivity.class.getSimpleName();
 
   ActivityCreateDealBinding b;
   DatabaseManager mDatabaseManager;

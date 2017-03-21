@@ -9,8 +9,8 @@ import com.bumptech.glide.Glide;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import org.latefire.deals.R;
 import org.latefire.deals.StringUtils;
-import org.latefire.deals.managers.DatabaseManager;
-import org.latefire.deals.models.Deal;
+import org.latefire.deals.database.DatabaseManager;
+import org.latefire.deals.database.Deal;
 
 /**
  * Created by dw on 20/03/17.
@@ -21,8 +21,7 @@ public class DealFirebaseAdapter
   private Context context;
 
   public DealFirebaseAdapter(Context context) {
-    super(Deal.class, R.layout.deal_list_item, ViewHolder.class,
-        DatabaseManager.getInstance().getDealsReference());
+    super(Deal.class, R.layout.deal_list_item, ViewHolder.class, DatabaseManager.getInstance().getDealsReference());
     this.context = context;
   }
 
