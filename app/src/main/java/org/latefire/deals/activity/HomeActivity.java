@@ -9,25 +9,25 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
-
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import com.github.florent37.materialviewpager.MaterialViewPager;
 import com.github.florent37.materialviewpager.header.HeaderDesign;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-
 import org.latefire.deals.R;
 import org.latefire.deals.adapters.DealListAdapter;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
 
 /**
  * Created by phongnguyen on 3/19/17.
  */
 
 public class HomeActivity extends BaseActivity{
+
+  private static final String LOG_TAG = HomeActivity.class.getSimpleName();
+
   @BindView(R.id.materialViewPager) MaterialViewPager viewPager;
   private DealListAdapter adapter;
   private FirebaseAuth mFirebaseAuth;
@@ -50,6 +50,22 @@ public class HomeActivity extends BaseActivity{
       String userMsg = String.format(getString(R.string.current_user), mFirebaseUser.getDisplayName());
       getSupportActionBar().setSubtitle(userMsg);
     }
+
+    // Testing
+    // *********************************************************************************************
+    //String id = "-KfjF6oBnZSR02m4Oc3Z";
+    //DatabaseManager.getInstance().getDeal(id, new DatabaseManager.QueryCallbackSingle() {
+    //  @Override public void yourResult(AbsModel model) {
+    //    Deal deal = (Deal) model;
+    //    Log.d(LOG_TAG, "Result of getDeal ID " + id + ": " + deal.toString());
+    //  }
+    //});
+
+    //DatabaseManager mgr2 = DatabaseManager.getInstance();
+    //String businessID = mgr2.createBusiness(TestUtils.getDummyBusiness());
+    //String dealId = mgr2.createDeal(TestUtils.getDummyDeal(businessID));
+    //Log.d(LOG_TAG, "Test deal: " + dealId);
+    // *********************************************************************************************
 
     adapter = new DealListAdapter(getSupportFragmentManager());
     viewPager.getViewPager().setAdapter(adapter);

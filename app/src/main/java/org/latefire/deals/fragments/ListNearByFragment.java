@@ -46,7 +46,7 @@ public class ListNearByFragment extends BaseFrament {
 
     rvDealList.setLayoutManager(new LinearLayoutManager(getContext()));
     rvDealList.addItemDecoration(new MaterialViewPagerHeaderDecorator());
-    rvDealList.setAdapter(new DealFirebaseAdapter());
+    rvDealList.setAdapter(new DealFirebaseAdapter(getContext()));
     return rootView;
   }
 
