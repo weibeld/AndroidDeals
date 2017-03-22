@@ -21,7 +21,8 @@ public class DealFirebaseAdapter
   private Context context;
 
   public DealFirebaseAdapter(Context context) {
-    super(Deal.class, R.layout.deal_list_item, ViewHolder.class, DatabaseManager.getInstance().getDealsReference());
+    super(Deal.class, R.layout.deal_list_item, ViewHolder.class,
+        DatabaseManager.getInstance().getDealsReference());
     this.context = context;
   }
 
@@ -29,7 +30,13 @@ public class DealFirebaseAdapter
       int position) {
     if (deal.getTitle() != null) {
       viewHolder.tvDealTitle.setText(deal.getTitle());
-      Glide.with(context).load(R.drawable.dummy).centerCrop().into(viewHolder.imgDealPhoto);
+      Glide.with(context)
+          .load(deal.getPhoto())
+          .asBitmap()
+          .placeholder(R.drawable.placeholder)
+          .error(R.drawable.image_not_found)
+          .centerCrop()
+          .into(viewHolder.imgDealPhoto);
       viewHolder.tvDealPrice.setText(
           StringUtils.makePriceText(context, String.valueOf(deal.getRegularPrice()),
               String.valueOf(deal.getDealPrice())), TextView.BufferType.EDITABLE);

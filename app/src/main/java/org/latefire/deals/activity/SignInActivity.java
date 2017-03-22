@@ -27,7 +27,7 @@ import org.latefire.deals.databinding.ActivitySignInBinding;
  * It allows the user to sign in to an account (currently, Google), and then this account is used
  * to authenticate to Firebase.
  */
-public class SignInActivity extends AppCompatActivity {
+public class SignInActivity extends BaseActivity {
 
   private static final String LOG_TAG = SignInActivity.class.getSimpleName();
   private static final int REQUEST_CODE_SIGN_IN = 0;
@@ -83,8 +83,10 @@ public class SignInActivity extends AppCompatActivity {
 
   // Authenticate to Firebase with an authenticated Google account
   private void authToFirebaseWithGoogleAccount(GoogleSignInAccount account) {
+    showProgress();
     AuthCredential credential = GoogleAuthProvider.getCredential(account.getIdToken(), null);
     mFirebaseAuth.signInWithCredential(credential).addOnCompleteListener(this, task -> {
+      dismissProgress();
       if (task.isSuccessful()) {
         startActivity(new Intent(mActivity, HomeActivity.class));
         finish();

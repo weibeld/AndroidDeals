@@ -15,6 +15,7 @@ public class Deal extends AbsModel {
   private String location;
   private String beginValidity;
   private String endValidity;
+  private String photo;
 
   public Deal() {
   }
@@ -102,5 +103,13 @@ public class Deal extends AbsModel {
 
   public void setLocation(String location) {
     this.location = location;
+  }
+
+  public String getPhoto() {
+    return photo;
+  }
+
+  public void setPhoto(String photo) {
+    this.photo = photo;
   }
 }

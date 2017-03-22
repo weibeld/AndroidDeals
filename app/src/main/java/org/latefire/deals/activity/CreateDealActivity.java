@@ -9,21 +9,24 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import org.latefire.deals.R;
 import org.latefire.deals.database.DatabaseManager;
-import org.latefire.deals.databinding.ActivityCreateDealBinding;
 import org.latefire.deals.database.Deal;
+import org.latefire.deals.databinding.ActivityCreateDealBinding;
 import org.latefire.deals.utils.AlertDialogUtils;
 import org.latefire.deals.utils.Constant;
 import org.latefire.deals.utils.DeviceUtils;
 import org.latefire.deals.utils.ProcessBitmap;
 
-public class CreateDealActivity extends AppCompatActivity {
+public class CreateDealActivity extends BaseActivity {
 
   private static final String LOG_TAG = CreateDealActivity.class.getSimpleName();
 
@@ -97,15 +100,47 @@ public class CreateDealActivity extends AppCompatActivity {
     if (!validateInput()) {
       return;
     }
-    mDeal.setTitle(b.etTitle.getText().toString());
-    mDeal.setDescription(b.etDescription.getText().toString());
-    mDeal.setRegularPrice(Double.parseDouble(b.etPrice.getText().toString()));
-    mDeal.setDealPrice(Double.parseDouble(b.etDealPrice.getText().toString()));
-    mDeal.setLocation(b.etLocation.getText().toString());
-    mDeal.setBusinessId("dummy-business");
-    mDatabaseManager.createDeal(mDeal);
-    //startActivity(new Intent(this, HomeActivity.class));
-    finish();
+    showProgress();
+    // Create a storage reference from our app
+    StorageReference storageRef = FirebaseStorage.getInstance().getReference();
+
+    // Create a reference to "mountains.jpg"
+    String imageName = String.valueOf(System.currentTimeMillis());
+    StorageReference mountainsRef = storageRef.child(imageName + ".jpg");
+
+    // Create a reference to 'images/mountains.jpg'
+    StorageReference mountainImagesRef = storageRef.child("images/" + imageName + ".jpg");
+
+    // While the file names are the same, the references point to different files
+    mountainsRef.getName().equals(mountainImagesRef.getName());    // true
+    mountainsRef.getPath().equals(mountainImagesRef.getPath());    // false
+
+    // Get the data from an ImageView as bytes
+    b.imgDeal.setDrawingCacheEnabled(true);
+    b.imgDeal.buildDrawingCache();
+    Bitmap bitmap = b.imgDeal.getDrawingCache();
+    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+    bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+    byte[] data1 = baos.toByteArray();
+
+    UploadTask uploadTask = mountainsRef.putBytes(data1);
+    uploadTask.addOnFailureListener(exception -> {
+      // Handle unsuccessful uploads
+      dismissProgress();
+    }).addOnSuccessListener(taskSnapshot -> {
+      // taskSnapshot.getMetadata() contains file metadata such as size, content-type, and download URL.
+      Uri downloadUrl = taskSnapshot.getDownloadUrl();
+      mDeal.setPhoto(downloadUrl.toString());
+      mDeal.setTitle(b.etTitle.getText().toString());
+      mDeal.setDescription(b.etDescription.getText().toString());
+      mDeal.setRegularPrice(Double.parseDouble(b.etPrice.getText().toString()));
+      mDeal.setDealPrice(Double.parseDouble(b.etDealPrice.getText().toString()));
+      mDeal.setLocation(b.etLocation.getText().toString());
+      mDeal.setBusinessId("dummy-business");
+      mDatabaseManager.createDeal(mDeal);
+      dismissProgress();
+      finish();
+    });
   }
 
   private boolean validateInput() {
