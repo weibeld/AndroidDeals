@@ -14,6 +14,7 @@ import org.latefire.deals.adapters.DealFirebaseAdapter;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import org.latefire.deals.database.DatabaseManager;
 
 /**
  * Created by phongnguyen on 3/19/17.
@@ -43,9 +44,10 @@ public class ListCategorizeDealFragment extends BaseFrament {
     View rootView = inflater.inflate(R.layout.fragment_categorize_deal_list, container, false);
     ButterKnife.bind(this, rootView);
 
+    DatabaseManager mgr = DatabaseManager.getInstance();
     rvDealList.setLayoutManager(new LinearLayoutManager(getContext()));
     rvDealList.addItemDecoration(new MaterialViewPagerHeaderDecorator());
-    rvDealList.setAdapter(new DealFirebaseAdapter(getContext()));
+    rvDealList.setAdapter(new DealFirebaseAdapter(getContext(), mgr.getDealsOrderByTitle()));
     return rootView;
   }
 

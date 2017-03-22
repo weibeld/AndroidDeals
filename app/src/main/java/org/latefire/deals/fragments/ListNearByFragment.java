@@ -6,14 +6,12 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
-import com.github.florent37.materialviewpager.header.MaterialViewPagerHeaderDecorator;
-
-import org.latefire.deals.R;
-import org.latefire.deals.adapters.DealFirebaseAdapter;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import com.github.florent37.materialviewpager.header.MaterialViewPagerHeaderDecorator;
+import org.latefire.deals.R;
+import org.latefire.deals.adapters.DealFirebaseAdapter;
+import org.latefire.deals.database.DatabaseManager;
 
 /**
  * Created by phongnguyen on 3/19/17.
@@ -44,9 +42,10 @@ public class ListNearByFragment extends BaseFrament {
     View rootView = inflater.inflate(R.layout.fragment_near_by_list, container, false);
     ButterKnife.bind(this, rootView);
 
+    DatabaseManager mgr = DatabaseManager.getInstance();
     rvDealList.setLayoutManager(new LinearLayoutManager(getContext()));
     rvDealList.addItemDecoration(new MaterialViewPagerHeaderDecorator());
-    rvDealList.setAdapter(new DealFirebaseAdapter(getContext()));
+    rvDealList.setAdapter(new DealFirebaseAdapter(getContext(), mgr.getDealsOrderByDealPrice()));
     return rootView;
   }
 

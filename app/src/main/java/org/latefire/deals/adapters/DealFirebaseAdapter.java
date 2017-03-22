@@ -2,45 +2,45 @@ package org.latefire.deals.adapters;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.text.SpannableStringBuilder;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
+import com.google.firebase.database.Query;
 import org.latefire.deals.R;
 import org.latefire.deals.StringUtils;
-import org.latefire.deals.database.DatabaseManager;
 import org.latefire.deals.database.Deal;
 
 /**
  * Created by dw on 20/03/17.
  */
 
-public class DealFirebaseAdapter
-    extends FirebaseRecyclerAdapter<Deal, DealFirebaseAdapter.ViewHolder> {
+public class DealFirebaseAdapter extends FirebaseRecyclerAdapter<Deal, DealFirebaseAdapter.ViewHolder> {
   private Context context;
 
-  public DealFirebaseAdapter(Context context) {
-    super(Deal.class, R.layout.deal_list_item, ViewHolder.class,
-        DatabaseManager.getInstance().getDealsReference());
+  public DealFirebaseAdapter(Context context, Query query) {
+    super(Deal.class, R.layout.deal_list_item, ViewHolder.class, query);
     this.context = context;
   }
 
-  @Override protected void populateViewHolder(DealFirebaseAdapter.ViewHolder viewHolder, Deal deal,
-      int position) {
-    if (deal.getTitle() != null) {
-      viewHolder.tvDealTitle.setText(deal.getTitle());
-      Glide.with(context)
-          .load(deal.getPhoto())
-          .asBitmap()
-          .placeholder(R.drawable.placeholder)
-          .error(R.drawable.image_not_found)
-          .centerCrop()
-          .into(viewHolder.imgDealPhoto);
-      viewHolder.tvDealPrice.setText(
-          StringUtils.makePriceText(context, String.valueOf(deal.getRegularPrice()),
-              String.valueOf(deal.getDealPrice())), TextView.BufferType.EDITABLE);
-    }
+  @Override protected void populateViewHolder(DealFirebaseAdapter.ViewHolder viewHolder, Deal deal, int position) {
+    // Title
+    viewHolder.tvDealTitle.setText(deal.getTitle());
+    // Photo
+    Glide.with(context)
+        .load(deal.getPhoto())
+        .asBitmap()
+        .placeholder(R.drawable.placeholder)
+        .error(R.drawable.image_not_found)
+        .centerCrop()
+        .into(viewHolder.imgDealPhoto);
+    // Deal price and regular price
+    String regularPrice = String.valueOf(deal.getRegularPrice());
+    String dealPrice = String.valueOf(deal.getDealPrice());
+    SpannableStringBuilder price = StringUtils.makePriceText(context, regularPrice, dealPrice);
+    viewHolder.tvDealPrice.setText(price, TextView.BufferType.EDITABLE);
   }
 
   public static class ViewHolder extends RecyclerView.ViewHolder {

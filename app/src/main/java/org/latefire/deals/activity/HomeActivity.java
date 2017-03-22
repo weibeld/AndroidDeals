@@ -61,7 +61,7 @@ public class HomeActivity extends BaseActivity {
     // Testing
     // *********************************************************************************************
     //String id = "-KfjF6oBnZSR02m4Oc3Z";
-    //DatabaseManager.getInstance().getDeal(id, new DatabaseManager.QueryCallbackSingle() {
+    //DatabaseManager.getInstance().getDeal(id, new DatabaseManager.SingleQueryCallback() {
     //  @Override public void yourResult(AbsModel model) {
     //    Deal deal = (Deal) model;
     //    Log.d(LOG_TAG, "Result of getDeal ID " + id + ": " + deal.toString());
