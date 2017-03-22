@@ -8,9 +8,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
+import com.google.firebase.database.Query;
 import org.latefire.deals.R;
 import org.latefire.deals.StringUtils;
-import org.latefire.deals.database.DatabaseManager;
 import org.latefire.deals.database.Deal;
 
 /**
@@ -20,8 +20,8 @@ import org.latefire.deals.database.Deal;
 public class DealFirebaseAdapter extends FirebaseRecyclerAdapter<Deal, DealFirebaseAdapter.ViewHolder> {
   private Context context;
 
-  public DealFirebaseAdapter(Context context) {
-    super(Deal.class, R.layout.deal_list_item, ViewHolder.class, DatabaseManager.getInstance().getDealsQuery());
+  public DealFirebaseAdapter(Context context, Query query) {
+    super(Deal.class, R.layout.deal_list_item, ViewHolder.class, query);
     this.context = context;
   }
 
