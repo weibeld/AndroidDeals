@@ -7,7 +7,6 @@
       android:id="@+id/avi"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:padding="10dp"
       android:background="@android:color/white"
       app:indicatorColor="@color/colorPrimary"
       app:indicatorName="BallScaleMultipleIndicator"

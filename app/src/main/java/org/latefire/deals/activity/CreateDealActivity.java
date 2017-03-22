@@ -12,6 +12,10 @@ import android.support.v7.app.AlertDialog;
 import android.view.View;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
+import com.google.android.gms.common.GooglePlayServicesRepairableException;
+import com.google.android.gms.location.places.AutocompleteFilter;
+import com.google.android.gms.location.places.ui.PlaceAutocomplete;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -25,6 +29,8 @@ import org.latefire.deals.utils.AlertDialogUtils;
 import org.latefire.deals.utils.Constant;
 import org.latefire.deals.utils.DeviceUtils;
 import org.latefire.deals.utils.ProcessBitmap;
+
+import static com.google.android.gms.location.places.AutocompleteFilter.TYPE_FILTER_ADDRESS;
 
 public class CreateDealActivity extends BaseActivity {
 
@@ -75,6 +81,22 @@ public class CreateDealActivity extends BaseActivity {
           mCurrentPhotoPath = mImageFile != null ? mImageFile.getAbsolutePath() : "";
           break;
       }
+    }
+  }
+
+  @OnClick(R.id.etLocation)
+  public void pickPlace(View view){
+
+    int PLACE_AUTOCOMPLETE_REQUEST_CODE = 1;
+    try {
+      Intent intent =
+          new PlaceAutocomplete.IntentBuilder(PlaceAutocomplete.MODE_FULLSCREEN)
+              .build(this);
+      startActivityForResult(intent, PLACE_AUTOCOMPLETE_REQUEST_CODE);
+    } catch (GooglePlayServicesRepairableException e) {
+      e.printStackTrace();
+    } catch (GooglePlayServicesNotAvailableException e) {
+      e.printStackTrace();
     }
   }
 

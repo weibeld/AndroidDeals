@@ -20,4 +20,6 @@
       <item>Choose From Gallery</item>
     </string-array>
     <string name="base_deal_price_text"><![CDATA[<strike><font color=#FF4081>%1$s</strike><b><font color=#FF4081>"\n"%2$s</b>]]></string>
+  <string name="date_begin">Date begin</string>
+  <string name="date_end">Date end</string>
 </resources>

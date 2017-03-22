@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     >
 
@@ -12,96 +13,164 @@
     <LinearLayout
         android:id="@+id/activity_create_deal"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical"
         android:paddingBottom="@dimen/activity_vertical_margin"
-        android:paddingLeft="@dimen/activity_horizontal_margin"
-        android:paddingRight="@dimen/activity_horizontal_margin"
-        android:paddingTop="@dimen/activity_vertical_margin"
         tools:context="org.latefire.deals.activity.CreateDealActivity"
         >
 
-      <ImageView
-          android:id="@+id/imgDeal"
+      <android.support.v7.widget.CardView
           android:layout_width="match_parent"
-          android:layout_height="150dp"
-          android:scaleType="centerCrop"
-          android:src="@drawable/placeholder"
-          />
+          android:layout_height="wrap_content"
+          android:layout_margin="20dp"
+          app:cardCornerRadius="10dp"
+          app:cardElevation="20dp"
+          >
+        <ImageView
+            android:id="@+id/imgDeal"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/placeholder"
+            />
+      </android.support.v7.widget.CardView>
 
       <android.support.design.widget.TextInputLayout
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
+          android:layout_marginLeft="20dp"
+          android:layout_marginRight="20dp"
+          android:layout_marginTop="10dp"
           >
         <EditText
             android:id="@+id/etTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:maxLines="1"
-            android:inputType="textCapSentences"
             android:hint="@string/title"
+            android:inputType="textCapSentences"
+            android:maxLines="1"
             />
       </android.support.design.widget.TextInputLayout>
 
       <android.support.design.widget.TextInputLayout
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
+          android:layout_marginLeft="20dp"
+          android:layout_marginRight="20dp"
           >
         <EditText
             android:id="@+id/etDescription"
             android:layout_width="match_parent"
-            android:maxLines="1"
-            android:inputType="textCapSentences"
             android:layout_height="wrap_content"
+            android:gravity="left"
             android:hint="@string/description"
+            android:inputType="textCapSentences|textMultiLine"
+            android:lines="4"
             />
       </android.support.design.widget.TextInputLayout>
 
       <android.support.design.widget.TextInputLayout
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
+          android:layout_marginLeft="20dp"
+          android:layout_marginRight="20dp"
           >
         <EditText
             android:id="@+id/etLocation"
             android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:focusableInTouchMode="false"
+            android:drawableRight="@drawable/ic_add_location_gray_24dp"
+            android:hint="@string/location"
             android:inputType="textCapSentences"
             android:maxLines="1"
-            android:layout_height="wrap_content"
-            android:hint="@string/location"
-            />
-      </android.support.design.widget.TextInputLayout>
-      <android.support.design.widget.TextInputLayout
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          >
-        <EditText
-            android:id="@+id/etPrice"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/price"
-            android:maxLines="1"
-            android:inputType="numberDecimal"
-            />
-      </android.support.design.widget.TextInputLayout>
-      <android.support.design.widget.TextInputLayout
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          >
-        <EditText
-            android:id="@+id/etDealPrice"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:maxLines="1"
-            android:hint="@string/deal_price"
-            android:inputType="numberDecimal"
             />
       </android.support.design.widget.TextInputLayout>
 
+      <LinearLayout
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_marginLeft="20dp"
+          android:layout_marginRight="20dp"
+          android:orientation="horizontal"
+          >
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="10dp"
+            android:layout_weight="1"
+            >
+          <org.latefire.deals.widgets.CustomEditText
+              android:id="@+id/etPrice"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:hint="@string/price"
+              android:inputType="numberDecimal"
+              android:maxLines="1"
+              app:smallText="$"
+              />
+        </android.support.design.widget.TextInputLayout>
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            >
+          <org.latefire.deals.widgets.CustomEditText
+              android:id="@+id/etDealPrice"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:hint="@string/deal_price"
+              android:inputType="numberDecimal"
+              android:maxLines="1"
+              app:smallText="$"
+              />
+        </android.support.design.widget.TextInputLayout>
+      </LinearLayout>
+      <LinearLayout
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_marginLeft="20dp"
+          android:layout_marginRight="20dp"
+          android:orientation="horizontal"
+          >
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="10dp"
+            android:layout_weight="1"
+            >
+          <EditText
+              android:id="@+id/etDateBegin"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:drawableRight="@drawable/ic_date_range_gray_24dp"
+              android:hint="@string/date_begin"
+              android:inputType="date"
+              android:maxLines="1"
+              />
+        </android.support.design.widget.TextInputLayout>
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            >
+          <EditText
+              android:id="@+id/etDateEnd"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:drawableRight="@drawable/ic_date_range_gray_24dp"
+              android:hint="@string/date_end"
+              android:inputType="date"
+              android:maxLines="1"
+              />
+        </android.support.design.widget.TextInputLayout>
+      </LinearLayout>
       <Button
           android:id="@+id/btnSave"
           android:layout_width="wrap_content"
           android:layout_height="40dp"
           android:layout_gravity="center"
+          android:layout_marginBottom="30dp"
           android:layout_marginTop="30dp"
           android:background="@drawable/drawable_button_create_deal"
           android:paddingLeft="50dp"
