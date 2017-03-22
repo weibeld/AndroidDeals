@@ -120,6 +120,9 @@ public class DatabaseManager {
    * Get lists of object
    *----------------------------------------------------------------------------------------------*/
 
+  // TODO: 22/03/17 Index data for ordering: https://firebase.google.com/docs/database/security/indexing-data 
+  
+  
   // Return all data as a list in a single call to the passed callback
   public void getDealsOrderByChild1(String child, ListQueryCallback callback) {
     ArrayList<Deal> deals = new ArrayList<>();
@@ -182,6 +185,37 @@ public class DatabaseManager {
     });
   }
 
+  // Note: returns the insertion order if using auto-generated keys (created by push())
+  public void getDealsOrderByKey(ListQueryCallback callback) {
+    ArrayList<Deal> deals = new ArrayList<>();
+    Query query = mDealsRef.orderByKey();
+    query.addListenerForSingleValueEvent(new MyDataChangedListener() {
+      @Override public void onDataChange(DataSnapshot dataSnapshot) {
+        for (DataSnapshot dealSnapshot : dataSnapshot.getChildren()) {
+          deals.add(dealSnapshot.getValue(Deal.class));
+        }
+        callback.yourResult(deals);
+      }
+    });
+  }
+
+  // Note: this ordering makes only sense if the values of the children are single values
+  // (e.g. numbers, strings). If the values are objects, then the result is sorted
+  // lexicographically by key in ascending order [1].
+  // [1] https://firebase.google.com/docs/database/admin/retrieve-data#orderbyvalue
+  public void getDealsOrderByValue(ListQueryCallback callback) {
+    ArrayList<Deal> deals = new ArrayList<>();
+    Query query = mDealsRef.orderByValue();
+    query.addListenerForSingleValueEvent(new MyDataChangedListener() {
+      @Override public void onDataChange(DataSnapshot dataSnapshot) {
+        for (DataSnapshot dealSnapshot : dataSnapshot.getChildren()) {
+          deals.add(dealSnapshot.getValue(Deal.class));
+        }
+        callback.yourResult(deals);
+      }
+    });
+  }
+
 
   //public ArrayList<Deal> getDealsOfCustomer(String customerId) {
   //  return null;
@@ -195,8 +229,8 @@ public class DatabaseManager {
   //  return null;
   //}
 
-  public DatabaseReference getDealsReference() {
-    return mDealsRef;
+  public Query getDealsQuery() {
+    return mDealsRef.limitToFirst(5).startAt(10);
   }
 
   /*----------------------------------------------------------------------------------------------*

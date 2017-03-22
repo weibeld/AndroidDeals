@@ -61,6 +61,24 @@ import static org.junit.Assert.assertEquals;
     wait(10);
   }
 
+  @Test public void testOrderByKey() throws Exception {
+    DatabaseManager mgr = DatabaseManager.getInstance();
+    mgr.getDealsOrderByKey(models -> {
+      ArrayList<Deal> deals = (ArrayList<Deal>) models;
+      print(deals);
+    });
+    wait(10);
+  }
+
+  @Test public void testOrderByValue() throws Exception {
+    DatabaseManager mgr = DatabaseManager.getInstance();
+    mgr.getDealsOrderByValue(models -> {
+      ArrayList<Deal> deals = (ArrayList<Deal>) models;
+      print(deals);
+    });
+    wait(10);
+  }
+
   // Stop execution for n seconds: needed for tests that include a callback
   private void wait(int seconds) throws Exception {
     CountDownLatch latch = new CountDownLatch(1);

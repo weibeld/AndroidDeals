@@ -6,14 +6,11 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
-import com.github.florent37.materialviewpager.header.MaterialViewPagerHeaderDecorator;
-
-import org.latefire.deals.R;
-import org.latefire.deals.adapters.DealFirebaseAdapter;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import com.github.florent37.materialviewpager.header.MaterialViewPagerHeaderDecorator;
+import org.latefire.deals.R;
+import org.latefire.deals.adapters.DealFirebaseAdapter;
 
 /**
  * Created by phongnguyen on 3/19/17.
