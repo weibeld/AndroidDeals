@@ -1,10 +1,13 @@
 package org.latefire.deals.database;
 
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -39,39 +42,6 @@ public class DatabaseManager {
   public static synchronized DatabaseManager getInstance() {
     if (instance == null) instance = new DatabaseManager();
     return instance;
-  }
-
-  /*----------------------------------------------------------------------------------------------*
-   * Get single object
-   *----------------------------------------------------------------------------------------------*/
-
-  public void getDeal(String id, QueryCallbackSingle callback) {
-    queryById(mDealsRef, id, callback, Deal.class);
-  }
-
-  public void getCustomer(String id, QueryCallbackSingle callback) {
-    queryById(mCustomersRef, id, callback, Customer.class);
-  }
-
-  public void getBusiness(String id, QueryCallbackSingle callback) {
-    queryById(mBusinessesRef, id, callback, Business.class);
-  }
-
-  public void getAcquisition(String id, QueryCallbackSingle callback) {
-    queryById(mAcquisitionsRef, id, callback, Acquisition.class);
-  }
-
-  // Retrieve an object by its ID (key) and pass it to the QueryCallbackSingle's method. If there
-  // is no object with the specified ID, null is passed to the callback method.
-  private void queryById(DatabaseReference parentRef, String id, QueryCallbackSingle callback, Class<? extends AbsModel> cls) {
-    DatabaseReference itemRef = parentRef.child(id);
-    itemRef.addListenerForSingleValueEvent(new ValueEventListener() {
-      @Override public void onDataChange(DataSnapshot dataSnapshot) {
-        AbsModel result = dataSnapshot.getValue(cls);
-        callback.yourResult(result);
-      }
-      @Override public void onCancelled(DatabaseError databaseError) {}
-    });
   }
 
 
@@ -112,6 +82,106 @@ public class DatabaseManager {
   }
 
 
+  /*----------------------------------------------------------------------------------------------*
+   * Get single object
+   *----------------------------------------------------------------------------------------------*/
+
+  public void getDeal(String id, SingleQueryCallback callback) {
+    queryById(mDealsRef, id, callback, Deal.class);
+  }
+
+  public void getCustomer(String id, SingleQueryCallback callback) {
+    queryById(mCustomersRef, id, callback, Customer.class);
+  }
+
+  public void getBusiness(String id, SingleQueryCallback callback) {
+    queryById(mBusinessesRef, id, callback, Business.class);
+  }
+
+  public void getAcquisition(String id, SingleQueryCallback callback) {
+    queryById(mAcquisitionsRef, id, callback, Acquisition.class);
+  }
+
+  // Retrieve an object by its ID (key) and pass it to the SingleQueryCallback's method. If there
+  // is no object with the specified ID, null is passed to the callback method.
+  private void queryById(DatabaseReference parentRef, String id, SingleQueryCallback callback, Class<? extends AbsModel> cls) {
+    DatabaseReference itemRef = parentRef.child(id);
+    itemRef.addListenerForSingleValueEvent(new ValueEventListener() {
+      @Override public void onDataChange(DataSnapshot dataSnapshot) {
+        AbsModel result = dataSnapshot.getValue(cls);
+        callback.yourResult(result);
+      }
+      @Override public void onCancelled(DatabaseError databaseError) {}
+    });
+  }
+
+
+  /*----------------------------------------------------------------------------------------------*
+   * Get lists of object
+   *----------------------------------------------------------------------------------------------*/
+
+  // Return all data as a list in a single call to the passed callback
+  public void getDealsOrderByChild1(String child, ListQueryCallback callback) {
+    ArrayList<Deal> deals = new ArrayList<>();
+    // If the child does not exist, then no ordering is applied
+    Query query = mDealsRef.orderByChild(child);
+    // Load initial data one object at a time (in specified sort order)
+    MyChildAddedListener childAddedListener = new MyChildAddedListener() {
+      @Override public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+        deals.add(dataSnapshot.getValue(Deal.class));
+      }
+    };
+    query.addChildEventListener(childAddedListener);
+    // Take the value event as an indicator that the loading of the initial data by the child event
+    // listener is finished (value events are guaranteed to be triggered after child events [1]).
+    // This approach of isolating the initial data load is described here [2].
+    // [1] https://firebase.google.com/docs/database/admin/retrieve-data#section-event-guarantees
+    // [2] http://stackoverflow.com/questions/27978078/how-to-separate-initial-data-load-from-incremental-children-with-firebase
+    query.addListenerForSingleValueEvent(new MyDataChangedListener() {
+      @Override public void onDataChange(DataSnapshot dataSnapshot) {
+        query.removeEventListener(childAddedListener);
+        callback.yourResult(deals);
+      }
+    });
+  }
+
+  // Return each data object in a separate call to the passed callback, and notify the caller when
+  // all data has been loaded by calling the finished() method of the callback.
+  public void getDealsOrderByChild2(String child, MultiSingleQueryCallback callback) {
+    Query query = mDealsRef.orderByChild(child);
+    MyChildAddedListener childAddedListener = new MyChildAddedListener() {
+      @Override public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+        callback.yourResult(dataSnapshot.getValue(Deal.class));
+      }
+    };
+    query.addChildEventListener(childAddedListener);
+    query.addListenerForSingleValueEvent(new MyDataChangedListener() {
+      @Override public void onDataChange(DataSnapshot dataSnapshot) {
+        query.removeEventListener(childAddedListener);
+        callback.finished();
+      }
+    });
+  }
+
+  // Note: the order methods can be applied in conjunction with value events, so the approach to
+  // separate initial data from incremental data in getDealsOrderByChild 1 + 2 is not necessary
+  // to make queries on the initial data (the separating approach is only necessary for discarding
+  // the initial data and handle only the incremental data in the child event listener)
+  public void getDealsOrderByChild3(String child, ListQueryCallback callback) {
+    ArrayList<Deal> deals = new ArrayList<>();
+    // If the child does not exist, then no ordering is applied
+    Query query = mDealsRef.orderByChild(child);
+
+    query.addListenerForSingleValueEvent(new MyDataChangedListener() {
+      @Override public void onDataChange(DataSnapshot dataSnapshot) {
+        for (DataSnapshot dealSnapshot : dataSnapshot.getChildren()) {
+          deals.add(dealSnapshot.getValue(Deal.class));
+        }
+        callback.yourResult(deals);
+      }
+    });
+  }
+
 
   //public ArrayList<Deal> getDealsOfCustomer(String customerId) {
   //  return null;
@@ -133,11 +203,26 @@ public class DatabaseManager {
    * Callback interfaces
    *----------------------------------------------------------------------------------------------*/
 
-  public interface QueryCallbackList {
-    void yourResult(List<AbsModel> modelList);
+  public interface ListQueryCallback {
+    void yourResult(List<? extends AbsModel> models);
   }
 
-  public interface QueryCallbackSingle {
+  public interface SingleQueryCallback {
     void yourResult(AbsModel model);
+  }
+
+  public interface MultiSingleQueryCallback extends SingleQueryCallback {
+    void finished();
+  }
+
+
+  public abstract class MyChildAddedListener implements ChildEventListener {
+    @Override public void onChildChanged(DataSnapshot dataSnapshot, String s) {}
+    @Override public void onChildRemoved(DataSnapshot dataSnapshot) {}
+    @Override public void onChildMoved(DataSnapshot dataSnapshot, String s) {}
+    @Override public void onCancelled(DatabaseError databaseError) {}
+  }
+  public abstract class MyDataChangedListener implements ValueEventListener {
+    @Override public void onCancelled(DatabaseError databaseError) {}
   }
 }
