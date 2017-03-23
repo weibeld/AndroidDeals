@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 import com.github.florent37.materialviewpager.header.MaterialViewPagerHeaderDecorator;
 
 import org.latefire.deals.R;
-import org.latefire.deals.adapters.DealFirebaseAdapter;
+import org.latefire.deals.adapters.DealItemAdapter;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -47,7 +47,7 @@ public class ListCategorizeDealFragment extends BaseFrament {
     DatabaseManager mgr = DatabaseManager.getInstance();
     rvDealList.setLayoutManager(new LinearLayoutManager(getContext()));
     rvDealList.addItemDecoration(new MaterialViewPagerHeaderDecorator());
-    rvDealList.setAdapter(new DealFirebaseAdapter(getContext(), mgr.getDealsOrderByTitle()));
+    rvDealList.setAdapter(new DealItemAdapter(getContext(), mgr.getDealsOrderByTitle()));
     return rootView;
   }
 

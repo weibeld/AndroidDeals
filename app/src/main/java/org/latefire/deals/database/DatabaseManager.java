@@ -16,7 +16,7 @@ public class DatabaseManager {
   private static final String LOG_TAG = DatabaseManager.class.getSimpleName();
   private static DatabaseManager instance;
 
-  // Key names for 1-n and n-n relationships saved in a denormalised (redundant) way
+  // Key names for the denormalised (redundant) data
   private final String BUSINESS_DEALS = "deals";
   private final String CUSTOMER_ACQUISITIONS = "acquisitions";
   private final String DEAL_ACQUISITIONS = "acquisitions";
@@ -114,7 +114,7 @@ public class DatabaseManager {
 
 
   /*----------------------------------------------------------------------------------------------*
-   * Queries for lists of objects to be used with FirebaseRecyclerAdapter
+   * Queries to be used with FirebaseRecyclerAdapter
    *----------------------------------------------------------------------------------------------*/
 
   // TODO: 22/03/17 Index data for ordering: https://firebase.google.com/docs/database/security/indexing-data
@@ -130,6 +130,45 @@ public class DatabaseManager {
     return mDealsRef.orderByChild("title").limitToFirst(5);
   }
 
+  public Query getDealIdsOfBusiness(String businessId) {
+    return mBusinessesRef.child(businessId).child(BUSINESS_DEALS);
+  }
+
+  public Query getAcquisitionIdsOfCustomer(String customerId) {
+    return mCustomersRef.child(customerId).child(CUSTOMER_ACQUISITIONS);
+  }
+
+  public Query getAcquisitionIdsOfDeal(String dealId) {
+    return mCustomersRef.child(dealId).child(DEAL_ACQUISITIONS);
+  }
+
+  // If not using the denormalised data
+  //public Query getAcquisitionsOfDeal(String dealId) {
+  //  return mAcquisitionsRef.orderByChild("dealId").equalTo(dealId);
+  //}
+  //
+  //public Query getAcquisitionsOfCustomer(String customerId) {
+  //  return mAcquisitionsRef.orderByChild("customerId").equalTo(customerId);
+  //}
+  //
+  //public Query getDealsOfBusiness(String businessId) {
+  //  return mDealsRef.orderByChild("businessId").equalTo(businessId);
+  //}
+
+
+  /*----------------------------------------------------------------------------------------------*
+   * Get DatabaseReferences to specific locations in the database
+   *----------------------------------------------------------------------------------------------*/
+  public DatabaseReference getDealRef(String dealId) {
+    return mDealsRef.child(dealId);
+  }
+
+  public DatabaseReference getAcquisitionRef(String acqId) {
+    return mAcquisitionsRef.child(acqId);
+  }
+
+
+
   /*----------------------------------------------------------------------------------------------*
    * Callback interfaces
    *----------------------------------------------------------------------------------------------*/
@@ -137,23 +176,4 @@ public class DatabaseManager {
   public interface SingleQueryCallback {
     void yourResult(AbsModel model);
   }
-
-  //public interface ListQueryCallback {
-  //  void yourResult(List<? extends AbsModel> models);
-  //}
-
-  //public interface MultiSingleQueryCallback extends SingleQueryCallback {
-  //  void finished();
-  //}
-
-
-  //public abstract class MyChildAddedListener implements ChildEventListener {
-  //  @Override public void onChildChanged(DataSnapshot dataSnapshot, String s) {}
-  //  @Override public void onChildRemoved(DataSnapshot dataSnapshot) {}
-  //  @Override public void onChildMoved(DataSnapshot dataSnapshot, String s) {}
-  //  @Override public void onCancelled(DatabaseError databaseError) {}
-  //}
-  //public abstract class MyDataChangedListener implements ValueEventListener {
-  //  @Override public void onCancelled(DatabaseError databaseError) {}
-  //}
 }

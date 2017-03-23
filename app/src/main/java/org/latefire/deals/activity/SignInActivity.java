@@ -3,10 +3,8 @@ package org.latefire.deals.activity;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.Toast;
-
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
@@ -15,8 +13,8 @@ import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
-
 import org.latefire.deals.R;
 import org.latefire.deals.databinding.ActivitySignInBinding;
 
@@ -88,6 +86,8 @@ public class SignInActivity extends BaseActivity {
     mFirebaseAuth.signInWithCredential(credential).addOnCompleteListener(this, task -> {
       dismissProgress();
       if (task.isSuccessful()) {
+        FirebaseUser user = mFirebaseAuth.getCurrentUser();
+        Log.d(LOG_TAG, "User: " + user.getDisplayName() + ", UID: " + user.getUid());
         startActivity(new Intent(mActivity, HomeActivity.class));
         finish();
       } else {

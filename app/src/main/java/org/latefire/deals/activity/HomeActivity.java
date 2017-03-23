@@ -45,6 +45,8 @@ public class HomeActivity extends BaseActivity {
     mFirebaseAuth = FirebaseAuth.getInstance();
     mFirebaseUser = mFirebaseAuth.getCurrentUser();
 
+    Log.d(LOG_TAG, "Firebase user UID: " + mFirebaseUser.getUid());
+
     mGoogleApiClient = getGoogleApiClient();
 
     final Toolbar toolbar = viewPager.getToolbar();

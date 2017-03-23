@@ -10,7 +10,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import com.github.florent37.materialviewpager.header.MaterialViewPagerHeaderDecorator;
 import org.latefire.deals.R;
-import org.latefire.deals.adapters.DealFirebaseAdapter;
+import org.latefire.deals.adapters.NormalizedDealItemAdapter;
 import org.latefire.deals.database.DatabaseManager;
 
 /**
@@ -45,7 +45,8 @@ public class ListNearByFragment extends BaseFrament {
     DatabaseManager mgr = DatabaseManager.getInstance();
     rvDealList.setLayoutManager(new LinearLayoutManager(getContext()));
     rvDealList.addItemDecoration(new MaterialViewPagerHeaderDecorator());
-    rvDealList.setAdapter(new DealFirebaseAdapter(getContext(), mgr.getDealsOrderByDealPrice()));
+    //rvDealList.setAdapter(new DealItemAdapter(getContext(), mgr.getDealsOfBusiness("dummy-business")));
+    rvDealList.setAdapter(new NormalizedDealItemAdapter(getContext(), mgr.getDealIdsOfBusiness("dummy-business")));
     return rootView;
   }
 
