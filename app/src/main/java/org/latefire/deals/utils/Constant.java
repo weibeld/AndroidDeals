@@ -5,6 +5,7 @@ package org.latefire.deals.utils;
  */
 
 public class Constant {
+  public static final boolean DEBUG = true;
   public static final int FROM_GALLERY = 1;
   public static final int TAKE_A_PHOTO = 2;
   public static final int PERMISSION_REQUEST_CAMERA = 3;

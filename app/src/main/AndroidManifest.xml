@@ -27,12 +27,7 @@
     <activity
         android:name=".activity.CreateDealActivity"
         android:parentActivityName=".activity.HomeActivity"
-        android:screenOrientation="portrait">
-      <intent-filter>
-        <action android:name="android.intent.action.MAIN" />
-        <category android:name="android.intent.category.LAUNCHER" />
-      </intent-filter>
-    </activity>
+        android:screenOrientation="portrait" />
     <activity
         android:name=".activity.SplashActivity"
         android:noHistory="true"
@@ -51,6 +46,9 @@
         android:screenOrientation="portrait"
         android:theme="@style/AppThemeNoActionBar" />
 
+    <meta-data
+        android:name="com.google.android.geo.API_KEY"
+        android:value="@string/map_key" />
 
   </application>
 

@@ -22,4 +22,7 @@
     <string name="base_deal_price_text"><![CDATA[<strike><font color=#FF4081>%1$s</strike><b><font color=#FF4081>"\n"%2$s</b>]]></string>
   <string name="date_begin">Date begin</string>
   <string name="date_end">Date end</string>
+    <string name="map_key">AIzaSyD4I4m80AgYH7ntStP2eyZ_fWiLTdpE8-c</string>
+  <string name="error_input_date_begin">Please input date begin for deal!</string>
+  <string name="error_input_date_end">Please input date end for deal!</string>
 </resources>
