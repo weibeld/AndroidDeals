@@ -133,6 +133,11 @@ public class HomeActivity extends BaseActivity {
       case R.id.action_create_deal:
         startActivity(new Intent(this, CreateDealActivity.class));
         return true;
+      case R.id.action_sample_show_customer:
+        Intent intent = new Intent(this, SampleShowCustomerActivity.class);
+        intent.putExtra(getString(R.string.extra_customer_id), "dummy-customer");
+        startActivity(intent);
+        return true;
       default:
         return super.onOptionsItemSelected(item);
     }

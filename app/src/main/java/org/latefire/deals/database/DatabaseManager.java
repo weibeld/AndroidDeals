@@ -120,34 +120,30 @@ public class DatabaseManager {
    * Get single object
    *----------------------------------------------------------------------------------------------*/
 
-  public void getDeal(String id, SingleQueryCallback callback) {
-    queryById(mDealsRef, id, callback, Deal.class);
-  }
-
-  public void getCustomer(String id, SingleQueryCallback callback) {
-    queryById(mCustomersRef, id, callback, Customer.class);
-  }
-
-  public void getBusiness(String id, SingleQueryCallback callback) {
-    queryById(mBusinessesRef, id, callback, Business.class);
-  }
-
-  //public void getAcquisition(String id, SingleQueryCallback callback) {
-  //  queryById(mAcquisitionsRef, id, callback, Acquisition.class);
+  //public void getDeal(String id, SingleQueryCallback callback) {
+  //  queryById(mDealsRef, id, callback, Deal.class);
   //}
-
-  // Retrieve an object by its ID (key) and pass it to the SingleQueryCallback's method. If there
-  // is no object with the specified ID, null is passed to the callback method.
-  private void queryById(DatabaseReference parentRef, String id, SingleQueryCallback callback, Class<? extends AbsModel> cls) {
-    DatabaseReference itemRef = parentRef.child(id);
-    itemRef.addListenerForSingleValueEvent(new ValueEventListener() {
-      @Override public void onDataChange(DataSnapshot dataSnapshot) {
-        AbsModel result = dataSnapshot.getValue(cls);
-        callback.yourResult(result);
-      }
-      @Override public void onCancelled(DatabaseError databaseError) {}
-    });
-  }
+  //
+  //public void getCustomer(String id, SingleQueryCallback callback) {
+  //  queryById(mCustomersRef, id, callback, Customer.class);
+  //}
+  //
+  //public void getBusiness(String id, SingleQueryCallback callback) {
+  //  queryById(mBusinessesRef, id, callback, Business.class);
+  //}
+  //
+  //// Retrieve an object by its ID (key) and pass it to the SingleQueryCallback's method. If there
+  //// is no object with the specified ID, null is passed to the callback method.
+  //private void queryById(DatabaseReference parentRef, String id, SingleQueryCallback callback, Class<? extends AbsModel> cls) {
+  //  DatabaseReference itemRef = parentRef.child(id);
+  //  itemRef.addListenerForSingleValueEvent(new ValueEventListener() {
+  //    @Override public void onDataChange(DataSnapshot dataSnapshot) {
+  //      AbsModel result = dataSnapshot.getValue(cls);
+  //      callback.yourResult(result);
+  //    }
+  //    @Override public void onCancelled(DatabaseError databaseError) {}
+  //  });
+  //}
 
 
   /*----------------------------------------------------------------------------------------------*
@@ -179,16 +175,12 @@ public class DatabaseManager {
   }
 
   public DatabaseReference getCustomerRef(String customerId) {
-    return mDealsRef.child(customerId);
+    return mCustomersRef.child(customerId);
   }
 
   public DatabaseReference getBusinessRef(String businessId) {
-    return mDealsRef.child(businessId);
+    return mBusinessesRef.child(businessId);
   }
-
-  //public DatabaseReference getAcquisitionRef(String acqId) {
-  //  return mAcquisitionsRef.child(acqId);
-  //}
 
   public DatabaseReference getDealsRef() {
     return mDealsRef;
@@ -230,7 +222,7 @@ public class DatabaseManager {
    * Callback interfaces
    *----------------------------------------------------------------------------------------------*/
 
-  public interface SingleQueryCallback {
-    void yourResult(AbsModel model);
-  }
+  //public interface SingleQueryCallback {
+  //  void yourResult(AbsModel model);
+  //}
 }
