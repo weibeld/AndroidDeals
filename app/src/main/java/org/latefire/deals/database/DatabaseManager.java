@@ -163,9 +163,54 @@ public class DatabaseManager {
     return mDealsRef.child(dealId);
   }
 
+  public DatabaseReference getCustomerRef(String customerId) {
+    return mDealsRef.child(customerId);
+  }
+
+  public DatabaseReference getBusinessRef(String businessId) {
+    return mDealsRef.child(businessId);
+  }
+
   public DatabaseReference getAcquisitionRef(String acqId) {
     return mAcquisitionsRef.child(acqId);
   }
+
+  public DatabaseReference getDealsRef() {
+    return mDealsRef;
+  }
+
+  public DatabaseReference getCustomersRef() {
+    return mCustomersRef;
+  }
+
+  public DatabaseReference getBusinessesRef() {
+    return mBusinessesRef;
+  }
+  public DatabaseReference getAcquisitionsRef() {
+    return mAcquisitionsRef;
+  }
+
+
+  //public DatabaseReference getModelParentRef(Class<AbsModel> modelClass) {
+  //  return getParentRef(modelClass);
+  //}
+  //
+  //public DatabaseReference getModelRef(Class<? extends AbsModel> modelClass, String id) {
+  //  return getParentRef(modelClass).child(id);
+  //}
+  //
+  //private DatabaseReference getParentRef(Class<? extends AbsModel> modelClass) {
+  //  if (modelClass.isAssignableFrom(Deal.class))
+  //    return mDealsRef;
+  //  else if (modelClass.isAssignableFrom(Customer.class))
+  //    return mCustomersRef;
+  //  else if (modelClass.isAssignableFrom(Business.class))
+  //    return mBusinessesRef;
+  //  else if (modelClass.isAssignableFrom(Acquisition.class))
+  //    return mAcquisitionsRef;
+  //  else
+  //    throw new IllegalArgumentException(modelClass.getSimpleName() + " is not a valid database model class");
+  //}
 
 
 

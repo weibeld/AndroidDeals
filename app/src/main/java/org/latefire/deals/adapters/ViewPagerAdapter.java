@@ -11,8 +11,8 @@ import org.latefire.deals.fragments.ListNearByFragment;
  * Created by phongnguyen on 3/20/17.
  */
 
-public class DealListAdapter extends FragmentStatePagerAdapter {
-  public DealListAdapter(FragmentManager fm) {
+public class ViewPagerAdapter extends FragmentStatePagerAdapter {
+  public ViewPagerAdapter(FragmentManager fm) {
     super(fm);
   }
 

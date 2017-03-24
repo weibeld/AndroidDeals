@@ -18,7 +18,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 import org.latefire.deals.R;
-import org.latefire.deals.adapters.DealListAdapter;
+import org.latefire.deals.adapters.ViewPagerAdapter;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -32,7 +32,7 @@ public class HomeActivity extends BaseActivity {
   private static final String LOG_TAG = HomeActivity.class.getSimpleName();
 
   @BindView(R.id.materialViewPager) MaterialViewPager viewPager;
-  private DealListAdapter adapter;
+  private ViewPagerAdapter adapter;
   private FirebaseAuth mFirebaseAuth;
   private GoogleApiClient mGoogleApiClient;
   private FirebaseUser mFirebaseUser;
@@ -76,7 +76,7 @@ public class HomeActivity extends BaseActivity {
     //Log.d(LOG_TAG, "Test deal: " + dealId);
     // *********************************************************************************************
 
-    adapter = new DealListAdapter(getSupportFragmentManager());
+    adapter = new ViewPagerAdapter(getSupportFragmentManager());
     viewPager.getViewPager().setAdapter(adapter);
     viewPager.setMaterialViewPagerListener(new MaterialViewPager.Listener() {
       @Override public HeaderDesign getHeaderDesign(int page) {
