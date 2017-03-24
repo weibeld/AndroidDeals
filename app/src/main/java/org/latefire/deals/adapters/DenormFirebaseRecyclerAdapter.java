@@ -17,7 +17,6 @@ import org.latefire.deals.database.DatabaseManager;
  * list of deal IDs saved in a business object. This adapter listens on these IDs and creates
  * list item views from the corresponding real AbsModel objects.
  */
-
 public class DenormFirebaseRecyclerAdapter<T extends AbsModel, VH extends AbsItemViewHolder<T>>
     extends FirebaseRecyclerAdapter<Boolean, VH> {
 

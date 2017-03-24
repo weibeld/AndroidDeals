@@ -6,9 +6,8 @@ import android.view.View;
 import org.latefire.deals.database.AbsModel;
 
 /**
- * Created by dw on 24/03/17.
+ * Base type of the ViewHolder required by DenormFirebaseRecyclerAdapter.
  */
-
 public abstract class AbsItemViewHolder<T extends AbsModel> extends RecyclerView.ViewHolder {
 
   // General-purpose tag
