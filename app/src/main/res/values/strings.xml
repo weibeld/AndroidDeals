@@ -1,28 +1,29 @@
 <resources>
-    <string name="app_name">Deals</string>
-    <string name="action_sign_out">Sign Out</string>
-    <string name="title_sign_in_activity">Sign In</string>
-    <string name="current_user">Signed in to Firebase as %1$s</string>
-    <string name="action_create_deal">Create Deal</string>
-    <string name="title">Title</string>
-    <string name="description">Description</string>
-    <string name="location">Location</string>
-    <string name="save">Save</string>
-    <string name="price">Price</string>
-    <string name="deal_price">Deal price</string>
-    <string name="erro_input_title">Please input title!</string>
-    <string name="error_input_description">Please input description!</string>
-    <string name="error_input_location">Please input location!</string>
-    <string name="error_input_price">Please input price!</string>
-    <string name="error_input_deal_price">Please input deal price!</string>
-    <string-array name="upload_deal_image">
-      <item>Take a Photo</item>
-      <item>Choose From Gallery</item>
-    </string-array>
-    <string name="base_deal_price_text"><![CDATA[<strike><font color=#FF4081>%1$s</strike><b><font color=#FF4081>"\n"%2$s</b>]]></string>
+  <string name="app_name">Deals</string>
+  <string name="action_sign_out">Sign Out</string>
+  <string name="title_sign_in_activity">Sign In</string>
+  <string name="current_user">Signed in to Firebase as %1$s</string>
+  <string name="action_create_deal">Create Deal</string>
+  <string name="title">Title</string>
+  <string name="description">Description</string>
+  <string name="location">Location</string>
+  <string name="save">Save</string>
+  <string name="price">Price</string>
+  <string name="deal_price">Deal price</string>
+  <string name="erro_input_title">Please input title!</string>
+  <string name="error_input_description">Please input description!</string>
+  <string name="error_input_location">Please input location!</string>
+  <string name="error_input_price">Please input price!</string>
+  <string name="error_input_deal_price">Please input deal price!</string>
+  <string-array name="upload_deal_image">
+    <item>Take a Photo</item>
+    <item>Choose From Gallery</item>
+  </string-array>
+  <string name="base_deal_price_text"><![CDATA[<strike><font color=#FF4081>%1$s</strike><b><font color=#FF4081>"\n"%2$s</b>]]></string>
   <string name="date_begin">Date begin</string>
   <string name="date_end">Date end</string>
-    <string name="map_key">AIzaSyD4I4m80AgYH7ntStP2eyZ_fWiLTdpE8-c</string>
+  <string name="map_key">AIzaSyD4I4m80AgYH7ntStP2eyZ_fWiLTdpE8-c</string>
   <string name="error_input_date_begin">Please input date begin for deal!</string>
   <string name="error_input_date_end">Please input date end for deal!</string>
+  <string name="extra_customer_id">extra_customer_id</string>
 </resources>
