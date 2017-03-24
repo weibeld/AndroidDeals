@@ -7,6 +7,7 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.latefire.deals.database.DatabaseManager;
 
 import static org.junit.Assert.assertEquals;
 
@@ -83,6 +84,14 @@ import static org.junit.Assert.assertEquals;
   //  });
   //  wait(10);
   //}
+
+  @Test public void acquireDealTest() throws Exception {
+    DatabaseManager mgr = DatabaseManager.getInstance();
+    String customerId = "dummy-customer";
+    String dealId = "-KficT0oo-ZlylsD3umz";
+    mgr.acquireDeal(customerId, dealId);
+    wait(10);
+  }
 
   // Stop execution for n seconds: needed for tests that include a callback
   private void wait(int seconds) throws Exception {
