@@ -39,7 +39,7 @@
       </intent-filter>
     </activity>
     <activity
-        android:name=".activity.SignInActivity"
+        android:name=".auth.AuthActivity"
         android:screenOrientation="portrait"/>
     <activity
         android:name=".activity.HomeActivity"

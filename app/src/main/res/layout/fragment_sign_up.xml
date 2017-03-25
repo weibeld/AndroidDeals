@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+  <LinearLayout
+      android:orientation="vertical"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:padding="16dp"
+      android:gravity="center_horizontal">
+
+    <TextView
+        style="@style/Header"
+        android:text="Account Type"
+        />
+
+    <RadioGroup
+        android:id="@+id/rgUserType"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_horizontal"
+        >
+      <RadioButton
+          android:id="@+id/rbCustomer"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="Customer"
+          android:checked="true"
+          android:layout_marginLeft="12dp"
+          android:layout_marginRight="12dp"
+          />
+      <RadioButton
+          android:id="@+id/rbBusiness"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="Business"
+          android:checked="false"
+          android:layout_marginLeft="12dp"
+          android:layout_marginRight="12dp"
+          />
+    </RadioGroup>
+
+    <TextView
+        style="@style/Header"
+        android:text="Your Information"
+        android:layout_marginTop="16dp"
+        />
+
+    <EditText
+        android:id="@+id/etFirstName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="First Name"
+        android:inputType="textCapWords"
+        android:visibility="visible"
+        />
+
+    <EditText
+        android:id="@+id/etLastName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Last Name"
+        android:inputType="textCapWords"
+        android:visibility="visible"
+        />
+
+    <EditText
+        android:id="@+id/etBusinessName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Business Name"
+        android:inputType="textCapWords"
+        android:visibility="gone"
+        />
+
+    <EditText
+        android:id="@+id/etEmail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="E-Mail"
+        android:inputType="textEmailAddress"
+        />
+
+    <EditText
+        android:id="@+id/etPassword"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Password"
+        android:inputType="textPassword"
+        />
+
+    <EditText
+        android:id="@+id/etPasswordConfirm"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Confirm Password"
+        android:inputType="textPassword"
+        />
+
+    <Button
+        android:id="@+id/btnSignUpWithEmailPassword"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Sign Up"
+        android:layout_gravity="right"
+        />
+
+    <TextView
+        style="@style/Header"
+        android:text="Alternative Sign Up Option"
+        android:layout_marginTop="16dp"
+        />
+
+    <com.google.android.gms.common.SignInButton
+        android:id="@+id/btnSignInWithGoogle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        />
+
+  </LinearLayout>
+
+</layout>

@@ -22,6 +22,7 @@ import org.latefire.deals.adapters.ViewPagerAdapter;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import org.latefire.deals.auth.AuthActivity;
 
 /**
  * Created by phongnguyen on 3/19/17.
@@ -128,7 +129,7 @@ public class HomeActivity extends BaseActivity {
       case R.id.action_sign_out:
         mFirebaseAuth.signOut();
         Auth.GoogleSignInApi.signOut(mGoogleApiClient);
-        startActivity(new Intent(this, SignInActivity.class));
+        startActivity(new Intent(this, AuthActivity.class));
         return true;
       case R.id.action_create_deal:
         startActivity(new Intent(this, CreateDealActivity.class));

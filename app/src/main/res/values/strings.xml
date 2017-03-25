@@ -1,7 +1,7 @@
 <resources>
   <string name="app_name">Deals</string>
   <string name="action_sign_out">Sign Out</string>
-  <string name="title_sign_in_activity">Sign In</string>
+  <string name="title_sign_in_activity">Welcome</string>
   <string name="current_user">Signed in to Firebase as %1$s</string>
   <string name="action_create_deal">Create Deal</string>
   <string name="title">Title</string>
@@ -26,4 +26,7 @@
   <string name="error_input_date_begin">Please input date begin for deal!</string>
   <string name="error_input_date_end">Please input date end for deal!</string>
   <string name="extra_customer_id">extra_customer_id</string>
+  <string name="arg_page_number">argPageNumber</string>
+  <string name="title_sign_up_fragment">Sign up</string>
+  <string name="title_sign_in_fragment">Sign In</string>
 </resources>
