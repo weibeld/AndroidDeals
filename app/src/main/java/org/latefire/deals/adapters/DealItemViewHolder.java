@@ -8,6 +8,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import org.latefire.deals.R;
 import org.latefire.deals.StringUtils;
+import org.latefire.deals.activity.DealDetailsActivity;
 import org.latefire.deals.database.Deal;
 
 /**
@@ -49,6 +50,9 @@ public class DealItemViewHolder extends AbsItemViewHolder<Deal> {
     String dealPrice = String.valueOf(deal.getDealPrice());
     SpannableStringBuilder price = StringUtils.makePriceText(c, regularPrice, dealPrice);
     tvDealPrice.setText(price, TextView.BufferType.EDITABLE);
+    itemView.setOnClickListener(v -> {
+      DealDetailsActivity.start(c, deal);
+    });
   }
 
   public Object getTag() {

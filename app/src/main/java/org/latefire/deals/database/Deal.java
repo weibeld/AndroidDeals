@@ -1,10 +1,13 @@
 package org.latefire.deals.database;
 
 // TODO: 21/03/17 Change type of dates to java.util.Date
+
+import java.io.Serializable;
+
 /**
  * Created by dw on 19/03/17.
  */
-public class Deal extends AbsModel {
+public class Deal extends AbsModel implements Serializable {
 
   private String businessId;
   private String title;
@@ -24,7 +27,8 @@ public class Deal extends AbsModel {
   }
 
   public Deal(String businessId, String title, String description, String currency,
-      double regularPrice, double dealPrice, String beginValidity, String endValidity, String location) {
+      double regularPrice, double dealPrice, String beginValidity, String endValidity,
+      String location) {
     this.businessId = businessId;
     this.title = title;
     this.description = description;

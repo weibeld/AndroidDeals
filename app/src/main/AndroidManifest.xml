@@ -2,10 +2,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="org.latefire.deals">
 
-  <uses-permission android:name="android.permission.INTERNET"/>
-  <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-  <uses-permission android:name="android.permission.CAMERA"/>
-  <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+  <uses-permission android:name="android.permission.INTERNET" />
+  <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+  <uses-permission android:name="android.permission.CAMERA" />
+  <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
   <application
       android:name=".MyApplication"
@@ -21,37 +21,42 @@
         android:grantUriPermissions="true">
       <meta-data
           android:name="android.support.FILE_PROVIDER_PATHS"
-          android:resource="@xml/provider_paths"/>
+          android:resource="@xml/provider_paths" />
     </provider>
 
     <activity
         android:name=".activity.CreateDealActivity"
         android:parentActivityName=".activity.HomeActivity"
-        android:screenOrientation="portrait"/>
+        android:screenOrientation="portrait" />
     <activity
         android:name=".activity.SplashActivity"
         android:noHistory="true"
         android:screenOrientation="portrait">
       <intent-filter>
-        <action android:name="android.intent.action.MAIN"/>
+        <action android:name="android.intent.action.MAIN" />
 
-        <category android:name="android.intent.category.LAUNCHER"/>
+        <category android:name="android.intent.category.LAUNCHER" />
       </intent-filter>
     </activity>
     <activity
         android:name=".activity.SignInActivity"
-        android:screenOrientation="portrait"/>
+        android:screenOrientation="portrait" />
     <activity
         android:name=".activity.HomeActivity"
         android:screenOrientation="portrait"
-        android:theme="@style/AppThemeNoActionBar"/>
+        android:theme="@style/AppThemeNoActionBar" />
 
     <meta-data
         android:name="com.google.android.geo.API_KEY"
-        android:value="@string/map_key"/>
+        android:value="@string/map_key" />
 
-    <activity android:name=".activity.SampleShowCustomerActivity">
-    </activity>
+    <activity
+        android:name=".activity.SampleShowCustomerActivity"
+        android:screenOrientation="portrait" />
+    <activity
+        android:name=".activity.DealDetailsActivity"
+        android:theme="@style/AppThemeNoActionBar"
+        android:screenOrientation="portrait" />
   </application>
 
 </manifest>

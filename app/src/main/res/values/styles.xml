@@ -25,4 +25,17 @@
         <item name="android:navigationBarColor" tools:targetApi="21">@color/navigationBarColor</item>
         <item name="android:windowDrawsSystemBarBackgrounds" tools:targetApi="21">true</item>
     </style>
+
+    <style name="FabStyle">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_margin">@dimen/space_large</item>
+        <item name="android:src">@drawable/ic_add_location_gray_24dp</item>
+        <item name="borderWidth">0dp</item>
+        <item name="elevation">6dp</item>
+        <item name="pressedTranslationZ">12dp</item>
+        <item name="android:colorBackground">#FFC107</item>
+        <item name="android:color">#FFC107</item>
+        <item name="rippleColor">@android:color/white</item>
+    </style>
 </resources>

@@ -33,8 +33,6 @@ public class ListNearByFragment extends BaseFrament {
     super.onCreate(savedInstanceState);
   }
 
-
-
   /**
    * Change the null parameter in {@code inflater.inflate()}
    * to a layout resource {@code R.layout.example}
@@ -48,14 +46,10 @@ public class ListNearByFragment extends BaseFrament {
     rvDealList.setLayoutManager(new LinearLayoutManager(getContext()));
     rvDealList.addItemDecoration(new MaterialViewPagerHeaderDecorator());
     //rvDealList.setAdapter(new DealItemAdapter(getContext(), mgr.getDealsOfBusiness("dummy-business")));
-    DenormFirebaseRecyclerAdapter<Deal, DealItemViewHolder>
-        adapter = new DenormFirebaseRecyclerAdapter<>(
-        mgr.getDealIdsOfBusiness("dummy-business"),
-        mgr.getDealsRef(),
-        Deal.class,
-        R.layout.deal_list_item,
-        DealItemViewHolder.class,
-        getContext());
+    DenormFirebaseRecyclerAdapter<Deal, DealItemViewHolder> adapter =
+        new DenormFirebaseRecyclerAdapter<>(mgr.getDealIdsOfBusiness("dummy-business"),
+            mgr.getDealsRef(), Deal.class, R.layout.deal_list_item, DealItemViewHolder.class,
+            getContext());
     rvDealList.setAdapter(adapter);
     return rootView;
   }

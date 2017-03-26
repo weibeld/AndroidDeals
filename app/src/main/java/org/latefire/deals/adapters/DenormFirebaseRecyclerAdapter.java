@@ -25,7 +25,8 @@ public class DenormFirebaseRecyclerAdapter<T extends AbsModel, VH extends AbsIte
   private Class<T> mModelClass;
   private DatabaseReference mModelParentRef;
 
-  public DenormFirebaseRecyclerAdapter(Query idsRef, DatabaseReference modelParentRef, Class<T> modelClass, int modelLayout, Class<VH> viewHolderClass, Context context) {
+  public DenormFirebaseRecyclerAdapter(Query idsRef, DatabaseReference modelParentRef,
+      Class<T> modelClass, int modelLayout, Class<VH> viewHolderClass, Context context) {
     super(Boolean.class, modelLayout, viewHolderClass, idsRef);
     mContext = context;
     mDatabaseManager = DatabaseManager.getInstance();
@@ -41,7 +42,9 @@ public class DenormFirebaseRecyclerAdapter<T extends AbsModel, VH extends AbsIte
         T item = dataSnapshot.getValue(mModelClass);
         viewHolder.setViewHolderFields(item, mContext);
       }
-      @Override public void onCancelled(DatabaseError databaseError) {}
+
+      @Override public void onCancelled(DatabaseError databaseError) {
+      }
     };
     itemRef.addValueEventListener(listener);
     // Attach deal DB ref and listener to the ViewHolder, so that the listener can be removed later
@@ -52,7 +55,8 @@ public class DenormFirebaseRecyclerAdapter<T extends AbsModel, VH extends AbsIte
   @Override public void onViewRecycled(VH holder) {
     super.onViewRecycled(holder);
     // Remove the listener that has been added to the deal's database location in populateViewHolder
-    Pair<DatabaseReference, ValueEventListener> tag = (Pair<DatabaseReference, ValueEventListener>) holder.getTag();
+    Pair<DatabaseReference, ValueEventListener> tag =
+        (Pair<DatabaseReference, ValueEventListener>) holder.getTag();
     tag.first.removeEventListener(tag.second);
   }
 }
