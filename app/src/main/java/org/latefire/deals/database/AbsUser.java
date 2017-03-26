@@ -4,7 +4,7 @@ package org.latefire.deals.database;
  * Created by dw on 19/03/17.
  */
 
-abstract class AbsUser extends AbsModel {
+abstract public class AbsUser extends AbsModel {
 
   private String email;
   private String phone;

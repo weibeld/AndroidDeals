@@ -7,6 +7,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import java.util.GregorianCalendar;
+import org.latefire.deals.utils.Constant;
 
 /**
  * Created by dw on 19/03/17.
@@ -26,10 +27,15 @@ public class DatabaseManager {
   private final String VALIDITY_BEGIN_DATE = "validityBeginDate";
   private final String VALIDITY_END_DATE = "validityEndDate";
 
+  // Values for user types
+  private final String CUSTOMER = "customer";
+  private final String BUSINESS = "business";
+
   // Shorthand database references
   private DatabaseReference mCustomersRef;
   private DatabaseReference mBusinessesRef;
   private DatabaseReference mDealsRef;
+  private DatabaseReference mUsersRef;
 
 
   private DatabaseManager() {
@@ -37,6 +43,7 @@ public class DatabaseManager {
     mCustomersRef = rootDbRef.child("customers");
     mBusinessesRef = rootDbRef.child("businesses");
     mDealsRef = rootDbRef.child("deals");
+    mUsersRef = rootDbRef.child("users");
   }
 
   public static synchronized DatabaseManager getInstance() {
@@ -49,12 +56,19 @@ public class DatabaseManager {
    * Create single object
    *----------------------------------------------------------------------------------------------*/
 
-  public String createCustomer(Customer customer) {
-    return pushAndReturnId(mCustomersRef, customer);
+  public void createCustomer(Customer customer, String userId, SimpleCallback callback) {
+    customer.setId(userId);
+    mCustomersRef.child(userId).setValue(customer)
+        .addOnCompleteListener(task1 -> mUsersRef.child(userId).setValue(CUSTOMER)
+            .addOnCompleteListener(task2 -> callback.call()));
   }
 
-  public String createBusiness(Business business) {
-    return pushAndReturnId(mBusinessesRef, business);
+  public void createBusiness(Business business, String userId, SimpleCallback callback) {
+    business.setId(userId);
+    mBusinessesRef.child(userId).setValue(business)
+        .addOnCompleteListener(task1 -> mUsersRef.child(userId).setValue(BUSINESS)
+            .addOnCompleteListener(task2 -> callback.call()));
+
   }
 
   // Save deal in database and add its ID to the list of deals of the corresponding business
@@ -115,35 +129,50 @@ public class DatabaseManager {
     return id;
   }
 
+  /*----------------------------------------------------------------------------------------------*
+   * Query user type
+   *----------------------------------------------------------------------------------------------*/
+
+  public void getUserType(String userId, IntegerCallback callback) {
+    mUsersRef.child(userId).addListenerForSingleValueEvent(new ValueEventListener() {
+      @Override public void onDataChange(DataSnapshot dataSnapshot) {
+        String userType = dataSnapshot.getValue(String.class);
+        if (userType == null) callback.result(null);
+        else if (userType.equals(CUSTOMER)) callback.result(Constant.USER_TYPE_CUSTOMER);
+        else if (userType.equals(BUSINESS)) callback.result(Constant.USER_TYPE_BUSINESS);
+      }
+      @Override public void onCancelled(DatabaseError databaseError) {}
+    });
+  }
 
   /*----------------------------------------------------------------------------------------------*
    * Get single object
    *----------------------------------------------------------------------------------------------*/
 
-  //public void getDeal(String id, SingleQueryCallback callback) {
-  //  queryById(mDealsRef, id, callback, Deal.class);
-  //}
-  //
-  //public void getCustomer(String id, SingleQueryCallback callback) {
-  //  queryById(mCustomersRef, id, callback, Customer.class);
-  //}
-  //
-  //public void getBusiness(String id, SingleQueryCallback callback) {
-  //  queryById(mBusinessesRef, id, callback, Business.class);
-  //}
-  //
-  //// Retrieve an object by its ID (key) and pass it to the SingleQueryCallback's method. If there
-  //// is no object with the specified ID, null is passed to the callback method.
-  //private void queryById(DatabaseReference parentRef, String id, SingleQueryCallback callback, Class<? extends AbsModel> cls) {
-  //  DatabaseReference itemRef = parentRef.child(id);
-  //  itemRef.addListenerForSingleValueEvent(new ValueEventListener() {
-  //    @Override public void onDataChange(DataSnapshot dataSnapshot) {
-  //      AbsModel result = dataSnapshot.getValue(cls);
-  //      callback.yourResult(result);
-  //    }
-  //    @Override public void onCancelled(DatabaseError databaseError) {}
-  //  });
-  //}
+  public void getDeal(String id, SingleQueryCallback callback) {
+    queryById(mDealsRef, id, callback, Deal.class);
+  }
+
+  public void getCustomer(String id, SingleQueryCallback callback) {
+    queryById(mCustomersRef, id, callback, Customer.class);
+  }
+
+  public void getBusiness(String id, SingleQueryCallback callback) {
+    queryById(mBusinessesRef, id, callback, Business.class);
+  }
+
+  // Retrieve an object by its ID (key) and pass it to the SingleQueryCallback's method. If there
+  // is no object with the specified ID, null is passed to the callback method.
+  private void queryById(DatabaseReference parentRef, String id, SingleQueryCallback callback, Class<? extends AbsModel> cls) {
+    DatabaseReference itemRef = parentRef.child(id);
+    itemRef.addListenerForSingleValueEvent(new ValueEventListener() {
+      @Override public void onDataChange(DataSnapshot dataSnapshot) {
+        AbsModel result = dataSnapshot.getValue(cls);
+        callback.yourResult(result);
+      }
+      @Override public void onCancelled(DatabaseError databaseError) {}
+    });
+  }
 
 
   /*----------------------------------------------------------------------------------------------*
@@ -222,7 +251,15 @@ public class DatabaseManager {
    * Callback interfaces
    *----------------------------------------------------------------------------------------------*/
 
-  //public interface SingleQueryCallback {
-  //  void yourResult(AbsModel model);
-  //}
+  public interface SingleQueryCallback {
+    void yourResult(AbsModel model);
+  }
+
+  public interface IntegerCallback {
+    void result(Integer result);
+  }
+
+  public interface SimpleCallback {
+    void call();
+  }
 }

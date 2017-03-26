@@ -1,4 +1,4 @@
-package org.latefire.deals;
+package org.latefire.deals.utils;
 
 import android.content.Context;
 import android.support.v4.content.ContextCompat;
@@ -6,6 +6,7 @@ import android.text.SpannableStringBuilder;
 import android.text.Spanned;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.StrikethroughSpan;
+import org.latefire.deals.R;
 
 /**
  * Created by phongnguyen on 3/20/17.
