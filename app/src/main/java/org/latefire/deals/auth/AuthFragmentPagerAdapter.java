@@ -15,20 +15,18 @@ public class AuthFragmentPagerAdapter extends FragmentPagerAdapter {
   private final int PAGE_COUNT = 2;
 
   private Context mContext;
-  private SignUpFragment.LoadingListener mLoadingListener;
 
-  public AuthFragmentPagerAdapter(FragmentManager fm, SignUpFragment.LoadingListener listener, Context c) {
+  public AuthFragmentPagerAdapter(Context c, FragmentManager fm) {
     super(fm);
     mContext = c;
-    mLoadingListener = listener;
   }
 
   @Override public Fragment getItem(int position) {
     switch (position) {
       case 0:
-        return SignUpFragment.newInstance(mLoadingListener);
+        return new SignUpFragment();
       case 1:
-        return SignUpFragment.newInstance(mLoadingListener);
+        return new SignInFragment();
       default:
         throw new IllegalArgumentException(position + " is not a valid fragment position");
     }

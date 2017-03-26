@@ -1,213 +1,190 @@
 package org.latefire.deals.auth;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
-import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.SignInButton;
-import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.firebase.auth.AuthCredential;
-import com.google.firebase.auth.FirebaseAuth;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.auth.UserProfileChangeRequest;
-import java.io.Serializable;
-import org.latefire.deals.Constants;
 import org.latefire.deals.R;
-import org.latefire.deals.activity.HomeActivity;
 import org.latefire.deals.database.Business;
 import org.latefire.deals.database.Customer;
-import org.latefire.deals.database.DatabaseManager;
 import org.latefire.deals.databinding.FragmentSignUpBinding;
+import org.latefire.deals.utils.MiscUtils;
 
 /**
  * Created by dw on 25/03/17.
  */
 
-public class SignUpFragment extends Fragment {
+public class SignUpFragment extends AbsAuthFragment {
   
   private static final String LOG_TAG = SignUpFragment.class.getSimpleName();
 
   private FragmentSignUpBinding b;
-  private FirebaseAuth mFirebaseAuth;
-  private DatabaseManager mDatabaseManager;
-  private LoadingListener mLoadingListener;
-
-  public static SignUpFragment newInstance(LoadingListener listener) {
-    Bundle args = new Bundle();
-    args.putSerializable(Constants.ARG_FRAG_LISTENER, listener);
-    SignUpFragment fragment = new SignUpFragment();
-    fragment.setArguments(args);
-    return fragment;
-  }
-
-  @Override
-  public void onCreate(Bundle savedInstanceState) {
-    super.onCreate(savedInstanceState);
-    mLoadingListener = (LoadingListener) getArguments().getSerializable(Constants.ARG_FRAG_LISTENER);
-    mFirebaseAuth = FirebaseAuth.getInstance();
-    mDatabaseManager = DatabaseManager.getInstance();
-  }
 
   @Override
   public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
     b = FragmentSignUpBinding.inflate(inflater, container, false);
 
-    b.rgUserType.setOnCheckedChangeListener((group, checkedId) -> {
-      switch (checkedId) {
-        case R.id.rbCustomer:
-          showEditText(b.etFirstName);
-          showEditText(b.etLastName);
-          hideEditText(b.etBusinessName);
-          break;
-        case R.id.rbBusiness:
-          hideEditText(b.etFirstName);
-          hideEditText(b.etLastName);
-          showEditText(b.etBusinessName);
-          break;
+    // Select account type
+    b.rgUserType.setOnCheckedChangeListener((group, checkedId) -> swapVisibleTextFields(checkedId));
+
+    // Sign up with email/password
+    b.btnSignUpWithEmailPassword.setOnClickListener(v -> {
+      if (validateInput()) {
+        mLoadingListener.onLoadingStart();
+        String email = b.etEmail.getText().toString();
+        String password = b.etPassword.getText().toString();
+        signUpEmailPasswordStep1(email, password);
       }
     });
 
-    b.btnSignUpWithEmailPassword.setOnClickListener(v -> {
-      if (!validateInput()) return;
-      mLoadingListener.onLoadingStart();
-      String email = b.etEmail.getText().toString();
-      String password = b.etPassword.getText().toString();
-      // Create a new Firebase user
-      mFirebaseAuth.createUserWithEmailAndPassword(email, password)
-          .addOnCompleteListener(getActivity(), createUserTask -> {
-            if (createUserTask.isSuccessful()) {
-              // Sign in newly created user
-              mFirebaseAuth.signInWithEmailAndPassword(email, password)
-                  .addOnCompleteListener(getActivity(), signInTask -> {
-                    if (signInTask.isSuccessful()) {
-                      FirebaseUser user = mFirebaseAuth.getCurrentUser();
-                      if (isSignUpCustomer()) {
-                        String firstName = b.etFirstName.getText().toString();
-                        String lastName = b.etLastName.getText().toString();
-                        setUserDisplayName(user, firstName + " " + lastName);
-                        Customer customer = new Customer();
-                        customer.setEmail(email);
-                        customer.setFirstName(firstName);
-                        customer.setLastName(lastName);
-                        mDatabaseManager.signUpCustomer(customer, user.getUid(), this::signUpComplete);
-                      }
-                      else if (isSignUpBusiness()) {
-                        String businessName = b.etBusinessName.getText().toString();
-                        setUserDisplayName(user, businessName);
-                        Business business = new Business();
-                        business.setEmail(email);
-                        business.setBusinessName(businessName);
-                        mDatabaseManager.signUpBusiness(business, user.getUid(), this::signUpComplete);
-                      }
-                    } else {
-                      mLoadingListener.onLoadingEnd();
-                      Log.w(LOG_TAG, "Could not sign in with email/password: ", createUserTask.getException());
-                    }
-                  });
-            } else {
-              mLoadingListener.onLoadingEnd();
-              Log.w(LOG_TAG, "Could not create Firebase user with email/password: ", createUserTask.getException());
-            }
-          });
-    });
-
-    // TODO: 25/03/17 Sign up with Google
-    // Sign in with Google
+    // Sign up with Google
     b.btnSignInWithGoogle.setSize(SignInButton.SIZE_WIDE);
     b.btnSignInWithGoogle.setOnClickListener(v -> {
-      Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(getGoogleApiClient());
-      startActivityForResult(signInIntent, Constants.REQUEST_CODE_GOOGLE_SIGN_IN);
+      mLoadingListener.onLoadingStart();
+      launchSignInWithGoogle();
     });
-
-
 
     return b.getRoot();
   }
 
-  // Get the API client for handling the sign in with Google
-  private GoogleApiClient getGoogleApiClient() {
-    // Configure Google Sign In
-    GoogleSignInOptions opts = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-        .requestIdToken(getString(R.string.default_web_client_id)).requestEmail().build();
-    return new GoogleApiClient.Builder(getActivity()).enableAutoManage(getActivity(), connectionResult -> {
-      Log.d(LOG_TAG, "Could not connect to Google to sign in");
-    }).addApi(Auth.GOOGLE_SIGN_IN_API, opts).build();
-  }
+  /*----------------------------------------------------------------------------------------------*
+   * Sign up with e-mail and password
+   *----------------------------------------------------------------------------------------------*/
 
-  // Authenticate to Firebase with an authenticated Google account
-  private void authToFirebaseWithGoogleAccount(GoogleSignInAccount account) {
-    mLoadingListener.onLoadingStart();
-    AuthCredential credential = GoogleAuthProvider.getCredential(account.getIdToken(), null);
-    mFirebaseAuth.signInWithCredential(credential).addOnCompleteListener(getActivity(), task -> {
-      if (task.isSuccessful()) {
-        FirebaseUser user = mFirebaseAuth.getCurrentUser();
-        signUpComplete();
-        Log.d(LOG_TAG, "User: " + user.getDisplayName() + ", UID: " + user.getUid());
-      } else {
-        Log.w(LOG_TAG, "signInWithCredential", task.getException());
+  // Step 1: create a new Firebase user with the specified email and password
+  private void signUpEmailPasswordStep1(String email, String password) {
+    mAuthManager.createUserWithEmailAndPassword(email, password, new AuthManager.FirebaseAuthListener() {
+      @Override public void onAuthSuccess(Task<AuthResult> task) {
+        signUpEmailPasswordStep2(email, password);
+      }
+      @Override public void onAuthFailure(Task<AuthResult> task) {
+        mLoadingListener.onLoadingEnd();
+        MiscUtils.toastL(getActivity(), "Error: " + task.getException().getMessage());
+        Log.w(LOG_TAG, "Could not create Firebase user with email/password: ", task.getException());
       }
     });
   }
 
-  @Override public void onActivityResult(int requestCode, int resultCode, Intent data) {
-    super.onActivityResult(requestCode, resultCode, data);
-    // For Google sign-in: when returning from the Google account selection dialog
-    if (requestCode == Constants.REQUEST_CODE_GOOGLE_SIGN_IN) {
-      GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
-      if (result.isSuccess()) {
-        authToFirebaseWithGoogleAccount(result.getSignInAccount());
-      } else {
-        Log.e(LOG_TAG, "Google Sign-In failed.");
+  // Step 2: sign in to Firebase with newly created user
+  private void signUpEmailPasswordStep2(String email, String password) {
+    mAuthManager.signInWithEmailAndPassword(email, password, new AuthManager.FirebaseAuthListener() {
+      @Override public void onAuthSuccess(Task<AuthResult> task) {
+        signUpEmailPasswordStep3(task.getResult().getUser().getUid());
       }
+      @Override public void onAuthFailure(Task<AuthResult> task) {
+        mLoadingListener.onLoadingEnd();
+        MiscUtils.toastL(getActivity(), "Error: could not sign in user");
+        Log.w(LOG_TAG, "Could not sign in with email/password: ", task.getException());
+      }
+    });
+  }
+
+  // Step 3: create a Customer or Business from the entered information and save it in our database
+  private void signUpEmailPasswordStep3(String userId) {
+    if (isSigningUpCustomer()) {
+      Customer customer = new Customer();
+      customer.setEmail(b.etEmail.getText().toString());
+      customer.setFirstName(b.etFirstName.getText().toString());
+      customer.setLastName(b.etLastName.getText().toString());
+      mDatabaseManager.signUpCustomer(customer, userId, this::authComplete);
+    }
+    else if (isSigningUpBusiness()) {
+      Business business = new Business();
+      business.setEmail(b.etEmail.getText().toString());
+      business.setBusinessName(b.etBusinessName.getText().toString());
+      mDatabaseManager.signUpBusiness(business, userId, this::authComplete);
     }
   }
 
+  /*----------------------------------------------------------------------------------------------*
+   * Sign up with Google
+   *----------------------------------------------------------------------------------------------*/
 
-
-  private void signUpComplete() {
-    mLoadingListener.onLoadingEnd();
-    startActivity(new Intent(getActivity(), HomeActivity.class));
-    getActivity().finish();
+  // Step 0: sign in to a Google account (select Google account from dialog)
+  @Override protected void onGoogleSignInSuccess(GoogleSignInAccount account) {
+    signUpGoogleStep1(account);
   }
+  @Override protected void onGoogleSignInFailure(GoogleSignInResult result) {
+    mLoadingListener.onLoadingEnd();
+    MiscUtils.toastL(getActivity(), "Error: could not sign in to your Google account");
+    Log.d(LOG_TAG, "Could not sign in to Google: " + result.getStatus());
+  }
+
+  // Step 1: sign in to Firebase with the selected Google account
+  private void signUpGoogleStep1(GoogleSignInAccount account) {
+    mAuthManager.signInWithGoogleAccount(account, new AuthManager.FirebaseAuthListener() {
+      @Override public void onAuthSuccess(Task<AuthResult> task) {
+        signUpGoogleStep2(task.getResult().getUser().getUid(), account);
+      }
+      @Override public void onAuthFailure(Task<AuthResult> task) {
+        mLoadingListener.onLoadingEnd();
+        MiscUtils.toastL(getActivity(), "Error: could not sign in with your Google account");
+        Log.d(LOG_TAG, "Could not sign in with Google: " + task.getException());
+      }
+    });
+  }
+
+  // Step 2: create a Customer or Business from the Google account and save it in our database
+  private void signUpGoogleStep2(String userId, GoogleSignInAccount account) {
+    if (isSigningUpCustomer()) {
+      Customer customer = new Customer();
+      customer.setEmail(account.getEmail());
+      customer.setFirstName(account.getGivenName());
+      customer.setLastName(account.getFamilyName());
+      mDatabaseManager.signUpCustomer(customer, userId, this::authComplete);
+    }
+    else if (isSigningUpBusiness()) {
+      Business business = new Business();
+      business.setEmail(account.getEmail());
+      business.setBusinessName(account.getDisplayName());
+      mDatabaseManager.signUpBusiness(business, userId, this::authComplete);
+    }
+  }
+
+  /*----------------------------------------------------------------------------------------------*
+   * Misc
+   *----------------------------------------------------------------------------------------------*/
 
   private void setUserDisplayName(FirebaseUser user, String name) {
     user.updateProfile(new UserProfileChangeRequest.Builder().setDisplayName(name).build());
-
   }
   
-  private boolean isSignUpCustomer() {
+  private boolean isSigningUpCustomer() {
     return b.rgUserType.getCheckedRadioButtonId() == R.id.rbCustomer;
   }
   
-  private boolean isSignUpBusiness() {
-    return !isSignUpCustomer();
-  }
-  
-  private void hideEditText(EditText et) {
-    et.setText("");
-    et.setVisibility(View.GONE);
-  }
-  
-  private void showEditText(EditText et) {
-    et.setVisibility(View.VISIBLE);
+  private boolean isSigningUpBusiness() {
+    return !isSigningUpCustomer();
   }
 
-  // TODO: 25/03/17 Validate sign up input
-  private boolean validateInput() {
+  private void swapVisibleTextFields(int checkedId) {
+    switch (checkedId) {
+      case R.id.rbCustomer:
+        b.etFirstName.setVisibility(View.VISIBLE);
+        b.etLastName.setVisibility(View.VISIBLE);
+        b.etBusinessName.setVisibility(View.GONE);
+        b.etBusinessName.setText("");
+        break;
+      case R.id.rbBusiness:
+        b.etFirstName.setVisibility(View.GONE);
+        b.etFirstName.setText("");
+        b.etLastName.setVisibility(View.GONE);
+        b.etLastName.setText("");
+        b.etBusinessName.setVisibility(View.VISIBLE);
+        break;
+    }
+  }
+
+  // TODO: 25/03/17 Implement input validation for sign-up with email and password
+  @Override protected boolean validateInput() {
     return true;
-  }
-
-  public interface LoadingListener extends Serializable{
-    void onLoadingStart();
-    void onLoadingEnd();
   }
 }
