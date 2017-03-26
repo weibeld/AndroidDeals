@@ -94,13 +94,13 @@ public class SignUpFragment extends AbsAuthFragment {
       customer.setEmail(b.etEmail.getText().toString());
       customer.setFirstName(b.etFirstName.getText().toString());
       customer.setLastName(b.etLastName.getText().toString());
-      mDatabaseManager.signUpCustomer(customer, userId, this::authComplete);
+      mDatabaseManager.createCustomer(customer, userId, this::authComplete);
     }
     else if (isSigningUpBusiness()) {
       Business business = new Business();
       business.setEmail(b.etEmail.getText().toString());
       business.setBusinessName(b.etBusinessName.getText().toString());
-      mDatabaseManager.signUpBusiness(business, userId, this::authComplete);
+      mDatabaseManager.createBusiness(business, userId, this::authComplete);
     }
   }
 
@@ -139,13 +139,13 @@ public class SignUpFragment extends AbsAuthFragment {
       customer.setEmail(account.getEmail());
       customer.setFirstName(account.getGivenName());
       customer.setLastName(account.getFamilyName());
-      mDatabaseManager.signUpCustomer(customer, userId, this::authComplete);
+      mDatabaseManager.createCustomer(customer, userId, this::authComplete);
     }
     else if (isSigningUpBusiness()) {
       Business business = new Business();
       business.setEmail(account.getEmail());
       business.setBusinessName(account.getDisplayName());
-      mDatabaseManager.signUpBusiness(business, userId, this::authComplete);
+      mDatabaseManager.createBusiness(business, userId, this::authComplete);
     }
   }
 
