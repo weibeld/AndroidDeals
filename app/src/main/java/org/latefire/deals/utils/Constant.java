@@ -13,4 +13,6 @@ public class Constant {
   public static final int PERMISSION_CREATE_FILE = 4;
   public static final int PERMISSION_READ_WRITE_STORAGE = 5;
   public static final int REQUEST_CODE_GOOGLE_SIGN_IN = 0;
+  public static final int USER_TYPE_CUSTOMER = 0;
+  public static final int USER_TYPE_BUSINESS = 1;
 }

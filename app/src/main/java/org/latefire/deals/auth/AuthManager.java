@@ -6,6 +6,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 
 /**
@@ -26,6 +27,16 @@ public class AuthManager extends AppCompatActivity {
   public static synchronized  AuthManager getInstance() {
     if (instance == null) instance = new AuthManager();
     return instance;
+  }
+
+  public boolean isSignedIn() {
+    return mFirebaseAuth.getCurrentUser() != null;
+  }
+
+  public String getCurrentUserId() {
+    FirebaseUser user = mFirebaseAuth.getCurrentUser();
+    if (user == null) return null;
+    return user.getUid();
   }
 
   public void signInWithEmailAndPassword(String email, String password, FirebaseAuthListener listener) {
