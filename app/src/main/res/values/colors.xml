@@ -6,4 +6,5 @@
     <color name="base">#FAFAFA</color>
     <color name="primaryText">#4F4F4F</color>
     <color name="secondaryText">#929292</color>
+    <color name="lightGray">#C9C9C9</color>
 </resources>

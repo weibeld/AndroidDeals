@@ -8,6 +8,7 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import org.latefire.deals.R;
+import org.latefire.deals.auth.AuthActivity;
 
 /**
  * Created by phongnguyen on 3/20/17.
@@ -29,7 +30,7 @@ public class SplashActivity extends BaseActivity {
     new Handler().postDelayed(() -> {
       Intent t;
       if (mFirebaseUser == null) {
-        t = new Intent(SplashActivity.this, SignInActivity.class);
+        t = new Intent(SplashActivity.this, AuthActivity.class);
       } else {
         t = new Intent(SplashActivity.this, HomeActivity.class);
       }

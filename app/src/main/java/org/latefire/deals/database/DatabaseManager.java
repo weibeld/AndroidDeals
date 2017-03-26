@@ -49,8 +49,18 @@ public class DatabaseManager {
    * Create single object
    *----------------------------------------------------------------------------------------------*/
 
+  public void signUpCustomer(Customer customer, String id, SimpleCallback callback) {
+    customer.setId(id);
+    mCustomersRef.child(id).setValue(customer).addOnCompleteListener(task -> callback.call());
+  }
+
   public String createCustomer(Customer customer) {
     return pushAndReturnId(mCustomersRef, customer);
+  }
+
+  public void signUpBusiness(Business business, String id, SimpleCallback callback) {
+    business.setId(id);
+    mBusinessesRef.child(id).setValue(business).addOnCompleteListener(task -> callback.call());
   }
 
   public String createBusiness(Business business) {
@@ -225,4 +235,8 @@ public class DatabaseManager {
   //public interface SingleQueryCallback {
   //  void yourResult(AbsModel model);
   //}
+
+  public interface SimpleCallback {
+    void call();
+  }
 }
