@@ -50,9 +50,9 @@ public class GoogleSignInFragment extends Fragment {
     if (requestCode == Constant.REQUEST_CODE_GOOGLE_SIGN_IN) {
       GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
       if (result.isSuccess()) {
-        mListener.onSuccess(result.getSignInAccount());
+        mListener.onGoogleSignInSuccess(result.getSignInAccount());
       } else {
-        mListener.onFailure(result);
+        mListener.onGoogleSignInFailure(result);
       }
     }
   }
@@ -83,7 +83,7 @@ public class GoogleSignInFragment extends Fragment {
   }
 
   public interface OnGoogleSignInListener {
-    void onSuccess(GoogleSignInAccount account);
-    void onFailure(GoogleSignInResult result);
+    void onGoogleSignInSuccess(GoogleSignInAccount account);
+    void onGoogleSignInFailure(GoogleSignInResult result);
   }
 }

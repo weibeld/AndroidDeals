@@ -12,6 +12,9 @@ import com.google.firebase.auth.AuthResult;
 import org.latefire.deals.R;
 import org.latefire.deals.activity.BaseActivity;
 import org.latefire.deals.activity.HomeActivity;
+import org.latefire.deals.database.Business;
+import org.latefire.deals.database.Customer;
+import org.latefire.deals.database.DatabaseManager;
 import org.latefire.deals.databinding.ActivityAuthBinding;
 import org.latefire.deals.utils.MiscUtils;
 
@@ -20,13 +23,18 @@ import org.latefire.deals.utils.MiscUtils;
  * It allows the user to sign in to an account (currently, Google), and then this account is used
  * to authenticate to Firebase.
  */
-public class AuthActivity extends BaseActivity implements GoogleSignInFragment.OnGoogleSignInListener {
+public class AuthActivity extends BaseActivity implements GoogleSignInFragment.OnGoogleSignInListener,
+    SelectUserTypeDialogFragment.OnUserTypeSelectedListener {
 
   private static final String LOG_TAG = AuthActivity.class.getSimpleName();
 
   private ActivityAuthBinding b;
   private AuthActivity mActivity;
   private AuthManager mAuthManager;
+  private DatabaseManager mDatabaseManager;
+
+  private GoogleSignInAccount mGoogleAccount;
+  private String mUserId;
 
   @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -34,6 +42,7 @@ public class AuthActivity extends BaseActivity implements GoogleSignInFragment.O
     getSupportActionBar().setTitle(R.string.title_sign_in_activity);
     mActivity = this;
     mAuthManager = AuthManager.getInstance();
+    mDatabaseManager = DatabaseManager.getInstance();
 
     showGoogleSignInFragment();
   }
@@ -44,21 +53,26 @@ public class AuthActivity extends BaseActivity implements GoogleSignInFragment.O
     t.commit();
   }
 
-  @Override public void onSuccess(GoogleSignInAccount account) {
+  // Callbacks of the GoogleSignInFragment (called when user has selected a Google account)
+  @Override public void onGoogleSignInSuccess(GoogleSignInAccount account) {
+    mGoogleAccount = account;
     showProgress();
-    signInWithGoogle(account);
+    signInWithGoogleAccount(mGoogleAccount);
   }
-
-  @Override public void onFailure(GoogleSignInResult result) {
+  @Override public void onGoogleSignInFailure(GoogleSignInResult result) {
     MiscUtils.toastL(this, "Error: could not sign in to your Google account");
     Log.d(LOG_TAG, "Could not sign in to Google: " + result.getStatus());
   }
 
-  private void signInWithGoogle(GoogleSignInAccount account) {
+  private void signInWithGoogleAccount(GoogleSignInAccount account) {
     mAuthManager.signInWithGoogleAccount(account, new AuthManager.FirebaseAuthListener() {
       @Override public void onAuthSuccess(Task<AuthResult> task) {
-        dismissProgress();
-        authComplete();
+        mUserId = task.getResult().getUser().getUid();
+        mDatabaseManager.isUserSignedUp(mUserId, isUserSignedUp -> {
+          if (!isUserSignedUp)
+            new SelectUserTypeDialogFragment().show(getFragmentManager(), "tag");
+          else authComplete();
+        });
       }
       @Override public void onAuthFailure(Task<AuthResult> task) {
         dismissProgress();
@@ -68,7 +82,23 @@ public class AuthActivity extends BaseActivity implements GoogleSignInFragment.O
     });
   }
 
+  @Override public void onCustomerSelected() {
+    Customer customer = new Customer();
+    customer.setEmail(mGoogleAccount.getEmail());
+    customer.setFirstName(mGoogleAccount.getGivenName());
+    customer.setLastName(mGoogleAccount.getFamilyName());
+    mDatabaseManager.createCustomer(customer, mUserId, this::authComplete);
+  }
+
+  @Override public void onBusinessSelected(String businessName) {
+    Business business = new Business();
+    business.setEmail(mGoogleAccount.getEmail());
+    business.setBusinessName(businessName);
+    mDatabaseManager.createBusiness(business, mUserId, this::authComplete);
+  }
+
   protected void authComplete() {
+    dismissProgress();
     startActivity(new Intent(this, HomeActivity.class));
     finish();
   }
