@@ -8,6 +8,7 @@ public class Customer extends AbsUser {
 
   private String firstName;
   private String lastName;
+  private String profilePhoto;
 
   public Customer() {
   }
@@ -32,5 +33,13 @@ public class Customer extends AbsUser {
 
   public void setLastName(String lastName) {
     this.lastName = lastName;
+  }
+
+  public String getProfilePhoto() {
+    return profilePhoto;
+  }
+
+  public void setProfilePhoto(String profilePhoto) {
+    this.profilePhoto = profilePhoto;
   }
 }

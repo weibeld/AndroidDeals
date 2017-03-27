@@ -8,6 +8,7 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import java.util.GregorianCalendar;
 import org.latefire.deals.utils.Constant;
+import org.latefire.deals.utils.debug.ShowLog;
 
 /**
  * Created by dw on 19/03/17.
@@ -170,7 +171,9 @@ public class DatabaseManager {
         AbsModel result = dataSnapshot.getValue(cls);
         callback.yourResult(result);
       }
-      @Override public void onCancelled(DatabaseError databaseError) {}
+      @Override public void onCancelled(DatabaseError databaseError) {
+        ShowLog.error(databaseError.getMessage());
+      }
     });
   }
 

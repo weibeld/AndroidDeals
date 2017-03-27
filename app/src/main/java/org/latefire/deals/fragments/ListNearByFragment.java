@@ -12,6 +12,7 @@ import com.github.florent37.materialviewpager.header.MaterialViewPagerHeaderDeco
 import org.latefire.deals.R;
 import org.latefire.deals.adapters.DealItemViewHolder;
 import org.latefire.deals.adapters.DenormFirebaseRecyclerAdapter;
+import org.latefire.deals.auth.AuthManager;
 import org.latefire.deals.database.DatabaseManager;
 import org.latefire.deals.database.Deal;
 
@@ -47,7 +48,7 @@ public class ListNearByFragment extends BaseFrament {
     rvDealList.addItemDecoration(new MaterialViewPagerHeaderDecorator());
     //rvDealList.setAdapter(new DealItemAdapter(getContext(), mgr.getDealsOfBusiness("dummy-business")));
     DenormFirebaseRecyclerAdapter<Deal, DealItemViewHolder> adapter =
-        new DenormFirebaseRecyclerAdapter<>(mgr.getDealIdsOfBusiness("dummy-business"),
+        new DenormFirebaseRecyclerAdapter<>(mgr.getDealIdsOfBusiness(AuthManager.getInstance().getCurrentUserId()),
             mgr.getDealsRef(), Deal.class, R.layout.deal_list_item, DealItemViewHolder.class,
             getContext());
     rvDealList.setAdapter(adapter);

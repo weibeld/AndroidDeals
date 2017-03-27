@@ -23,13 +23,13 @@ import org.latefire.deals.utils.MiscUtils;
  */
 
 public class SignUpFragment extends AbsAuthFragment {
-  
+
   private static final String LOG_TAG = SignUpFragment.class.getSimpleName();
 
   private FragmentSignUpBinding b;
 
-  @Override
-  public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+  @Override public View onCreateView(LayoutInflater inflater, ViewGroup container,
+      Bundle savedInstanceState) {
     b = FragmentSignUpBinding.inflate(inflater, container, false);
 
     // Select account type
@@ -61,30 +61,35 @@ public class SignUpFragment extends AbsAuthFragment {
 
   // Step 1: create a new Firebase user with the specified email and password
   private void signUpEmailPasswordStep1(String email, String password) {
-    mAuthManager.createUserWithEmailAndPassword(email, password, new AuthManager.FirebaseAuthListener() {
-      @Override public void onAuthSuccess(Task<AuthResult> task) {
-        signUpEmailPasswordStep2(email, password);
-      }
-      @Override public void onAuthFailure(Task<AuthResult> task) {
-        mLoadingListener.onLoadingEnd();
-        MiscUtils.toastL(getActivity(), "Error: " + task.getException().getMessage());
-        Log.w(LOG_TAG, "Could not create Firebase user with email/password: ", task.getException());
-      }
-    });
+    mAuthManager.createUserWithEmailAndPassword(email, password,
+        new AuthManager.FirebaseAuthListener() {
+          @Override public void onAuthSuccess(Task<AuthResult> task) {
+            signUpEmailPasswordStep2(email, password);
+          }
+
+          @Override public void onAuthFailure(Task<AuthResult> task) {
+            mLoadingListener.onLoadingEnd();
+            MiscUtils.toastL(getActivity(), "Error: " + task.getException().getMessage());
+            Log.w(LOG_TAG, "Could not create Firebase user with email/password: ",
+                task.getException());
+          }
+        });
   }
 
   // Step 2: sign in to Firebase with newly created user
   private void signUpEmailPasswordStep2(String email, String password) {
-    mAuthManager.signInWithEmailAndPassword(email, password, new AuthManager.FirebaseAuthListener() {
-      @Override public void onAuthSuccess(Task<AuthResult> task) {
-        signUpEmailPasswordStep3(task.getResult().getUser().getUid());
-      }
-      @Override public void onAuthFailure(Task<AuthResult> task) {
-        mLoadingListener.onLoadingEnd();
-        MiscUtils.toastL(getActivity(), "Error: could not sign in user");
-        Log.w(LOG_TAG, "Could not sign in with email/password: ", task.getException());
-      }
-    });
+    mAuthManager.signInWithEmailAndPassword(email, password,
+        new AuthManager.FirebaseAuthListener() {
+          @Override public void onAuthSuccess(Task<AuthResult> task) {
+            signUpEmailPasswordStep3(task.getResult().getUser().getUid());
+          }
+
+          @Override public void onAuthFailure(Task<AuthResult> task) {
+            mLoadingListener.onLoadingEnd();
+            MiscUtils.toastL(getActivity(), "Error: could not sign in user");
+            Log.w(LOG_TAG, "Could not sign in with email/password: ", task.getException());
+          }
+        });
   }
 
   // Step 3: create a Customer or Business from the entered information and save it in our database
@@ -95,8 +100,7 @@ public class SignUpFragment extends AbsAuthFragment {
       customer.setFirstName(b.etFirstName.getText().toString());
       customer.setLastName(b.etLastName.getText().toString());
       mDatabaseManager.createCustomer(customer, userId, this::authComplete);
-    }
-    else if (isSigningUpBusiness()) {
+    } else if (isSigningUpBusiness()) {
       Business business = new Business();
       business.setEmail(b.etEmail.getText().toString());
       business.setBusinessName(b.etBusinessName.getText().toString());
@@ -112,6 +116,7 @@ public class SignUpFragment extends AbsAuthFragment {
   @Override protected void onGoogleSignInSuccess(GoogleSignInAccount account) {
     signUpGoogleStep1(account);
   }
+
   @Override protected void onGoogleSignInFailure(GoogleSignInResult result) {
     mLoadingListener.onLoadingEnd();
     MiscUtils.toastL(getActivity(), "Error: could not sign in to your Google account");
@@ -124,6 +129,7 @@ public class SignUpFragment extends AbsAuthFragment {
       @Override public void onAuthSuccess(Task<AuthResult> task) {
         signUpGoogleStep2(task.getResult().getUser().getUid(), account);
       }
+
       @Override public void onAuthFailure(Task<AuthResult> task) {
         mLoadingListener.onLoadingEnd();
         MiscUtils.toastL(getActivity(), "Error: could not sign in with your Google account");
@@ -139,12 +145,13 @@ public class SignUpFragment extends AbsAuthFragment {
       customer.setEmail(account.getEmail());
       customer.setFirstName(account.getGivenName());
       customer.setLastName(account.getFamilyName());
+      customer.setProfilePhoto(account.getPhotoUrl().toString());
       mDatabaseManager.createCustomer(customer, userId, this::authComplete);
-    }
-    else if (isSigningUpBusiness()) {
+    } else if (isSigningUpBusiness()) {
       Business business = new Business();
       business.setEmail(account.getEmail());
       business.setBusinessName(account.getDisplayName());
+      business.setProfilePhoto(account.getPhotoUrl().toString());
       mDatabaseManager.createBusiness(business, userId, this::authComplete);
     }
   }
@@ -156,11 +163,11 @@ public class SignUpFragment extends AbsAuthFragment {
   private void setUserDisplayName(FirebaseUser user, String name) {
     user.updateProfile(new UserProfileChangeRequest.Builder().setDisplayName(name).build());
   }
-  
+
   private boolean isSigningUpCustomer() {
     return b.rgUserType.getCheckedRadioButtonId() == R.id.rbCustomer;
   }
-  
+
   private boolean isSigningUpBusiness() {
     return !isSigningUpCustomer();
   }

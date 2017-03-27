@@ -25,6 +25,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.util.Calendar;
 import org.latefire.deals.R;
+import org.latefire.deals.auth.AuthManager;
 import org.latefire.deals.database.DatabaseManager;
 import org.latefire.deals.database.Deal;
 import org.latefire.deals.databinding.ActivityCreateDealBinding;
@@ -205,7 +206,7 @@ public class CreateDealActivity extends BaseActivity {
       mDeal.setRegularPrice(Double.parseDouble(b.etPrice.getText().toString()));
       mDeal.setDealPrice(Double.parseDouble(b.etDealPrice.getText().toString()));
       mDeal.setLocation(b.etLocation.getText().toString());
-      mDeal.setBusinessId("dummy-business");
+      mDeal.setBusinessId(AuthManager.getInstance().getCurrentUserId());
       mDatabaseManager.createDeal(mDeal);
       dismissProgress();
       finish();
