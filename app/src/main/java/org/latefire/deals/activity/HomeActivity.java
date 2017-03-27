@@ -19,10 +19,11 @@ import org.latefire.deals.R;
 import org.latefire.deals.adapters.ViewPagerAdapter;
 import org.latefire.deals.auth.AuthActivity;
 import org.latefire.deals.auth.AuthManager;
+import org.latefire.deals.auth.CurrentUserManager;
+import org.latefire.deals.database.AbsUser;
 import org.latefire.deals.database.Business;
 import org.latefire.deals.database.Customer;
 import org.latefire.deals.database.DatabaseManager;
-import org.latefire.deals.utils.Constant;
 
 /**
  * Created by phongnguyen on 3/19/17.
@@ -34,11 +35,9 @@ public class HomeActivity extends BaseActivity {
 
   @BindView(R.id.materialViewPager) MaterialViewPager viewPager;
   private ViewPagerAdapter mViewPagerAdapter;
-  private GoogleApiClient mGoogleApiClient;
   private DatabaseManager mDatabaseManager;
   private AuthManager mAuthManager;
-  private String mCurrentUserId;
-  private int mCurrentUserType;
+  private CurrentUserManager mCurrentUserManager;
 
   @Override protected void onCreate(@Nullable Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -49,13 +48,10 @@ public class HomeActivity extends BaseActivity {
 
     mDatabaseManager = DatabaseManager.getInstance();
     mAuthManager = AuthManager.getInstance();
-    mGoogleApiClient = getGoogleApiClient();
-    mCurrentUserId = mAuthManager.getCurrentUserId();
+    mCurrentUserManager = CurrentUserManager.getInstance();
 
-    // Determine type of current user and set ActionBar subtitle
-    mDatabaseManager.getUserType(mCurrentUserId, result -> {
-      mCurrentUserType = result;
-      setActionBarSubtitle();
+    mCurrentUserManager.getCurrentUser(user -> {
+      setActionBarSubtitle(user);
     });
 
     mViewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
@@ -94,18 +90,13 @@ public class HomeActivity extends BaseActivity {
     }
   }
 
-  private void setActionBarSubtitle() {
-    if (mCurrentUserType == Constant.USER_TYPE_CUSTOMER) {
-      mDatabaseManager.getCustomer(mCurrentUserId, model -> {
-        Customer customer = (Customer) model;
-        getSupportActionBar().setSubtitle(customer.getFirstName() + " " + customer.getLastName() + " (Customer)");
-      });
-    }
-    else if (mCurrentUserType == Constant.USER_TYPE_BUSINESS) {
-      mDatabaseManager.getBusiness(mCurrentUserId, model -> {
-        Business business = (Business) model;
-        getSupportActionBar().setSubtitle(business.getBusinessName() + " (Business)");
-      });
+  private void setActionBarSubtitle(AbsUser user) {
+    if (user instanceof Customer) {
+      Customer customer = (Customer) user;
+      getSupportActionBar().setSubtitle(customer.getFirstName() + " " + customer.getLastName() + " (Customer)");
+    } else if (user instanceof Business) {
+      Business business = (Business) user;
+      getSupportActionBar().setSubtitle(business.getBusinessName() + " (Business)");
     }
   }
 
@@ -119,8 +110,9 @@ public class HomeActivity extends BaseActivity {
       // Sign out from Firebase and from the Google account
       case R.id.action_sign_out:
         FirebaseAuth.getInstance().signOut();
-        Auth.GoogleSignInApi.signOut(mGoogleApiClient);
+        //Auth.GoogleSignInApi.signOut(getGoogleApiClient());
         startActivity(new Intent(this, AuthActivity.class));
+        finish();
         return true;
       case R.id.action_create_deal:
         startActivity(new Intent(this, CreateDealActivity.class));

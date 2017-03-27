@@ -146,6 +146,15 @@ public class DatabaseManager {
     });
   }
 
+  public void isUserSignedUp(String userId, BooleanCallback callback) {
+    mUsersRef.child(userId).addListenerForSingleValueEvent(new ValueEventListener() {
+      @Override public void onDataChange(DataSnapshot dataSnapshot) {
+        callback.result(dataSnapshot.getValue() != null);
+      }
+      @Override public void onCancelled(DatabaseError databaseError) {}
+    });
+  }
+
   /*----------------------------------------------------------------------------------------------*
    * Get single object
    *----------------------------------------------------------------------------------------------*/
@@ -260,6 +269,10 @@ public class DatabaseManager {
 
   public interface IntegerCallback {
     void result(Integer result);
+  }
+
+  public interface BooleanCallback {
+    void result(boolean result);
   }
 
   public interface SimpleCallback {

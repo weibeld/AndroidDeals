@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android">
+  <LinearLayout
+      android:orientation="vertical"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:paddingLeft="16dp"
+      android:paddingRight="16dp"
+      android:paddingTop="16dp"
+      android:paddingBottom="4dp">
+
+    <RadioGroup
+        android:id="@+id/rgUserType"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_horizontal"
+        >
+      <RadioButton
+          android:id="@+id/rbCustomer"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="Customer"
+          android:checked="true"
+          android:layout_marginLeft="12dp"
+          android:layout_marginRight="12dp"
+          />
+      <RadioButton
+          android:id="@+id/rbBusiness"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="Business"
+          android:checked="false"
+          android:layout_marginLeft="12dp"
+          android:layout_marginRight="12dp"
+          />
+    </RadioGroup>
+
+    <EditText
+        android:id="@+id/etBusinessName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:hint="Business Name"
+        android:inputType="textCapWords"
+        />
+
+  </LinearLayout>
+</layout>

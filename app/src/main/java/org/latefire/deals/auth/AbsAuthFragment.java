@@ -43,7 +43,7 @@ public abstract class AbsAuthFragment extends Fragment {
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     mDatabaseManager = DatabaseManager.getInstance();
-    mAuthManager = AuthManager.getInstance();
+    mAuthManager = null; //AuthManager.getInstance();
   }
 
   protected void authComplete() {
