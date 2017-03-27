@@ -87,6 +87,7 @@ public class AuthActivity extends BaseActivity implements GoogleSignInFragment.O
     customer.setEmail(mGoogleAccount.getEmail());
     customer.setFirstName(mGoogleAccount.getGivenName());
     customer.setLastName(mGoogleAccount.getFamilyName());
+    customer.setProfilePhoto(mGoogleAccount.getPhotoUrl().toString());
     mDatabaseManager.createCustomer(customer, mUserId, this::authComplete);
   }
 
@@ -94,6 +95,7 @@ public class AuthActivity extends BaseActivity implements GoogleSignInFragment.O
     Business business = new Business();
     business.setEmail(mGoogleAccount.getEmail());
     business.setBusinessName(businessName);
+    business.setProfilePhoto(mGoogleAccount.getPhotoUrl().toString());
     mDatabaseManager.createBusiness(business, mUserId, this::authComplete);
   }
 

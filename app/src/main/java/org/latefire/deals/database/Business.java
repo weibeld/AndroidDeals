@@ -12,7 +12,6 @@ public class Business extends AbsUser {
   private String city;
   private double locationLat;
   private double locationLong;
-  private String profilePhoto;
 
   public Business() {
   }
@@ -76,11 +75,4 @@ public class Business extends AbsUser {
     this.locationLong = locationLong;
   }
 
-  public String getProfilePhoto() {
-    return profilePhoto;
-  }
-
-  public void setProfilePhoto(String profilePhoto) {
-    this.profilePhoto = profilePhoto;
-  }
 }

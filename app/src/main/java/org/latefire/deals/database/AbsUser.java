@@ -8,6 +8,7 @@ abstract public class AbsUser extends AbsModel {
 
   private String email;
   private String phone;
+  private String profilePhoto;
 
   AbsUser() {
   }
@@ -31,5 +32,13 @@ abstract public class AbsUser extends AbsModel {
 
   public void setPhone(String phone) {
     this.phone = phone;
+  }
+
+  public String getProfilePhoto() {
+    return profilePhoto;
+  }
+
+  public void setProfilePhoto(String profilePhoto) {
+    this.profilePhoto = profilePhoto;
   }
 }

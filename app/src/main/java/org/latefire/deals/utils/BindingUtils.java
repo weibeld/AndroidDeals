@@ -18,7 +18,7 @@ import org.latefire.deals.database.Deal;
 public class BindingUtils {
   @BindingAdapter("imgUrlDeal")
   public static void loadImageDeal(ImageView imageView, String imgUrl) {
-    if (imgUrl.isEmpty()) {
+    if (imgUrl == null || imgUrl.isEmpty()) {
       imageView.setImageResource(R.drawable.image_not_found);
       return;
     }
@@ -62,6 +62,20 @@ public class BindingUtils {
       Business business = (Business) model;
       textView.setText(business.getBusinessName());
     });
+  }
+
+  @BindingAdapter("imgUserAvatar")
+  public static void showUserAvatar(RoundedImageView roundedImageView, String imgUrl) {
+    if (imgUrl == null || imgUrl.isEmpty()) {
+      roundedImageView.setImageResource(R.drawable.image_not_found);
+      return;
+    }
+    Glide.with(roundedImageView.getContext())
+        .load(imgUrl)
+        .asBitmap()
+        .placeholder(R.drawable.placeholder)
+        .error(R.drawable.image_not_found)
+        .into(roundedImageView);
   }
 }
 

@@ -50,6 +50,8 @@ public class DealItemViewHolder extends AbsItemViewHolder<Deal> {
     String dealPrice = String.valueOf(deal.getDealPrice());
     SpannableStringBuilder price = StringUtils.makePriceText(c, regularPrice, dealPrice);
     tvDealPrice.setText(price, TextView.BufferType.EDITABLE);
+    tvDealDate.setText(deal.getBeginValidity() + " - " + deal.getEndValidity());
+    tvDealLocation.setText(deal.getLocationName());
     itemView.setOnClickListener(v -> {
       DealDetailsActivity.start(c, deal);
     });
