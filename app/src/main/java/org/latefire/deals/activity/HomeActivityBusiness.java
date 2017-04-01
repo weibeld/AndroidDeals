@@ -7,10 +7,15 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 import com.bumptech.glide.Glide;
+import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.firebase.auth.FirebaseAuth;
 import org.latefire.deals.R;
 import org.latefire.deals.auth.AuthActivity;
@@ -20,15 +25,25 @@ import org.latefire.deals.database.Business;
 import org.latefire.deals.database.Customer;
 import org.latefire.deals.databinding.ActivityHomeBusinessBinding;
 
-public class HomeActivityBusiness extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class HomeActivityBusiness extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener, GoogleApiClient.OnConnectionFailedListener {
+
+  private static final String LOG_TAG = HomeActivityBusiness.class.getSimpleName();
 
   ActivityHomeBusinessBinding b;
+
+  GoogleApiClient mGoogleApiClient;
 
   @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     b = DataBindingUtil.setContentView(this, R.layout.activity_home_business);
     setSupportActionBar(b.toolbarInclude.toolbar);
     setUpNavigationDrawer();
+
+    mGoogleApiClient = new GoogleApiClient.Builder(this)
+        .enableAutoManage(this /* FragmentActivity */, this /* OnConnectionFailedListener */)
+        .addApi(Auth.GOOGLE_SIGN_IN_API)
+        .build();
+
 
     // FloatingActionButton for creating a new deal
     b.fab.setOnClickListener(view -> startActivity(new Intent(this, CreateDealActivity.class)));
@@ -39,7 +54,7 @@ public class HomeActivityBusiness extends BaseActivity implements NavigationView
     switch (item.getItemId()) {
       case R.id.nav_sign_out:
         FirebaseAuth.getInstance().signOut();
-        //Auth.GoogleSignInApi.signOut(getGoogleApiClient());
+        Auth.GoogleSignInApi.signOut(mGoogleApiClient);
         startActivity(new Intent(this, AuthActivity.class));
         finish();
         return true;
@@ -81,5 +96,12 @@ public class HomeActivityBusiness extends BaseActivity implements NavigationView
           .error(R.drawable.image_not_found)
           .into(mIvAvatar);
     }
+  }
+
+  @Override public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+    // An unresolvable error has occurred and Google APIs (including Sign-In) will not
+    // be available.
+    Log.d(LOG_TAG, "onConnectionFailed:" + connectionResult);
+    Toast.makeText(this, "Google Play Services error.", Toast.LENGTH_SHORT).show();
   }
 }

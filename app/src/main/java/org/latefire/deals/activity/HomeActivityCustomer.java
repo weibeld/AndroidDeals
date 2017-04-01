@@ -3,6 +3,7 @@ package org.latefire.deals.activity;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -21,6 +22,7 @@ import com.bumptech.glide.Glide;
 import com.github.florent37.materialviewpager.MaterialViewPager;
 import com.github.florent37.materialviewpager.header.HeaderDesign;
 import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.firebase.auth.FirebaseAuth;
 import org.latefire.deals.R;
@@ -39,7 +41,7 @@ import org.latefire.deals.databinding.ActivityHomeCustomerBinding;
  */
 
 public class HomeActivityCustomer extends BaseActivity
-    implements NavigationView.OnNavigationItemSelectedListener {
+    implements NavigationView.OnNavigationItemSelectedListener, GoogleApiClient.OnConnectionFailedListener {
 
   private static final String LOG_TAG = HomeActivityCustomer.class.getSimpleName();
 
@@ -53,6 +55,7 @@ public class HomeActivityCustomer extends BaseActivity
   private TextView mTvEmail;
   private ImageView mIvAvatar;
   private DrawerLayout mDrawerLayout;
+  GoogleApiClient mGoogleApiClient;
 
   @Override protected void onCreate(@Nullable Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -65,6 +68,11 @@ public class HomeActivityCustomer extends BaseActivity
         R.string.navigation_drawer_open, R.string.navigation_drawer_close);
     drawer.setDrawerListener(toggle);
     toggle.syncState();
+
+    mGoogleApiClient = new GoogleApiClient.Builder(this)
+        .enableAutoManage(this /* FragmentActivity */, this /* OnConnectionFailedListener */)
+        .addApi(Auth.GOOGLE_SIGN_IN_API)
+        .build();
 
 
     NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
@@ -186,11 +194,18 @@ public class HomeActivityCustomer extends BaseActivity
     switch (item.getItemId()) {
       case R.id.nav_sign_out:
         FirebaseAuth.getInstance().signOut();
-        //Auth.GoogleSignInApi.signOut(getGoogleApiClient());
+        Auth.GoogleSignInApi.signOut(mGoogleApiClient);
         startActivity(new Intent(this, AuthActivity.class));
         finish();
         return true;
     }
     return false;
+  }
+
+  @Override public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+    // An unresolvable error has occurred and Google APIs (including Sign-In) will not
+    // be available.
+    Log.d(LOG_TAG, "onConnectionFailed:" + connectionResult);
+    Toast.makeText(this, "Google Play Services error.", Toast.LENGTH_SHORT).show();
   }
 }
