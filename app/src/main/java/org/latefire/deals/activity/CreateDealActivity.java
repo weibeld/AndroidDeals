@@ -52,8 +52,11 @@ public class CreateDealActivity extends BaseActivity {
     super.onCreate(savedInstanceState);
     b = DataBindingUtil.setContentView(this, R.layout.activity_create_deal);
     ButterKnife.bind(this);
-    mDatabaseManager = DatabaseManager.getInstance();
+    setSupportActionBar(b.toolbarInclude.toolbar);
     getSupportActionBar().setTitle("Create Deal");
+    getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+    mDatabaseManager = DatabaseManager.getInstance();
     mDeal = new Deal();
   }
 

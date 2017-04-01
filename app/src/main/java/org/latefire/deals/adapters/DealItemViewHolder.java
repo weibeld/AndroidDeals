@@ -12,7 +12,7 @@ import org.latefire.deals.utils.StringUtils;
 import org.latefire.deals.database.Deal;
 
 /**
- * ViewHolder for a deal item in a list of deals, as shown on the HomeActivity
+ * ViewHolder for a deal item in a list of deals, as shown on the HomeActivityCustomer
  */
 public class DealItemViewHolder extends AbsItemViewHolder<Deal> {
   TextView tvDealTitle;

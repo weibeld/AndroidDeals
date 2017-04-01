@@ -11,7 +11,8 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import org.latefire.deals.R;
 import org.latefire.deals.activity.BaseActivity;
-import org.latefire.deals.activity.HomeActivity;
+import org.latefire.deals.activity.HomeActivityBusiness;
+import org.latefire.deals.activity.HomeActivityCustomer;
 import org.latefire.deals.database.Business;
 import org.latefire.deals.database.Customer;
 import org.latefire.deals.database.DatabaseManager;
@@ -39,6 +40,7 @@ public class AuthActivity extends BaseActivity implements GoogleSignInFragment.O
   @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     b = DataBindingUtil.setContentView(this, R.layout.activity_auth);
+    setSupportActionBar(b.toolbarInclude.toolbar);
     getSupportActionBar().setTitle(R.string.title_sign_in_activity);
     mActivity = this;
     mAuthManager = AuthManager.getInstance();
@@ -100,9 +102,14 @@ public class AuthActivity extends BaseActivity implements GoogleSignInFragment.O
   }
 
   protected void authComplete() {
-    dismissProgress();
-    startActivity(new Intent(this, HomeActivity.class));
-    finish();
+    CurrentUserManager.getInstance().getCurrentUser(user -> {
+      Class target = null;
+      if (user instanceof Customer) target = HomeActivityCustomer.class;
+      else if (user instanceof Business) target = HomeActivityBusiness.class;
+      dismissProgress();
+      startActivity(new Intent(mActivity, target));
+      finish();
+    });
   }
 
   //@Override public void onLoadingStart() {

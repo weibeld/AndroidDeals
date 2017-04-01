@@ -41,13 +41,14 @@ public class CurrentUserManager {
       callback.result(null);
     else if (mCurrentUser == null)
       updateCurrentUser(callback);
-    else if (mCurrentUser.getId() == mFirebaseAuth.getCurrentUser().getUid())
+    else if (mCurrentUser.getId().equals(mFirebaseAuth.getCurrentUser().getUid()))
       callback.result(mCurrentUser);
     else
       updateCurrentUser(callback);
   }
 
   private void updateCurrentUser(CurrentUserCallback callback) {
+    // If current user has changed (user signed out and signed in as another user)
     if (mUserRef != null && mUserListener != null) {
       mUserRef.removeEventListener(mUserListener);
       mUserRef = null;

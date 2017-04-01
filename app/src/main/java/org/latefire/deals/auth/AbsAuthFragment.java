@@ -12,7 +12,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import java.io.Serializable;
 import org.latefire.deals.R;
-import org.latefire.deals.activity.HomeActivity;
+import org.latefire.deals.activity.HomeActivityCustomer;
 import org.latefire.deals.database.DatabaseManager;
 import org.latefire.deals.databinding.FragmentSignUpBinding;
 import org.latefire.deals.utils.Constant;
@@ -48,7 +48,7 @@ public abstract class AbsAuthFragment extends Fragment {
 
   protected void authComplete() {
     mLoadingListener.onLoadingEnd();
-    startActivity(new Intent(getActivity(), HomeActivity.class));
+    startActivity(new Intent(getActivity(), HomeActivityCustomer.class));
     getActivity().finish();
   }
 

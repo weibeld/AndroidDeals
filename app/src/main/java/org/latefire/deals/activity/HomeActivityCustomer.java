@@ -4,9 +4,7 @@ import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
-import android.support.design.widget.Snackbar;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -34,30 +32,31 @@ import org.latefire.deals.database.AbsUser;
 import org.latefire.deals.database.Business;
 import org.latefire.deals.database.Customer;
 import org.latefire.deals.database.DatabaseManager;
-import org.latefire.deals.databinding.ActivityHomeBinding;
+import org.latefire.deals.databinding.ActivityHomeCustomerBinding;
 
 /**
  * Created by phongnguyen on 3/19/17.
  */
 
-public class HomeActivity extends BaseActivity
+public class HomeActivityCustomer extends BaseActivity
     implements NavigationView.OnNavigationItemSelectedListener {
 
-  private static final String LOG_TAG = HomeActivity.class.getSimpleName();
+  private static final String LOG_TAG = HomeActivityCustomer.class.getSimpleName();
 
   @BindView(R.id.materialViewPager) MaterialViewPager viewPager;
   private ViewPagerAdapter mViewPagerAdapter;
   private DatabaseManager mDatabaseManager;
   private AuthManager mAuthManager;
   private CurrentUserManager mCurrentUserManager;
-  private ActivityHomeBinding mBinding;
+  private ActivityHomeCustomerBinding mBinding;
   private TextView mTvName;
   private TextView mTvEmail;
   private ImageView mIvAvatar;
+  private DrawerLayout mDrawerLayout;
 
   @Override protected void onCreate(@Nullable Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    mBinding = DataBindingUtil.setContentView(this, R.layout.activity_home);
+    mBinding = DataBindingUtil.setContentView(this, R.layout.activity_home_customer);
     ButterKnife.bind(this);
     setSupportActionBar(viewPager.getToolbar());
     getSupportActionBar().setSubtitle(" ");
@@ -67,11 +66,10 @@ public class HomeActivity extends BaseActivity
     drawer.setDrawerListener(toggle);
     toggle.syncState();
 
-    FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-    fab.setOnClickListener(view ->   startActivity(new Intent(this, CreateDealActivity.class)));
 
     NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
     navigationView.setNavigationItemSelectedListener(this);
+    mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
     mTvName = (TextView) navigationView.getHeaderView(0).findViewById(R.id.nav_header_tv_name);
     mTvEmail = (TextView) navigationView.getHeaderView(0).findViewById(R.id.nav_header_tv_email);
     mIvAvatar = (ImageView) navigationView.getHeaderView(0).findViewById(R.id.nav_header_iv_avatar);
@@ -80,9 +78,7 @@ public class HomeActivity extends BaseActivity
     mAuthManager = AuthManager.getInstance();
     mCurrentUserManager = CurrentUserManager.getInstance();
 
-    mCurrentUserManager.getCurrentUser(user -> {
-      setHeaderNav(user);
-    });
+    mCurrentUserManager.getCurrentUser(user -> setHeaderNav(user));
 
     mViewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
     viewPager.getViewPager().setAdapter(mViewPagerAdapter);
@@ -184,21 +180,17 @@ public class HomeActivity extends BaseActivity
     }).addApi(Auth.GOOGLE_SIGN_IN_API).build();
   }
 
-  @SuppressWarnings("StatementWithEmptyBody") @Override
+  @Override
   public boolean onNavigationItemSelected(MenuItem item) {
-    // Handle navigation view item clicks here.
-    int id = item.getItemId();
-
-    if (id == R.id.nav_share) {
-
-    } else if (id == R.id.nav_sign_out) {
-      FirebaseAuth.getInstance().signOut();
-      //Auth.GoogleSignInApi.signOut(getGoogleApiClient());
-      startActivity(new Intent(this, AuthActivity.class));
-      finish();
+    mDrawerLayout.closeDrawer(GravityCompat.START);
+    switch (item.getItemId()) {
+      case R.id.nav_sign_out:
+        FirebaseAuth.getInstance().signOut();
+        //Auth.GoogleSignInApi.signOut(getGoogleApiClient());
+        startActivity(new Intent(this, AuthActivity.class));
+        finish();
+        return true;
     }
-    DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-    drawer.closeDrawer(GravityCompat.START);
-    return true;
+    return false;
   }
 }

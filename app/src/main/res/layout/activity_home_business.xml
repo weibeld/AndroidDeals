@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+  <android.support.v4.widget.DrawerLayout
+      android:id="@+id/drawer_layout"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      tools:openDrawer="start"
+      >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
+
+      <include
+          layout="@layout/toolbar"
+          android:id="@+id/toolbarInclude"
+          />
+
+      <android.support.v7.widget.RecyclerView
+          android:id="@+id/recyclerView"
+          android:layout_width="match_parent"
+          android:layout_height="match_parent"
+          android:layout_below="@+id/toolbarInclude"
+          />
+
+      <android.support.design.widget.FloatingActionButton
+          android:id="@+id/fab"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_margin="@dimen/fab_margin"
+          app:srcCompat="@android:drawable/ic_input_add"
+          android:layout_alignParentBottom="true"
+          android:layout_alignParentRight="true"
+          />
+
+    </RelativeLayout>
+
+    <include
+        layout="@layout/nav_view"
+        android:id="@+id/nav_view_include"/>
+
+  </android.support.v4.widget.DrawerLayout>
+
+</layout>

@@ -32,7 +32,7 @@ public class SplashActivity extends BaseActivity {
       if (mFirebaseUser == null) {
         t = new Intent(SplashActivity.this, AuthActivity.class);
       } else {
-        t = new Intent(SplashActivity.this, HomeActivity.class);
+        t = new Intent(SplashActivity.this, HomeActivityCustomer.class);
       }
       t.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
       startActivity(t);
