@@ -4,11 +4,13 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
-import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import org.latefire.deals.R;
 import org.latefire.deals.auth.AuthActivity;
+import org.latefire.deals.auth.CurrentUserManager;
+import org.latefire.deals.database.Business;
+import org.latefire.deals.database.Customer;
 
 /**
  * Created by phongnguyen on 3/20/17.
@@ -17,7 +19,6 @@ import org.latefire.deals.auth.AuthActivity;
 public class SplashActivity extends BaseActivity {
   private FirebaseAuth mFirebaseAuth;
   private FirebaseUser mFirebaseUser;
-  private GoogleApiClient mGoogleApiClient;
 
   @Override protected void onCreate(@Nullable Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -28,14 +29,23 @@ public class SplashActivity extends BaseActivity {
 
     //TODO: can't sign in google so temporality solution is opposite with true case (mFirebaseUser == null)
     new Handler().postDelayed(() -> {
-      Intent t;
       if (mFirebaseUser == null) {
-        t = new Intent(SplashActivity.this, AuthActivity.class);
+        Intent intent = new Intent(SplashActivity.this, AuthActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(intent);
       } else {
-        t = new Intent(SplashActivity.this, HomeActivityCustomer.class);
+        CurrentUserManager.getInstance().getCurrentUser(user -> {
+          if (user instanceof Business) {
+            Intent intent = new Intent(SplashActivity.this, HomeActivityBusiness.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent);
+          } else if (user instanceof Customer) {
+            Intent intent = new Intent(SplashActivity.this, HomeActivityCustomer.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent);
+          }
+        });
       }
-      t.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-      startActivity(t);
     }, 1500);
   }
 }

@@ -26,7 +26,7 @@
 
     <activity
         android:name=".activity.CreateDealActivity"
-        android:parentActivityName=".activity.HomeActivityBusiness"
+        android:windowSoftInputMode="adjustResize"
         android:screenOrientation="portrait"/>
     <activity
         android:name=".activity.SplashActivity"
