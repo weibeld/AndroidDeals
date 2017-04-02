@@ -25,7 +25,8 @@ import org.latefire.deals.utils.MiscUtils;
  * to authenticate to Firebase.
  */
 public class AuthActivity extends BaseActivity implements GoogleSignInFragment.OnGoogleSignInListener,
-    SelectUserTypeDialogFragment.OnUserTypeSelectedListener {
+    SelectUserTypeDialogFragment.OnUserTypeSelectedListener,
+    SignInDialogFragment.OnAuthCompleteListener, SignInDialogFragment.OnLoadingListener {
 
   private static final String LOG_TAG = AuthActivity.class.getSimpleName();
 
@@ -47,6 +48,18 @@ public class AuthActivity extends BaseActivity implements GoogleSignInFragment.O
     mDatabaseManager = DatabaseManager.getInstance();
 
     showGoogleSignInFragment();
+
+    b.btnSignUpWithEmailPassword.setOnClickListener(v -> showSignUpDialog());
+    
+    b.btnSignInWithEmailPassword.setOnClickListener(v -> showSignInDialog());
+  }
+
+  private void showSignInDialog() {
+    new SignInDialogFragment().show(getFragmentManager(), "SignIn");
+  }
+
+  private void showSignUpDialog() {
+    new SignUpDialogFragment().show(getFragmentManager(), "SignUp");
   }
 
   private void showGoogleSignInFragment() {
@@ -112,11 +125,22 @@ public class AuthActivity extends BaseActivity implements GoogleSignInFragment.O
     });
   }
 
-  //@Override public void onLoadingStart() {
-  //  showProgress();
-  //}
-  //
-  //@Override public void onLoadingEnd() {
-  //  dismissProgress();
-  //}
+  @Override public void onAuthComplete() {
+    CurrentUserManager.getInstance().getCurrentUser(user -> {
+      Class target;
+      if (user instanceof Customer) target = HomeActivityCustomer.class;
+      else if (user instanceof Business) target = HomeActivityBusiness.class;
+      else throw new IllegalArgumentException("Invalid user type");
+      dismissProgress();
+      startActivity(new Intent(mActivity, target));
+    });
+  }
+
+  @Override public void onLoadingStart() {
+    showProgress();
+  }
+
+  @Override public void onLoadingEnd() {
+    dismissProgress();
+  }
 }

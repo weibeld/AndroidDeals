@@ -28,6 +28,52 @@
                 android:layout_centerInParent="true"
                 />
 
+            <TextView
+                android:id="@+id/tvOr"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:layout_below="@+id/googleSignInFragmentContainer"
+                android:text="OR"
+                android:layout_marginTop="40dp"
+                android:layout_marginBottom="20dp"
+                />
+
+            <TextView
+                android:id="@+id/tvEmailPasswordTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:layout_below="@+id/tvOr"
+                android:text="Connect by email and password"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="20dp"
+                />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_horizontal"
+                android:layout_below="@+id/tvEmailPasswordTitle"
+                >
+
+                <Button
+                    android:id="@+id/btnSignUpWithEmailPassword"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Sign Up"
+                    />
+
+                <Button
+                    android:id="@+id/btnSignInWithEmailPassword"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Sign In"
+                    />
+
+            </LinearLayout>
+
         </RelativeLayout>
 
     </LinearLayout>
