@@ -29,11 +29,15 @@ public class GoogleSignInFragment extends Fragment {
 
   SignInButton mButton;
   OnGoogleSignInListener mListener;
+  private GoogleSignInOptions mGoogleSignInOpts;
+  private GoogleApiClient mApiClient;
 
   // Required empty public constructor
-  public GoogleSignInFragment() {}
+  public GoogleSignInFragment() {
+  }
 
-  @Override public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+  @Override public View onCreateView(LayoutInflater inflater, ViewGroup container,
+      Bundle savedInstanceState) {
     mButton = (SignInButton) inflater.inflate(R.layout.fragment_google_sign_in, container, false);
     mButton.setSize(SignInButton.SIZE_WIDE);
     mButton.setOnClickListener(v -> launchSignInWithGoogle());
@@ -59,13 +63,18 @@ public class GoogleSignInFragment extends Fragment {
 
   // Get Google Sign In API client
   private GoogleApiClient getGoogleApiClient() {
-    GoogleSignInOptions opts = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-        .requestIdToken(getString(R.string.default_web_client_id)).requestEmail()
-        .build();
-    GoogleApiClient apiClient = new GoogleApiClient.Builder(getActivity())
-        .enableAutoManage(getActivity(), connectionResult -> Log.d(LOG_TAG, "Could not connect to Google API"))
-        .addApi(Auth.GOOGLE_SIGN_IN_API, opts).build();
-    return apiClient;
+    if (mGoogleSignInOpts == null) {
+      mGoogleSignInOpts =
+          new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestIdToken(
+              getString(R.string.default_web_client_id)).requestEmail().build();
+    }
+    if (mApiClient == null) {
+      mApiClient = new GoogleApiClient.Builder(getActivity()).enableAutoManage(getActivity(),
+          connectionResult -> Log.d(LOG_TAG, "Could not connect to Google API"))
+          .addApi(Auth.GOOGLE_SIGN_IN_API, mGoogleSignInOpts)
+          .build();
+    }
+    return mApiClient;
   }
 
   @Override public void onAttach(Context context) {
@@ -73,7 +82,9 @@ public class GoogleSignInFragment extends Fragment {
     if (context instanceof OnGoogleSignInListener) {
       mListener = (OnGoogleSignInListener) context;
     } else {
-      throw new RuntimeException(context.toString() + " must implement " + OnGoogleSignInListener.class.getCanonicalName());
+      throw new RuntimeException(context.toString()
+          + " must implement "
+          + OnGoogleSignInListener.class.getCanonicalName());
     }
   }
 
@@ -84,6 +95,7 @@ public class GoogleSignInFragment extends Fragment {
 
   public interface OnGoogleSignInListener {
     void onGoogleSignInSuccess(GoogleSignInAccount account);
+
     void onGoogleSignInFailure(GoogleSignInResult result);
   }
 }
