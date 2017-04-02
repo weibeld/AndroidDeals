@@ -1,21 +1,104 @@
 package org.latefire.deals.auth;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.app.DialogFragment;
+import android.content.Context;
+import android.databinding.DataBindingUtil;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import org.latefire.deals.R;
+import org.latefire.deals.database.Business;
+import org.latefire.deals.database.Customer;
+import org.latefire.deals.database.DatabaseManager;
+import org.latefire.deals.databinding.DialogSignUpBinding;
+import org.latefire.deals.utils.MiscUtils;
+
 /**
  * Created by dw on 25/03/17.
  */
 
-public class SignUpFragment extends AbsAuthFragment {
-  //@Override protected boolean validateInput() {
-  //  return false;
-  //}
-  //
-  //@Override protected void onGoogleSignInSuccess(GoogleSignInAccount account) {
-  //
-  //}
-  //
-  //@Override protected void onGoogleSignInFailure(GoogleSignInResult result) {
-  //
-  //}
+public class SignUpDialogFragment extends DialogFragment {
+
+  private static final String LOG_TAG = SignUpDialogFragment.class.getSimpleName();
+
+  DialogSignUpBinding b;
+  AuthActivity mActivity;
+  SignInDialogFragment.OnAuthCompleteListener mAuthListener;
+  SignInDialogFragment.OnLoadingListener mLoadingListener;
+
+  String mEmail;
+  String mPassword;
+
+  @Override public void onAttach(Context context) {
+    super.onAttach(context);
+    if (context instanceof AuthActivity) {
+      mActivity = (AuthActivity) context;
+      mAuthListener = (SignInDialogFragment.OnAuthCompleteListener) context;
+      mLoadingListener = (SignInDialogFragment.OnLoadingListener) context;
+    } else {
+      throw new ClassCastException(context.toString() + " must implement " + SignInDialogFragment.OnAuthCompleteListener.class.getCanonicalName());
+    }
+  }
+
+  @Override public void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    mActivity = (AuthActivity) getActivity();
+  }
+
+  @Override public Dialog onCreateDialog(Bundle savedInstanceState) {
+    b = DataBindingUtil.inflate(LayoutInflater.from(getActivity()), R.layout.dialog_sign_up, null, false);
+
+    // Select account type
+    b.rgUserType.setOnCheckedChangeListener((group, checkedId) -> onAccountTypeSelected(checkedId));
+
+    AlertDialog dialog = new AlertDialog.Builder(getActivity()).setTitle("Sign Up")
+        .setView(b.getRoot())
+        .setPositiveButton("Sign Up", (dialog1, which) -> {
+          if (validateInput()) {
+            mLoadingListener.onLoadingStart();
+            mEmail = b.etEmail.getText().toString();
+            mPassword = b.etPassword.getText().toString();
+            SignUpFirebaseAuthListener listener = new SignUpFirebaseAuthListener();
+            AuthManager.getInstance().createUserWithEmailAndPassword(mEmail, mPassword, listener);
+          }
+        })
+        .setNegativeButton("Cancel", (dialog12, which) -> {})
+        .create();
+    return dialog;
+  }
+
+  private boolean isCustomerSelected() {
+    return b.rgUserType.getCheckedRadioButtonId() == R.id.rbCustomer;
+  }
+
+  private boolean isBusinessSelected() {
+    return b.rgUserType.getCheckedRadioButtonId() == R.id.rbBusiness;
+  }
+
+  private void onAccountTypeSelected(int checkedId) {
+    switch (checkedId) {
+      case R.id.rbCustomer:
+        b.etFirstName.setVisibility(View.VISIBLE);
+        b.etLastName.setVisibility(View.VISIBLE);
+        b.etBusinessName.setVisibility(View.GONE);
+        b.etBusinessName.setText("");
+        b.etFirstName.requestFocus();
+        break;
+      case R.id.rbBusiness:
+        b.etFirstName.setVisibility(View.GONE);
+        b.etFirstName.setText("");
+        b.etLastName.setVisibility(View.GONE);
+        b.etLastName.setText("");
+        b.etBusinessName.setVisibility(View.VISIBLE);
+        b.etBusinessName.requestFocus();
+        break;
+    }
+  }
 
   //private static final String LOG_TAG = SignUpFragment.class.getSimpleName();
   //
@@ -187,4 +270,61 @@ public class SignUpFragment extends AbsAuthFragment {
   //@Override protected boolean validateInput() {
   //  return true;
   //}
+
+  // TODO: 26/03/17 Improve input validation for sign-up with email and password
+  private boolean validateInput() {
+    String email = b.etEmail.getText().toString();
+    String password = b.etPassword.getText().toString();
+    String passwordConfirm = b.etPasswordConfirm.getText().toString();
+    String firstName = b.etFirstName.getText().toString();
+    String lastName = b.etLastName.getText().toString();
+    String businessName = b.etBusinessName.getText().toString();
+
+    // Test for empty fields
+    boolean emptyField = false;
+    if (email.isEmpty() || password.isEmpty() || passwordConfirm.isEmpty()) emptyField = true;
+    if (isCustomerSelected() && (firstName.isEmpty() || lastName.isEmpty())) emptyField = true;
+    if (isBusinessSelected() && businessName.isEmpty()) emptyField = true;
+    if (emptyField) {
+      MiscUtils.toastS(mActivity, "Please fill in all input fields");
+      return false;
+    }
+
+    return true;
+  }
+
+  class SignUpFirebaseAuthListener implements AuthManager.FirebaseAuthListener {
+    @Override public void onAuthSuccess(Task<AuthResult> task) {
+      AuthManager.getInstance().signInWithEmailAndPassword(mEmail, mPassword, new SignInFirebaseAuthListener());
+    }
+    @Override public void onAuthFailure(Task<AuthResult> task) {
+      mLoadingListener.onLoadingEnd();
+      MiscUtils.toastL(mActivity, "Error: could not create user");
+      Log.d(LOG_TAG, "Could not create a new Firebase user: " + task.getException());
+    }
+  }
+
+  class SignInFirebaseAuthListener implements AuthManager.FirebaseAuthListener {
+    @Override public void onAuthSuccess(Task<AuthResult> task) {
+      String userId = task.getResult().getUser().getUid();
+      DatabaseManager m = DatabaseManager.getInstance();
+      if (isCustomerSelected()) {
+        Customer customer = new Customer();
+        customer.setEmail(b.etEmail.getText().toString());
+        customer.setFirstName(b.etFirstName.getText().toString());
+        customer.setLastName(b.etLastName.getText().toString());
+        m.createCustomer(customer, userId, () -> mAuthListener.onAuthComplete());
+      } else if (isBusinessSelected()) {
+        Business business = new Business();
+        business.setEmail(b.etEmail.getText().toString());
+        business.setBusinessName(b.etBusinessName.getText().toString());
+        m.createBusiness(business, userId, () -> mAuthListener.onAuthComplete());
+      }
+    }
+    @Override public void onAuthFailure(Task<AuthResult> task) {
+      mLoadingListener.onLoadingEnd();
+      MiscUtils.toastL(mActivity, "Error: could not sign in");
+      Log.d(LOG_TAG, "Could not sign in with newly created user: " + task.getException());
+    }
+  }
 }

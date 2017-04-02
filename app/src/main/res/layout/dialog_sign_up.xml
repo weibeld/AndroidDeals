@@ -11,7 +11,7 @@
 
     <TextView
         style="@style/Header"
-        android:text="Account Type"
+        android:text="Select Account Type"
         />
 
     <RadioGroup
@@ -96,26 +96,6 @@
         android:layout_height="wrap_content"
         android:hint="Confirm Password"
         android:inputType="textPassword"
-        />
-
-    <Button
-        android:id="@+id/btnSignUpWithEmailPassword"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Sign Up"
-        android:layout_gravity="right"
-        />
-
-    <TextView
-        style="@style/Header"
-        android:text="Alternative Sign Up Option"
-        android:layout_marginTop="16dp"
-        />
-
-    <com.google.android.gms.common.SignInButton
-        android:id="@+id/btnSignInWithGoogle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         />
 
   </LinearLayout>
