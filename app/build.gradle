@@ -6,7 +6,7 @@ android {
     debug {
       keyAlias 'deals'
       keyPassword 'latefire'
-      storeFile file('D:/CoderSchool/Deals/publish/latefire.jks')
+      storeFile file('../publish/latefire.jks')
       storePassword 'latefire'
     }
   }
