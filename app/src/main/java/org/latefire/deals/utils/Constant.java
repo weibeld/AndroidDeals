@@ -5,6 +5,7 @@ package org.latefire.deals.utils;
  */
 
 public class Constant {
+  public static final String ARG_CUSTOMER_ID = "customer_id";
   private static final String PKG = "org.latefire.deals.";
   public static final boolean DEBUG = true;
   public static final int FROM_GALLERY = 1;

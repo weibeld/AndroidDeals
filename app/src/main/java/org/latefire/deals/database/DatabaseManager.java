@@ -81,17 +81,13 @@ public class DatabaseManager {
 
   public void acquireDeal(String customerId, String dealId) {
     long timestamp = getCurrentTimestamp();
-
-    // Add  the deal to the customer object
-    DatabaseReference ref = getCustomerDealRef(customerId, dealId);
-    // Acquisition date
-    ref.child(ACQUISITION_DATE).setValue(timestamp);
-    // Get begin and end validity of deal and add it to the customer object
     getDealRef(dealId).addListenerForSingleValueEvent(new ValueEventListener() {
       @Override public void onDataChange(DataSnapshot dataSnapshot) {
         Deal deal = dataSnapshot.getValue(Deal.class);
-        ref.child(VALIDITY_BEGIN_DATE).setValue(deal.getBeginValidity());
-        ref.child(VALIDITY_END_DATE).setValue(deal.getEndValidity());
+        DealAcquired dealAcquired = new DealAcquired();
+        dealAcquired.setAcquisitionDate(timestamp);
+        dealAcquired.setDeal(deal);
+        getCustomerDealRef(customerId, dealId).setValue(dealAcquired);
       }
       @Override public void onCancelled(DatabaseError databaseError) {}
     });
@@ -206,6 +202,10 @@ public class DatabaseManager {
 
   public Query getDealIdsOfBusiness(String businessId) {
     return mBusinessesRef.child(businessId).child(BUSINESS_DEALS);
+  }
+
+  public Query getAcquiredDealsOfCustomer(String customerId) {
+    return mCustomersRef.child(customerId).child(CUSTOMER_DEALS).orderByChild("deal/endValidity");
   }
 
   /*----------------------------------------------------------------------------------------------*

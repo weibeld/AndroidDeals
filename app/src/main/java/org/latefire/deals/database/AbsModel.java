@@ -1,10 +1,12 @@
 package org.latefire.deals.database;
 
+import java.io.Serializable;
+
 /**
  * Created by dw on 21/03/17.
  */
 
-public abstract class AbsModel {
+public abstract class AbsModel implements Serializable {
 
   protected String id;
 
