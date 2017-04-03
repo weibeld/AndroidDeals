@@ -38,7 +38,7 @@ public class ViewPagerFragmentOpen extends Fragment implements ItemFilter {
     mCustomerId = getArguments().getString(ARG_CUSTOMER_ID);
 
     b.recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-    b.recyclerView.setAdapter(new CustomerDealsRecyclerAdapter(getActivity(), mCustomerId, false, this));
+    b.recyclerView.setAdapter(new RecyclerAdapterOpen(getActivity(), mCustomerId, false, this));
 
     return b.getRoot();
   }

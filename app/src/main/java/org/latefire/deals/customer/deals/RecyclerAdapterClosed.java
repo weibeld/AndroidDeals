@@ -19,16 +19,15 @@ import org.latefire.deals.utils.StringUtils;
  * list of deal IDs saved in a business object. This adapter listens on these IDs and creates
  * list item views from the corresponding real AbsModel objects.
  */
-class CustomerDealsRecyclerAdapter
-    extends FirebaseRecyclerAdapter<DealAcquired, DealAcquiredViewHolder> {
+class RecyclerAdapterClosed extends FirebaseRecyclerAdapter<DealAcquired, DealViewHolderClosed> {
 
   private Context mContext;
   private boolean mIsReverse;
   private ItemFilter mItemFilter;
   private int mItemHeight;
 
-  public CustomerDealsRecyclerAdapter(Context c, String customerId, boolean isReverse, ItemFilter filter) {
-    super(DealAcquired.class, R.layout.deal_list_item, DealAcquiredViewHolder.class, DatabaseManager
+  public RecyclerAdapterClosed(Context c, String customerId, boolean isReverse, ItemFilter filter) {
+    super(DealAcquired.class, R.layout.deal_list_item, DealViewHolderClosed.class, DatabaseManager
         .getInstance().getAcquiredDealsOfCustomer(customerId));
     mContext = c;
     mIsReverse = isReverse;
@@ -42,11 +41,9 @@ class CustomerDealsRecyclerAdapter
   }
 
 
-  @Override protected void populateViewHolder(DealAcquiredViewHolder holder, DealAcquired dealAcquired, int position) {
-    if (!mItemFilter.isDisplayItem(dealAcquired)) {
-      hideItem(holder.itemView);
-    }
-    else {
+  @Override protected void populateViewHolder(DealViewHolderClosed holder, DealAcquired dealAcquired, int position) {
+    hideItem(holder.itemView);
+    if (mItemFilter.isDisplayItem(dealAcquired)) {
       showItem(holder.itemView);
       Deal deal = dealAcquired.getDeal();
       // Title

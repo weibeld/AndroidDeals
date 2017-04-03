@@ -54,16 +54,16 @@
         android:screenOrientation="portrait"/>
     <activity
         android:name=".activity.DealDetailsActivity"
-        android:screenOrientation="portrait"
         android:parentActivityName=".activity.HomeActivityCustomer"
-        />
+        android:screenOrientation="portrait"/>
     <activity android:name=".activity.HomeActivityBusiness">
     </activity>
     <activity
         android:name=".customer.deals.CustomerDealsActivity"
         android:label="@string/title_activity_customer_deals"
-        android:parentActivityName=".activity.HomeActivityCustomer"
-        >
+        android:parentActivityName=".activity.HomeActivityCustomer">
+    </activity>
+    <activity android:name=".customer.redeem.RedemptionActivity">
     </activity>
   </application>
 

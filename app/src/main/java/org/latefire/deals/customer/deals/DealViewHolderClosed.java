@@ -10,7 +10,7 @@ import org.latefire.deals.R;
  * Created by dw on 02/04/17.
  */
 
-public class DealAcquiredViewHolder extends RecyclerView.ViewHolder {
+public class DealViewHolderClosed extends RecyclerView.ViewHolder {
 
   TextView tvDealTitle;
   ImageView imgDealPhoto;
@@ -18,7 +18,7 @@ public class DealAcquiredViewHolder extends RecyclerView.ViewHolder {
   TextView tvDealLocation;
   TextView tvDealPrice;
 
-  public DealAcquiredViewHolder(View itemView) {
+  public DealViewHolderClosed(View itemView) {
     super(itemView);
     tvDealTitle = (TextView) itemView.findViewById(R.id.tv_deal_title);
     imgDealPhoto = (ImageView) itemView.findViewById(R.id.img_deal_photo);
