@@ -2,12 +2,10 @@ package org.latefire.deals.database;
 
 // TODO: 21/03/17 Change type of dates to java.util.Date
 
-import java.io.Serializable;
-
 /**
  * Created by dw on 19/03/17.
  */
-public class Deal extends AbsModel implements Serializable {
+public class Deal extends AbsModel {
 
   private String businessId;
   private String title;
@@ -16,8 +14,8 @@ public class Deal extends AbsModel implements Serializable {
   private double regularPrice;
   private double dealPrice;
   private String location;
-  private String beginValidity;
-  private String endValidity;
+  private long beginValidity;
+  private long endValidity;
   private String photo;
   private String locationName;
   private double latitude;
@@ -26,19 +24,19 @@ public class Deal extends AbsModel implements Serializable {
   public Deal() {
   }
 
-  public Deal(String businessId, String title, String description, String currency,
-      double regularPrice, double dealPrice, String beginValidity, String endValidity,
-      String location) {
-    this.businessId = businessId;
-    this.title = title;
-    this.description = description;
-    this.currency = currency;
-    this.regularPrice = regularPrice;
-    this.dealPrice = dealPrice;
-    this.beginValidity = beginValidity;
-    this.endValidity = endValidity;
-    this.location = location;
-  }
+  //public Deal(String businessId, String title, String description, String currency,
+  //    double regularPrice, double dealPrice, String beginValidity, String endValidity,
+  //    String location) {
+  //  this.businessId = businessId;
+  //  this.title = title;
+  //  this.description = description;
+  //  this.currency = currency;
+  //  this.regularPrice = regularPrice;
+  //  this.dealPrice = dealPrice;
+  //  this.beginValidity = beginValidity;
+  //  this.endValidity = endValidity;
+  //  this.location = location;
+  //}
 
   public String getBusinessId() {
     return businessId;
@@ -88,19 +86,19 @@ public class Deal extends AbsModel implements Serializable {
     this.dealPrice = dealPrice;
   }
 
-  public String getBeginValidity() {
+  public long getBeginValidity() {
     return beginValidity;
   }
 
-  public void setBeginValidity(String beginValidity) {
+  public void setBeginValidity(long beginValidity) {
     this.beginValidity = beginValidity;
   }
 
-  public String getEndValidity() {
+  public long getEndValidity() {
     return endValidity;
   }
 
-  public void setEndValidity(String endValidity) {
+  public void setEndValidity(long endValidity) {
     this.endValidity = endValidity;
   }
 

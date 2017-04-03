@@ -7,7 +7,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.util.Log;
 import android.view.Menu;
@@ -30,6 +29,7 @@ import org.latefire.deals.adapters.ViewPagerAdapter;
 import org.latefire.deals.auth.AuthActivity;
 import org.latefire.deals.auth.AuthManager;
 import org.latefire.deals.auth.CurrentUserManager;
+import org.latefire.deals.customer.deals.CustomerDealsActivity;
 import org.latefire.deals.database.AbsUser;
 import org.latefire.deals.database.Business;
 import org.latefire.deals.database.Customer;
@@ -45,28 +45,26 @@ public class HomeActivityCustomer extends BaseActivity
 
   private static final String LOG_TAG = HomeActivityCustomer.class.getSimpleName();
 
+  private ActivityHomeCustomerBinding b;
+
   @BindView(R.id.materialViewPager) MaterialViewPager viewPager;
   private ViewPagerAdapter mViewPagerAdapter;
   private DatabaseManager mDatabaseManager;
   private AuthManager mAuthManager;
   private CurrentUserManager mCurrentUserManager;
-  private ActivityHomeCustomerBinding mBinding;
   private TextView mTvName;
   private TextView mTvEmail;
   private ImageView mIvAvatar;
-  private DrawerLayout mDrawerLayout;
   GoogleApiClient mGoogleApiClient;
 
   @Override protected void onCreate(@Nullable Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    mBinding = DataBindingUtil.setContentView(this, R.layout.activity_home_customer);
+    b = DataBindingUtil.setContentView(this, R.layout.activity_home_customer);
     ButterKnife.bind(this);
     setSupportActionBar(viewPager.getToolbar());
-    getSupportActionBar().setSubtitle(" ");
-    DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-    ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, viewPager.getToolbar(),
+    ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, b.drawerLayout, viewPager.getToolbar(),
         R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-    drawer.setDrawerListener(toggle);
+    b.drawerLayout.setDrawerListener(toggle);
     toggle.syncState();
 
     mGoogleApiClient = new GoogleApiClient.Builder(this)
@@ -74,19 +72,17 @@ public class HomeActivityCustomer extends BaseActivity
         .addApi(Auth.GOOGLE_SIGN_IN_API)
         .build();
 
-
-    NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-    navigationView.setNavigationItemSelectedListener(this);
-    mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-    mTvName = (TextView) navigationView.getHeaderView(0).findViewById(R.id.nav_header_tv_name);
-    mTvEmail = (TextView) navigationView.getHeaderView(0).findViewById(R.id.nav_header_tv_email);
-    mIvAvatar = (ImageView) navigationView.getHeaderView(0).findViewById(R.id.nav_header_iv_avatar);
+    NavigationView navView = b.navViewInclude.navViewCustomer;
+    navView.setNavigationItemSelectedListener(this);
+    mTvName = (TextView) navView.getHeaderView(0).findViewById(R.id.nav_header_tv_name);
+    mTvEmail = (TextView)  navView.getHeaderView(0).findViewById(R.id.nav_header_tv_email);
+    mIvAvatar = (ImageView)  navView.getHeaderView(0).findViewById(R.id.nav_header_iv_avatar);
 
     mDatabaseManager = DatabaseManager.getInstance();
     mAuthManager = AuthManager.getInstance();
     mCurrentUserManager = CurrentUserManager.getInstance();
 
-    mCurrentUserManager.getCurrentUser(user -> setHeaderNav(user));
+    mCurrentUserManager.getCurrentUser(this::setHeaderNav);
 
     mViewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
     viewPager.getViewPager().setAdapter(mViewPagerAdapter);
@@ -125,9 +121,8 @@ public class HomeActivityCustomer extends BaseActivity
   }
 
   @Override public void onBackPressed() {
-    DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-    if (drawer.isDrawerOpen(GravityCompat.START)) {
-      drawer.closeDrawer(GravityCompat.START);
+    if (b.drawerLayout.isDrawerOpen(GravityCompat.START)) {
+      b.drawerLayout.closeDrawer(GravityCompat.START);
     } else {
       super.onBackPressed();
     }
@@ -190,13 +185,16 @@ public class HomeActivityCustomer extends BaseActivity
 
   @Override
   public boolean onNavigationItemSelected(MenuItem item) {
-    mDrawerLayout.closeDrawer(GravityCompat.START);
+    b.drawerLayout.closeDrawer(GravityCompat.START);
     switch (item.getItemId()) {
-      case R.id.nav_sign_out:
+      case R.id.action_sign_out:
         FirebaseAuth.getInstance().signOut();
         Auth.GoogleSignInApi.signOut(mGoogleApiClient);
         startActivity(new Intent(this, AuthActivity.class));
         finish();
+        return true;
+      case R.id.action_your_deals:
+        startActivity(new Intent(this, CustomerDealsActivity.class));
         return true;
     }
     return false;

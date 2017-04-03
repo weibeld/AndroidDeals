@@ -41,8 +41,8 @@
     </RelativeLayout>
 
     <include
-        layout="@layout/nav_view"
-        android:id="@+id/nav_view_include"/>
+        android:id="@+id/nav_view_include"
+        layout="@layout/nav_view_business" />
 
   </android.support.v4.widget.DrawerLayout>
 

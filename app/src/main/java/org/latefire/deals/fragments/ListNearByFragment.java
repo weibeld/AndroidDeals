@@ -12,8 +12,6 @@ import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.github.florent37.materialviewpager.header.MaterialViewPagerHeaderDecorator;
 import org.latefire.deals.R;
 import org.latefire.deals.adapters.DealItemViewHolder;
-import org.latefire.deals.adapters.DenormFirebaseRecyclerAdapter;
-import org.latefire.deals.auth.AuthManager;
 import org.latefire.deals.database.DatabaseManager;
 import org.latefire.deals.database.Deal;
 
@@ -55,10 +53,8 @@ public class ListNearByFragment extends BaseFrament {
     //rvDealList.setAdapter(adapter);
     //
     rvDealList.setAdapter(
-        new FirebaseRecyclerAdapter<Deal, DealItemViewHolder>(Deal.class, R.layout.deal_list_item,
-            DealItemViewHolder.class, mgr.getDealsRef()) {
-          @Override protected void populateViewHolder(DealItemViewHolder viewHolder, Deal model,
-              int position) {
+        new FirebaseRecyclerAdapter<Deal, DealItemViewHolder>(Deal.class, R.layout.deal_list_item, DealItemViewHolder.class, mgr.getDealsRef()) {
+          @Override protected void populateViewHolder(DealItemViewHolder viewHolder, Deal model, int position) {
             viewHolder.setViewHolderFields(model, getContext());
           }
         });
