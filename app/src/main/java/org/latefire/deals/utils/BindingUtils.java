@@ -44,7 +44,7 @@ public class BindingUtils {
     DatabaseManager.getInstance().getBusiness(deal.getBusinessId(), model -> {
       Business business = (Business) model;
       if (business.getProfilePhoto() == null || business.getProfilePhoto().isEmpty()) {
-        roundedImageView.setImageResource(R.drawable.image_not_found);
+        roundedImageView.setImageResource(R.drawable.img_no_avatar_man);
         return;
       }
       Glide.with(roundedImageView.getContext())
@@ -67,7 +67,7 @@ public class BindingUtils {
   @BindingAdapter("imgUserAvatar")
   public static void showUserAvatar(RoundedImageView roundedImageView, String imgUrl) {
     if (imgUrl == null || imgUrl.isEmpty()) {
-      roundedImageView.setImageResource(R.drawable.image_not_found);
+      roundedImageView.setImageResource(R.drawable.img_no_avatar_man);
       return;
     }
     Glide.with(roundedImageView.getContext())

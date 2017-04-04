@@ -65,7 +65,6 @@
               app:riv_border_width="1dp"
               app:riv_mutate_background="true"
               app:riv_oval="true"
-              app:riv_tile_mode="repeat"
               app:srcCompat="@mipmap/ic_launcher"
               />
 
