@@ -7,6 +7,7 @@ import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import org.latefire.deals.R;
 import org.latefire.deals.database.Customer;
 import org.latefire.deals.database.DatabaseManager;
+import org.latefire.deals.ui.FormatManager;
 import org.latefire.deals.utils.MiscUtils;
 
 /**
@@ -16,10 +17,12 @@ import org.latefire.deals.utils.MiscUtils;
 class DealCustomersAdapter extends FirebaseRecyclerAdapter<DealCustomerInfo, DealCustomerItemViewHolder> {
 
   Context mContext;
+  FormatManager mFormateManager;
 
   public DealCustomersAdapter(Context c, String dealId) {
     super(DealCustomerInfo.class, R.layout.item_deal_customer, DealCustomerItemViewHolder.class, DatabaseManager.getInstance().getCustomerIdsOfDeal(dealId));
     mContext = c;
+    mFormateManager = FormatManager.getInstance();
   }
 
   // Reverse order (most recently grabbed deal on top of list)
@@ -41,13 +44,15 @@ class DealCustomersAdapter extends FirebaseRecyclerAdapter<DealCustomerInfo, Dea
       holder.tvEmail.setText(customer.getEmail());
 
       // Grabbing date
-      String grabDate = String.format(mContext.getString(R.string.deal_customer_grab_date), acquisitionDate.toString());
+      String grabDate = String.format(mContext.getString(R.string.deal_customer_grab_date),
+          mFormateManager.formatTimestamp(acquisitionDate));
       holder.tvAcquisitionDate.setText(grabDate);
 
       // Redemption date (if already redeemed)
       if (redemptionDate != null) {
-        String redeemDate = String.format(mContext.getString(R.string.deal_customer_redeem_date), redemptionDate.toString());
-        holder.tvRedemptionDate.setText(redeemDate);
+        String rDateText = String.format(mContext.getString(R.string.deal_customer_redeem_date),
+            mFormateManager.formatTimestamp(redemptionDate));
+        holder.tvRedemptionDate.setText(rDateText);
       }
 
       // Profile image
