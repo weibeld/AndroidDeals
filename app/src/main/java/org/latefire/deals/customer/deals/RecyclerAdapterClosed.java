@@ -11,6 +11,7 @@ import org.latefire.deals.R;
 import org.latefire.deals.database.DatabaseManager;
 import org.latefire.deals.database.Deal;
 import org.latefire.deals.database.DealAcquired;
+import org.latefire.deals.ui.FormatManager;
 import org.latefire.deals.utils.StringUtils;
 
 /**
@@ -61,7 +62,9 @@ class RecyclerAdapterClosed extends FirebaseRecyclerAdapter<DealAcquired, DealVi
       String dealPrice = String.valueOf(deal.getDealPrice());
       SpannableStringBuilder price = StringUtils.makePriceText(mContext, regularPrice, dealPrice);
       holder.tvDealPrice.setText(price, TextView.BufferType.EDITABLE);
-      holder.tvDealDate.setText(deal.getBeginValidity() + " - " + deal.getEndValidity());
+      String beginValidity = FormatManager.getInstance().formatTimestamp(deal.getBeginValidity());
+      String endValidity = FormatManager.getInstance().formatTimestamp(deal.getEndValidity());
+      holder.tvDealDate.setText(beginValidity + " - " + endValidity);
       holder.tvDealLocation.setText(deal.getLocationName());
     }
   }

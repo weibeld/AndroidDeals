@@ -7,6 +7,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import org.latefire.deals.R;
+import org.latefire.deals.ui.FormatManager;
 import org.latefire.deals.utils.StringUtils;
 import org.latefire.deals.database.Deal;
 
@@ -19,6 +20,7 @@ public class DealItemViewHolder extends AbsItemViewHolder<Deal> {
   TextView tvDealDate;
   TextView tvDealLocation;
   TextView tvDealPrice;
+  private FormatManager mFormatManager = FormatManager.getInstance();
 
   // General-purpose tag that can be set to every ViewHolder
   private Object tag;
@@ -49,7 +51,9 @@ public class DealItemViewHolder extends AbsItemViewHolder<Deal> {
     String dealPrice = String.valueOf(deal.getDealPrice());
     SpannableStringBuilder price = StringUtils.makePriceText(c, regularPrice, dealPrice);
     tvDealPrice.setText(price, TextView.BufferType.EDITABLE);
-    tvDealDate.setText(deal.getBeginValidity() + " - " + deal.getEndValidity());
+    String beginValidity = mFormatManager.formatTimestamp(deal.getBeginValidity());
+    String endValidity = mFormatManager.formatTimestamp(deal.getEndValidity());
+    tvDealDate.setText(beginValidity + " - " + endValidity);
     tvDealLocation.setText(deal.getLocationName());
     itemView.setOnClickListener(v -> {
       DealDetailsActivity.start(c, deal);

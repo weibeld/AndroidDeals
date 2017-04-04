@@ -10,6 +10,7 @@ import org.latefire.deals.R;
 import org.latefire.deals.business.deal.customers.DealCustomersActivity;
 import org.latefire.deals.database.DatabaseManager;
 import org.latefire.deals.database.Deal;
+import org.latefire.deals.ui.FormatManager;
 import org.latefire.deals.utils.StringUtils;
 
 import static org.latefire.deals.customer.home.DealDetailsActivity.ARG_DEAL;
@@ -23,10 +24,12 @@ public class BusinessDealsAdapter extends FirebaseRecyclerAdapter<Deal, DealItem
   private static final String LOG_TAG = BusinessDealsAdapter.class.getSimpleName();
 
   Context mContext;
+  private FormatManager mFormatManager;
 
   public BusinessDealsAdapter(Context c, String businessId) {
     super(Deal.class, R.layout.item_deal, DealItemViewHolder.class, DatabaseManager.getInstance().getDealsOfBusiness(businessId));
     mContext = c;
+    mFormatManager = FormatManager.getInstance();
   }
 
   // Reverse order (most recently created deal on top of list)
@@ -51,7 +54,9 @@ public class BusinessDealsAdapter extends FirebaseRecyclerAdapter<Deal, DealItem
     String dealPrice = String.valueOf(deal.getDealPrice());
     SpannableStringBuilder price = StringUtils.makePriceText(mContext, regularPrice, dealPrice);
     holder.tvDealPrice.setText(price, TextView.BufferType.EDITABLE);
-    holder.tvDealDate.setText(deal.getBeginValidity() + " - " + deal.getEndValidity());
+    String beginValidity = mFormatManager.formatTimestamp(deal.getBeginValidity());
+    String endValidity = mFormatManager.formatTimestamp(deal.getEndValidity());
+    holder.tvDealDate.setText(beginValidity + " - " + endValidity);
     holder.tvDealLocation.setText(deal.getLocationName());
 
     // On clicking an item, show customers who grabbed this deal
