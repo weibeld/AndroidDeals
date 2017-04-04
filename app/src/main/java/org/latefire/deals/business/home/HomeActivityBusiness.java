@@ -1,4 +1,4 @@
-package org.latefire.deals.activity;
+package org.latefire.deals.business.home;
 
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
@@ -18,6 +18,7 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.firebase.auth.FirebaseAuth;
 import org.latefire.deals.R;
+import org.latefire.deals.base.BaseActivity;
 import org.latefire.deals.auth.AuthActivity;
 import org.latefire.deals.auth.CurrentUserManager;
 import org.latefire.deals.database.AbsUser;
@@ -25,7 +26,8 @@ import org.latefire.deals.database.Business;
 import org.latefire.deals.database.Customer;
 import org.latefire.deals.databinding.ActivityHomeBusinessBinding;
 
-public class HomeActivityBusiness extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener, GoogleApiClient.OnConnectionFailedListener {
+public class HomeActivityBusiness extends BaseActivity
+    implements NavigationView.OnNavigationItemSelectedListener, GoogleApiClient.OnConnectionFailedListener {
 
   private static final String LOG_TAG = HomeActivityBusiness.class.getSimpleName();
 

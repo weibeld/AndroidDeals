@@ -1,4 +1,4 @@
-package org.latefire.deals.fragments;
+package org.latefire.deals.customer.home;
 
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -11,7 +11,7 @@ import butterknife.ButterKnife;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.github.florent37.materialviewpager.header.MaterialViewPagerHeaderDecorator;
 import org.latefire.deals.R;
-import org.latefire.deals.adapters.DealItemViewHolder;
+import org.latefire.deals.base.BaseFrament;
 import org.latefire.deals.database.DatabaseManager;
 import org.latefire.deals.database.Deal;
 
@@ -21,7 +21,7 @@ import org.latefire.deals.database.Deal;
 public class ListHotDealFragment extends BaseFrament {
 
   private static final String TAG = ListHotDealFragment.class.getSimpleName();
-  @BindView(R.id.rv_deal_list) RecyclerView rvDealList;
+  @BindView(R.id.rv_deal_list) public RecyclerView rvDealList;
   public ListHotDealFragment() {
   }
 
@@ -46,7 +46,7 @@ public class ListHotDealFragment extends BaseFrament {
     DatabaseManager mgr = DatabaseManager.getInstance();
     rvDealList.setLayoutManager(new LinearLayoutManager(getContext()));
     rvDealList.addItemDecoration(new MaterialViewPagerHeaderDecorator());
-    rvDealList.setAdapter(new FirebaseRecyclerAdapter<Deal, DealItemViewHolder>(Deal.class, R.layout.deal_list_item, DealItemViewHolder.class, mgr.getDealsOrderByRegularPrice()) {
+    rvDealList.setAdapter(new FirebaseRecyclerAdapter<Deal, DealItemViewHolder>(Deal.class, R.layout.item_deal, DealItemViewHolder.class, mgr.getDealsOrderByRegularPrice()) {
       @Override
       protected void populateViewHolder(DealItemViewHolder viewHolder, Deal model, int position) {
         viewHolder.setViewHolderFields(model, getContext());

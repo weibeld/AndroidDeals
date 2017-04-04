@@ -1,4 +1,4 @@
-package org.latefire.deals.adapters;
+package org.latefire.deals.customer.home;
 
 import android.content.Context;
 import android.text.SpannableStringBuilder;
@@ -7,7 +7,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import org.latefire.deals.R;
-import org.latefire.deals.activity.DealDetailsActivity;
 import org.latefire.deals.utils.StringUtils;
 import org.latefire.deals.database.Deal;
 

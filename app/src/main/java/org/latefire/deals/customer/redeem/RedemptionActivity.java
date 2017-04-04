@@ -12,7 +12,7 @@ import org.latefire.deals.database.Deal;
 import org.latefire.deals.databinding.ActivityRedemptionBinding;
 import org.latefire.deals.utils.MiscUtils;
 
-import static org.latefire.deals.activity.DealDetailsActivity.ARG_DEAL;
+import static org.latefire.deals.customer.home.DealDetailsActivity.ARG_DEAL;
 
 public class RedemptionActivity extends AppCompatActivity {
 

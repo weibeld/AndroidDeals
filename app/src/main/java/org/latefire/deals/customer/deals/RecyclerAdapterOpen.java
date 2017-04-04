@@ -15,7 +15,7 @@ import org.latefire.deals.database.Deal;
 import org.latefire.deals.database.DealAcquired;
 import org.latefire.deals.utils.StringUtils;
 
-import static org.latefire.deals.activity.DealDetailsActivity.ARG_DEAL;
+import static org.latefire.deals.customer.home.DealDetailsActivity.ARG_DEAL;
 
 /**
  * FirebaseRecyclerAdapter for creating AbsModel items from a list of AbsModel IDs (key = ID,
@@ -32,7 +32,7 @@ class RecyclerAdapterOpen
   private int mItemHeight;
 
   public RecyclerAdapterOpen(Context c, String customerId, boolean isReverse, ItemFilter filter) {
-    super(DealAcquired.class, R.layout.deal_list_item, DealViewHolderOpen.class, DatabaseManager
+    super(DealAcquired.class, R.layout.item_deal, DealViewHolderOpen.class, DatabaseManager
         .getInstance().getAcquiredDealsOfCustomer(customerId));
     mContext = c;
     mIsReverse = isReverse;

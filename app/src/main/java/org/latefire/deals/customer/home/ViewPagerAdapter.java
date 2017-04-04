@@ -1,11 +1,8 @@
-package org.latefire.deals.adapters;
+package org.latefire.deals.customer.home;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
-import org.latefire.deals.fragments.ListCategorizeDealFragment;
-import org.latefire.deals.fragments.ListHotDealFragment;
-import org.latefire.deals.fragments.ListNearByFragment;
 
 /**
  * Created by phongnguyen on 3/20/17.

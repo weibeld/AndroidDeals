@@ -1,4 +1,4 @@
-package org.latefire.deals.adapters;
+package org.latefire.deals.base;
 
 import android.content.Context;
 import android.util.Pair;
@@ -8,6 +8,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import org.latefire.deals.customer.home.AbsItemViewHolder;
 import org.latefire.deals.database.AbsModel;
 import org.latefire.deals.database.DatabaseManager;
 

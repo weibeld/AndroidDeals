@@ -1,4 +1,4 @@
-package org.latefire.deals.controler;
+package org.latefire.deals.base;
 
 import java.util.ArrayList;
 import java.util.List;

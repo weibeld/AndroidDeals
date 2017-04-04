@@ -1,4 +1,4 @@
-package org.latefire.deals.activity;
+package org.latefire.deals.business.home;
 
 import android.app.Activity;
 import android.app.DatePickerDialog;
@@ -25,6 +25,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.util.Calendar;
 import org.latefire.deals.R;
+import org.latefire.deals.base.BaseActivity;
 import org.latefire.deals.auth.AuthManager;
 import org.latefire.deals.database.DatabaseManager;
 import org.latefire.deals.database.Deal;

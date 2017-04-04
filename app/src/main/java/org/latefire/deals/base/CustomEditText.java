@@ -1,4 +1,4 @@
-package org.latefire.deals.widgets;
+package org.latefire.deals.base;
 
 import android.content.Context;
 import android.content.res.TypedArray;

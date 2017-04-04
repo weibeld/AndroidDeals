@@ -1,4 +1,4 @@
-package org.latefire.deals.adapters;
+package org.latefire.deals.customer.home;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;

@@ -27,7 +27,7 @@ class RecyclerAdapterClosed extends FirebaseRecyclerAdapter<DealAcquired, DealVi
   private int mItemHeight;
 
   public RecyclerAdapterClosed(Context c, String customerId, boolean isReverse, ItemFilter filter) {
-    super(DealAcquired.class, R.layout.deal_list_item, DealViewHolderClosed.class, DatabaseManager
+    super(DealAcquired.class, R.layout.item_deal, DealViewHolderClosed.class, DatabaseManager
         .getInstance().getAcquiredDealsOfCustomer(customerId));
     mContext = c;
     mIsReverse = isReverse;
