@@ -13,6 +13,7 @@ import org.latefire.deals.customer.redeem.RedemptionActivity;
 import org.latefire.deals.database.DatabaseManager;
 import org.latefire.deals.database.Deal;
 import org.latefire.deals.database.DealAcquired;
+import org.latefire.deals.ui.FormatManager;
 import org.latefire.deals.utils.StringUtils;
 
 import static org.latefire.deals.customer.home.DealDetailsActivity.ARG_DEAL;
@@ -33,7 +34,7 @@ class RecyclerAdapterOpen
 
   public RecyclerAdapterOpen(Context c, String customerId, boolean isReverse, ItemFilter filter) {
     super(DealAcquired.class, R.layout.item_deal, DealViewHolderOpen.class, DatabaseManager
-        .getInstance().getAcquiredDealsOfCustomer(customerId));
+        .getInstance().getDealsOfCustomer(customerId));
     mContext = c;
     mIsReverse = isReverse;
     mItemFilter = filter;
@@ -66,7 +67,9 @@ class RecyclerAdapterOpen
       String dealPrice = String.valueOf(deal.getDealPrice());
       SpannableStringBuilder price = StringUtils.makePriceText(mContext, regularPrice, dealPrice);
       holder.tvDealPrice.setText(price, TextView.BufferType.EDITABLE);
-      holder.tvDealDate.setText(deal.getBeginValidity() + " - " + deal.getEndValidity());
+      String beginValidity = FormatManager.getInstance().formatTimestamp(deal.getBeginValidity());
+      String endValidity = FormatManager.getInstance().formatTimestamp(deal.getEndValidity());
+      holder.tvDealDate.setText(beginValidity + " - " + endValidity);
       holder.tvDealLocation.setText(deal.getLocationName());
 
       holder.itemView.setOnClickListener(v -> {

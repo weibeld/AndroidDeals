@@ -205,12 +205,16 @@ public class DatabaseManager {
     return mBusinessesRef.child(businessId).child(BUSINESS_DEALS);
   }
 
-  public Query getAcquiredDealsOfCustomer(String customerId) {
+  public Query getDealsOfCustomer(String customerId) {
     return mCustomersRef.child(customerId).child(CUSTOMER_DEALS).orderByChild("deal/endValidity");
   }
 
   public Query getDealsOfBusiness(String businessId) {
     return mBusinessesRef.child(businessId).child(BUSINESS_DEALS);
+  }
+
+  public Query getCustomerIdsOfDeal(String dealId) {
+    return mDealsRef.child(dealId).child(DEAL_CUSTOMERS).orderByChild("acquisitionDate");
   }
 
   /*----------------------------------------------------------------------------------------------*

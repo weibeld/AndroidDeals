@@ -11,6 +11,9 @@ import java.util.Locale;
  */
 
 public class DateUtils {
+    public static final SimpleDateFormat DAY_HOUR_MIN_FORMAT = new SimpleDateFormat("d MMM yyyy HH:mm", Locale.US);
+    public static final SimpleDateFormat DMY_TIME_SLASH_FORMAT = new SimpleDateFormat("d/M/yyyy HH:mm", Locale.US);
+
     public static final SimpleDateFormat FORMAT_MONTH_YEAR = new SimpleDateFormat("MMMM yyyy", Locale.US);
     public static final SimpleDateFormat FORMAT_SIMPLEMONTH_YEAR = new SimpleDateFormat("MMM yyyy", Locale.US);
     public static final SimpleDateFormat FORMAT_YEAR_MONTH_DAY = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
