@@ -8,7 +8,7 @@
   <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
 
   <application
-      android:name=".MyApplication"
+      android:name=".base.MyApplication"
       android:allowBackup="true"
       android:icon="@mipmap/ic_launcher"
       android:label="@string/app_name"
@@ -25,11 +25,11 @@
     </provider>
 
     <activity
-        android:name=".activity.CreateDealActivity"
-        android:parentActivityName=".activity.HomeActivityBusiness"
+        android:name=".business.home.CreateDealActivity"
+        android:parentActivityName=".business.home.HomeActivityBusiness"
         android:screenOrientation="portrait"/>
     <activity
-        android:name=".activity.SplashActivity"
+        android:name=".base.SplashActivity"
         android:noHistory="true"
         android:screenOrientation="portrait">
       <intent-filter>
@@ -42,7 +42,7 @@
         android:name=".auth.AuthActivity"
         android:screenOrientation="portrait"/>
     <activity
-        android:name=".activity.HomeActivityCustomer"
+        android:name=".customer.home.HomeActivityCustomer"
         android:screenOrientation="portrait"/>
 
     <meta-data
@@ -50,18 +50,18 @@
         android:value="@string/map_key"/>
 
     <activity
-        android:name=".activity.SampleShowCustomerActivity"
+        android:name=".base.SampleShowCustomerActivity"
         android:screenOrientation="portrait"/>
     <activity
-        android:name=".activity.DealDetailsActivity"
-        android:parentActivityName=".activity.HomeActivityCustomer"
+        android:name=".customer.home.DealDetailsActivity"
+        android:parentActivityName=".customer.home.HomeActivityCustomer"
         android:screenOrientation="portrait"/>
-    <activity android:name=".activity.HomeActivityBusiness">
+    <activity android:name=".business.home.HomeActivityBusiness">
     </activity>
     <activity
         android:name=".customer.deals.CustomerDealsActivity"
         android:label="@string/title_activity_customer_deals"
-        android:parentActivityName=".activity.HomeActivityCustomer">
+        android:parentActivityName=".customer.home.HomeActivityCustomer">
     </activity>
     <activity android:name=".customer.redeem.RedemptionActivity">
     </activity>

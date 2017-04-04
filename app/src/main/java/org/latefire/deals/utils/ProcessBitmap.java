@@ -20,7 +20,7 @@ import android.provider.MediaStore;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import org.latefire.deals.MyApplication;
+import org.latefire.deals.base.MyApplication;
 
 public class ProcessBitmap {
   /**

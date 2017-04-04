@@ -1,4 +1,4 @@
-package org.latefire.deals.activity;
+package org.latefire.deals.customer.home;
 
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
@@ -25,7 +25,9 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.firebase.auth.FirebaseAuth;
 import org.latefire.deals.R;
-import org.latefire.deals.adapters.ViewPagerAdapter;
+import org.latefire.deals.base.BaseActivity;
+import org.latefire.deals.business.home.CreateDealActivity;
+import org.latefire.deals.base.SampleShowCustomerActivity;
 import org.latefire.deals.auth.AuthActivity;
 import org.latefire.deals.auth.AuthManager;
 import org.latefire.deals.auth.CurrentUserManager;
@@ -47,7 +49,7 @@ public class HomeActivityCustomer extends BaseActivity
 
   private ActivityHomeCustomerBinding b;
 
-  @BindView(R.id.materialViewPager) MaterialViewPager viewPager;
+  @BindView(R.id.materialViewPager) public MaterialViewPager viewPager;
   private ViewPagerAdapter mViewPagerAdapter;
   private DatabaseManager mDatabaseManager;
   private AuthManager mAuthManager;

@@ -1,4 +1,4 @@
-package org.latefire.deals.activity;
+package org.latefire.deals.base;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,6 +9,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import org.latefire.deals.R;
 import org.latefire.deals.auth.AuthActivity;
+import org.latefire.deals.customer.home.HomeActivityCustomer;
 
 /**
  * Created by phongnguyen on 3/20/17.

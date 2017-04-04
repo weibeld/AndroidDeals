@@ -1,4 +1,4 @@
-package org.latefire.deals.activity;
+package org.latefire.deals.base;
 
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;

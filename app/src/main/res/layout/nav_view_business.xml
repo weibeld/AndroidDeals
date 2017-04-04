@@ -10,7 +10,7 @@
     android:layout_gravity="start"
     android:fitsSystemWindows="true"
     app:headerLayout="@layout/nav_header"
-    app:menu="@menu/main_nav_drawer_business"
+    app:menu="@menu/main_nav_business"
     />
 
 </layout>
