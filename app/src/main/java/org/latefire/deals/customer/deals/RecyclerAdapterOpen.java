@@ -33,7 +33,7 @@ class RecyclerAdapterOpen
 
   public RecyclerAdapterOpen(Context c, String customerId, boolean isReverse, ItemFilter filter) {
     super(DealAcquired.class, R.layout.item_deal, DealViewHolderOpen.class, DatabaseManager
-        .getInstance().getAcquiredDealsOfCustomer(customerId));
+        .getInstance().getDealsOfCustomer(customerId));
     mContext = c;
     mIsReverse = isReverse;
     mItemFilter = filter;

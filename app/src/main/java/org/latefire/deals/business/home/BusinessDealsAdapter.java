@@ -1,15 +1,18 @@
 package org.latefire.deals.business.home;
 
 import android.content.Context;
+import android.content.Intent;
 import android.text.SpannableStringBuilder;
-import android.util.Log;
 import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import org.latefire.deals.R;
+import org.latefire.deals.business.deal.customers.DealCustomersActivity;
 import org.latefire.deals.database.DatabaseManager;
 import org.latefire.deals.database.Deal;
 import org.latefire.deals.utils.StringUtils;
+
+import static org.latefire.deals.customer.home.DealDetailsActivity.ARG_DEAL;
 
 /**
  * Created by dw on 04/04/17.
@@ -28,11 +31,7 @@ public class BusinessDealsAdapter extends FirebaseRecyclerAdapter<Deal, DealItem
 
   // Reverse order (most recently created deal on top of list)
   @Override public Deal getItem(int position) {
-    int pos = position;
-    int count = getItemCount();
-    int newPos = count - 1 - pos;
-    Log.d(LOG_TAG, "hello");
-    return super.getItem(newPos);
+    return super.getItem(getItemCount()-1-position);
   }
 
   @Override
@@ -54,5 +53,12 @@ public class BusinessDealsAdapter extends FirebaseRecyclerAdapter<Deal, DealItem
     holder.tvDealPrice.setText(price, TextView.BufferType.EDITABLE);
     holder.tvDealDate.setText(deal.getBeginValidity() + " - " + deal.getEndValidity());
     holder.tvDealLocation.setText(deal.getLocationName());
+
+    // On clicking an item, show customers who grabbed this deal
+    holder.itemView.setOnClickListener(v -> {
+      Intent intent = new Intent(mContext, DealCustomersActivity.class);
+      intent.putExtra(ARG_DEAL, deal);
+      mContext.startActivity(intent);
+    });
   }
 }
