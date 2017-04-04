@@ -25,20 +25,20 @@
         android:inputType="textPassword"
         />
 
-    <Button
-        android:id="@+id/btnSignInWithEmailPassword"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Sign in"
-        android:layout_gravity="right"
-        />
+    <!--<Button-->
+        <!--android:id="@+id/btnSignInWithEmailPassword"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:text="Sign in"-->
+        <!--android:layout_gravity="right"-->
+        <!--/>-->
 
-    <com.google.android.gms.common.SignInButton
-        android:id="@+id/btnSignInWithGoogle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="48dp"
-        />
+    <!--<com.google.android.gms.common.SignInButton-->
+        <!--android:id="@+id/btnSignInWithGoogle"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_marginTop="48dp"-->
+        <!--/>-->
 
   </LinearLayout>
 

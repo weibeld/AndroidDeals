@@ -52,7 +52,7 @@ public class HomeActivityBusiness extends BaseActivity implements NavigationView
   @Override public boolean onNavigationItemSelected(@NonNull MenuItem item) {
     b.drawerLayout.closeDrawer(GravityCompat.START);
     switch (item.getItemId()) {
-      case R.id.nav_sign_out:
+      case R.id.action_sign_out:
         FirebaseAuth.getInstance().signOut();
         Auth.GoogleSignInApi.signOut(mGoogleApiClient);
         startActivity(new Intent(this, AuthActivity.class));
@@ -67,14 +67,15 @@ public class HomeActivityBusiness extends BaseActivity implements NavigationView
         R.string.navigation_drawer_open, R.string.navigation_drawer_close);
     b.drawerLayout.setDrawerListener(hamburgerIcon);
     hamburgerIcon.syncState();
-    b.navViewInclude.navView.setNavigationItemSelectedListener(this);
+    b.navViewInclude.navViewBusiness.setNavigationItemSelectedListener(this);
     CurrentUserManager.getInstance().getCurrentUser(user -> setHeaderNav(user));
   }
 
   private void setHeaderNav(AbsUser user) {
-    TextView mTvName = (TextView) b.navViewInclude.navView.getHeaderView(0).findViewById(R.id.nav_header_tv_name);
-    TextView mTvEmail = (TextView) b.navViewInclude.navView.getHeaderView(0).findViewById(R.id.nav_header_tv_email);
-    ImageView mIvAvatar = (ImageView) b.navViewInclude.navView.getHeaderView(0).findViewById(R.id.nav_header_iv_avatar);
+    NavigationView navView = b.navViewInclude.navViewBusiness;
+    TextView mTvName = (TextView) navView.getHeaderView(0).findViewById(R.id.nav_header_tv_name);
+    TextView mTvEmail = (TextView) navView.getHeaderView(0).findViewById(R.id.nav_header_tv_email);
+    ImageView mIvAvatar = (ImageView) navView.getHeaderView(0).findViewById(R.id.nav_header_iv_avatar);
     if (user instanceof Customer) {
       Customer customer = (Customer) user;
       mTvName.setText(customer.getFirstName() + " " + customer.getLastName() + " (Customer)");

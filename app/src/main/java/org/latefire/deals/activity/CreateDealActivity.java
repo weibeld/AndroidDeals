@@ -129,7 +129,7 @@ public class CreateDealActivity extends BaseActivity {
           calendar1.set(Calendar.MONTH, month);
           calendar1.set(Calendar.DAY_OF_MONTH, dayOfMonth);
           b.etDateBegin.setText(DateUtils.formatDayMonthYear(calendar1.getTime()));
-          mDeal.setBeginValidity(DateUtils.formatDayMonthYear(calendar1.getTime()));
+          mDeal.setBeginValidity(calendar1.getTimeInMillis());
         }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH),
             calendar.get(Calendar.DAY_OF_MONTH));
     datePickerDialog.show();
@@ -144,7 +144,7 @@ public class CreateDealActivity extends BaseActivity {
           calendar1.set(Calendar.MONTH, month);
           calendar1.set(Calendar.DAY_OF_MONTH, dayOfMonth);
           b.etDateEnd.setText(DateUtils.formatDayMonthYear(calendar1.getTime()));
-          mDeal.setEndValidity(DateUtils.formatDayMonthYear(calendar1.getTime()));
+          mDeal.setEndValidity(calendar1.getTimeInMillis());
         }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH),
             calendar.get(Calendar.DAY_OF_MONTH));
 
