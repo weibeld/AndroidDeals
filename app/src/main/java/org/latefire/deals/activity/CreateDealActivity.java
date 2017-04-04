@@ -10,6 +10,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
+import android.view.MenuItem;
 import android.view.View;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -189,14 +190,14 @@ public class CreateDealActivity extends BaseActivity {
     mountainsRef.getPath().equals(mountainImagesRef.getPath());    // false
 
     // Get the data from an ImageView as bytes
-    b.imgDeal.setDrawingCacheEnabled(true);
-    b.imgDeal.buildDrawingCache();
-    Bitmap bitmap = b.imgDeal.getDrawingCache();
+    //b.imgDeal.setDrawingCacheEnabled(true);
+    //b.imgDeal.buildDrawingCache();
+    //Bitmap bitmap = b.imgDeal.getDrawingCache();
     ByteArrayOutputStream baos = new ByteArrayOutputStream();
-    bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
-    byte[] data1 = baos.toByteArray();
+    mBitmapImageDeal.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+    byte[] data = baos.toByteArray();
 
-    UploadTask uploadTask = mountainsRef.putBytes(data1);
+    UploadTask uploadTask = mountainsRef.putBytes(data);
     uploadTask.addOnFailureListener(exception -> {
       // Handle unsuccessful uploads
       dismissProgress();
@@ -217,6 +218,10 @@ public class CreateDealActivity extends BaseActivity {
   }
 
   private boolean validateInput() {
+    if (mBitmapImageDeal == null) {
+      AlertDialogUtils.showError(this, getString(R.string.error_upload_image));
+      return false;
+    }
     if (b.etTitle.getText().toString().isEmpty()) {
       AlertDialogUtils.showError(this, getString(R.string.erro_input_title));
       return false;
@@ -246,5 +251,15 @@ public class CreateDealActivity extends BaseActivity {
       return false;
     }
     return true;
+  }
+
+  @Override public boolean onOptionsItemSelected(MenuItem item) {
+    switch (item.getItemId()) {
+      case android.R.id.home:
+        finish();
+        return true;
+      default:
+        return super.onOptionsItemSelected(item);
+    }
   }
 }

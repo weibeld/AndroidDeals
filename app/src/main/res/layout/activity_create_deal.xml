@@ -8,6 +8,7 @@
       android:layout_width="match_parent"
       android:layout_height="match_parent"
       android:orientation="vertical"
+      android:background="@color/colorPrimary"
       android:fitsSystemWindows="true"
       tools:context="org.latefire.deals.activity.CreateDealActivity"
       >
@@ -19,6 +20,7 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="#FFFFFF"
         android:fillViewport="true"
         >
 
@@ -180,6 +182,7 @@
           </android.support.design.widget.TextInputLayout>
         </LinearLayout>
         <Button
+            fontPath="fonts/OmnesSemiBold.otf"
             android:id="@+id/btnSave"
             android:layout_width="wrap_content"
             android:layout_height="40dp"
