@@ -1,4 +1,4 @@
-package org.latefire.deals.fragments;
+package org.latefire.deals.customer.home;
 
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -11,22 +11,22 @@ import butterknife.ButterKnife;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.github.florent37.materialviewpager.header.MaterialViewPagerHeaderDecorator;
 import org.latefire.deals.R;
-import org.latefire.deals.adapters.DealItemViewHolder;
+import org.latefire.deals.base.BaseFrament;
 import org.latefire.deals.database.DatabaseManager;
 import org.latefire.deals.database.Deal;
 
 /**
  * Created by phongnguyen on 3/19/17.
  */
-public class ListHotDealFragment extends BaseFrament {
+public class ListCategorizeDealFragment extends BaseFrament {
 
-  private static final String TAG = ListHotDealFragment.class.getSimpleName();
-  @BindView(R.id.rv_deal_list) RecyclerView rvDealList;
-  public ListHotDealFragment() {
+  private static final String TAG = ListCategorizeDealFragment.class.getSimpleName();
+  @BindView(R.id.rv_deal_list) public RecyclerView rvDealList;
+  public ListCategorizeDealFragment() {
   }
 
-  public static ListHotDealFragment newInstance() {
-    ListHotDealFragment fragment = new ListHotDealFragment();
+  public static ListCategorizeDealFragment newInstance() {
+    ListCategorizeDealFragment fragment = new ListCategorizeDealFragment();
     return fragment;
   }
 
@@ -40,13 +40,13 @@ public class ListHotDealFragment extends BaseFrament {
    */
   @Override public View onCreateView(LayoutInflater inflater, ViewGroup container,
       Bundle savedInstanceState) {
-    View rootView = inflater.inflate(R.layout.fragment_hot_deal_list, container, false);
+    View rootView = inflater.inflate(R.layout.fragment_categorize_deal_list, container, false);
     ButterKnife.bind(this, rootView);
 
     DatabaseManager mgr = DatabaseManager.getInstance();
     rvDealList.setLayoutManager(new LinearLayoutManager(getContext()));
     rvDealList.addItemDecoration(new MaterialViewPagerHeaderDecorator());
-    rvDealList.setAdapter(new FirebaseRecyclerAdapter<Deal, DealItemViewHolder>(Deal.class, R.layout.deal_list_item, DealItemViewHolder.class, mgr.getDealsOrderByRegularPrice()) {
+    rvDealList.setAdapter(new FirebaseRecyclerAdapter<Deal, DealItemViewHolder>(Deal.class, R.layout.item_deal, DealItemViewHolder.class, mgr.getDealsOrderByTitle()) {
       @Override
       protected void populateViewHolder(DealItemViewHolder viewHolder, Deal model, int position) {
         viewHolder.setViewHolderFields(model, getActivity());

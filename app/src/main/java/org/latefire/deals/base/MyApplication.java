@@ -1,6 +1,7 @@
-package org.latefire.deals;
+package org.latefire.deals.base;
 
 import android.app.Application;
+import org.latefire.deals.R;
 import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
 
 /**

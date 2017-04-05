@@ -9,7 +9,7 @@
     android:layout_height="match_parent"
     android:layout_gravity="start"
     app:headerLayout="@layout/nav_header"
-    app:menu="@menu/main_nav_drawer_business"
+    app:menu="@menu/main_nav_business"
     />
 
 </layout>

@@ -1,4 +1,4 @@
-package org.latefire.deals.activity;
+package org.latefire.deals.business.home;
 
 import android.app.Activity;
 import android.app.DatePickerDialog;
@@ -21,12 +21,12 @@ import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlaceAutocomplete;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.util.Calendar;
 import org.latefire.deals.R;
 import org.latefire.deals.auth.AuthManager;
+import org.latefire.deals.base.BaseActivity;
 import org.latefire.deals.database.DatabaseManager;
 import org.latefire.deals.database.Deal;
 import org.latefire.deals.databinding.ActivityCreateDealBinding;
@@ -43,6 +43,7 @@ public class CreateDealActivity extends BaseActivity {
   private static final String LOG_TAG = CreateDealActivity.class.getSimpleName();
 
   ActivityCreateDealBinding b;
+  CreateDealActivity mActivity;
   DatabaseManager mDatabaseManager;
   private File mImageFile;
   private String mCurrentPhotoPath;
@@ -57,6 +58,7 @@ public class CreateDealActivity extends BaseActivity {
     getSupportActionBar().setTitle("Create Deal");
     getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+    mActivity = this;
     mDatabaseManager = DatabaseManager.getInstance();
     mDeal = new Deal();
   }
@@ -152,7 +154,7 @@ public class CreateDealActivity extends BaseActivity {
     datePickerDialog.show();
   }
 
-  @OnClick(R.id.imgDeal) public void uploadImage(View view) {
+  @OnClick(R.id.imgDeal) public void pickImage(View view) {
     new AlertDialog.Builder(this).setTitle("Upload deal image")
         .setItems(R.array.upload_deal_image, (dialog, which) -> {
           dialog.dismiss();
@@ -170,18 +172,21 @@ public class CreateDealActivity extends BaseActivity {
         .show();
   }
 
-  @OnClick(R.id.btnSave) public void saveDeal(View view) {
+  @OnClick(R.id.btnSave) public void uploadImage(View view) {
     if (!validateInput()) {
       return;
     }
+
     showProgress();
-    // Create a storage reference from our app
-    StorageReference storageRef = FirebaseStorage.getInstance().getReference();
 
-    // Create a reference to "mountains.jpg"
-    String imageName = String.valueOf(System.currentTimeMillis());
-    StorageReference mountainsRef = storageRef.child(imageName + ".jpg");
+    // Storage reference to deal image
+    StorageReference rootRef = FirebaseStorage.getInstance().getReference();
+    StorageReference imageRef = rootRef.child(System.currentTimeMillis() + ".jpg");
 
+    // Transform the image to a byte array
+    b.imgDeal.setDrawingCacheEnabled(true);
+    b.imgDeal.buildDrawingCache();
+    Bitmap bitmap = b.imgDeal.getDrawingCache();
     // Create a reference to 'images/mountains.jpg'
     StorageReference mountainImagesRef = storageRef.child("images/" + imageName + ".jpg");
 
@@ -194,9 +199,26 @@ public class CreateDealActivity extends BaseActivity {
     //b.imgDeal.buildDrawingCache();
     //Bitmap bitmap = b.imgDeal.getDrawingCache();
     ByteArrayOutputStream baos = new ByteArrayOutputStream();
+    bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+    byte[] bytes = baos.toByteArray();
     mBitmapImageDeal.compress(Bitmap.CompressFormat.JPEG, 100, baos);
     byte[] data = baos.toByteArray();
 
+    // Upload the data to Firebase Storage
+    imageRef.putBytes(bytes)
+      .addOnFailureListener(exception -> dismissProgress())
+      .addOnSuccessListener(taskSnapshot -> createDeal(taskSnapshot.getDownloadUrl()));
+  }
+
+  private void createDeal(Uri imageUrl) {
+    mDeal.setPhoto(imageUrl.toString());
+    mDeal.setTitle(b.etTitle.getText().toString());
+    mDeal.setDescription(b.etDescription.getText().toString());
+    mDeal.setRegularPrice(Double.parseDouble(b.etPrice.getText().toString()));
+    mDeal.setDealPrice(Double.parseDouble(b.etDealPrice.getText().toString()));
+    mDeal.setLocation(b.etLocation.getText().toString());
+    mDeal.setBusinessId(AuthManager.getInstance().getCurrentUserId());
+    mDatabaseManager.createDeal(mDeal, () -> {
     UploadTask uploadTask = mountainsRef.putBytes(data);
     uploadTask.addOnFailureListener(exception -> {
       // Handle unsuccessful uploads
@@ -213,6 +235,7 @@ public class CreateDealActivity extends BaseActivity {
       mDeal.setBusinessId(AuthManager.getInstance().getCurrentUserId());
       mDatabaseManager.createDeal(mDeal);
       dismissProgress();
+      startActivity(new Intent(mActivity, HomeActivityBusiness.class));
       finish();
     });
   }

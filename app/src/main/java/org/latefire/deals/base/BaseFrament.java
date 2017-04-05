@@ -1,4 +1,4 @@
-package org.latefire.deals.fragments;
+package org.latefire.deals.base;
 
 import android.support.v4.app.Fragment;
 

@@ -1,7 +1,6 @@
-package org.latefire.deals.controler;
+package org.latefire.deals.base;
 
 import java.util.ArrayList;
-import java.util.List;
 import org.latefire.deals.database.DatabaseManager;
 import org.latefire.deals.database.Deal;
 
@@ -22,14 +21,6 @@ public class BaseControler {
 
   public void init(DatabaseManager databaseManager) {
     this.databaseManager = databaseManager;
-  }
-
-  public List<Deal> getAllDeals() {
-    return null;  // Not needed
-  }
-
-  public void createDeal(Deal deal){
-    databaseManager.createDeal(deal);
   }
 
   public ArrayList<Deal> getDummyDeal() {

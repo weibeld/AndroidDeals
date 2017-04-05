@@ -31,6 +31,8 @@
   <string name="arg_page_number">argPageNumber</string>
   <string name="title_sign_up_fragment">Sign up</string>
   <string name="title_sign_in_fragment">Sign In</string>
+  <string name="deal_customer_grab_date">Grabbed: %1$s</string>
+  <string name="deal_customer_redeem_date">Redeemed: %1$s</string>
 
   <!-- TODO: Remove or change this placeholder text -->
   <string name="hello_blank_fragment">Hello blank fragment</string>

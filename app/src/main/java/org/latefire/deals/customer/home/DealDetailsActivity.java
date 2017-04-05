@@ -1,4 +1,4 @@
-package org.latefire.deals.activity;
+package org.latefire.deals.customer.home;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
@@ -17,6 +17,7 @@ import android.widget.ImageView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import org.latefire.deals.R;
+import org.latefire.deals.base.BaseActivity;
 import org.latefire.deals.auth.CurrentUserManager;
 import org.latefire.deals.database.DatabaseManager;
 import org.latefire.deals.database.Deal;

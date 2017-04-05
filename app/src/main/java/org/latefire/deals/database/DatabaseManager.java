@@ -73,9 +73,10 @@ public class DatabaseManager {
   }
 
   // Save deal in database and add its ID to the list of deals of the corresponding business
-  public String createDeal(Deal deal) {
+  public String createDeal(Deal deal, OnDbCompleteListener listener) {
     String dealId = pushAndReturnId(mDealsRef, deal);
-    getBusinessDealRef(deal.getBusinessId(), dealId).setValue(true);
+    getBusinessDealRef(deal.getBusinessId(), dealId).setValue(deal)
+        .addOnCompleteListener(task -> listener.onComplete());
     return dealId;
   }
 
@@ -204,8 +205,16 @@ public class DatabaseManager {
     return mBusinessesRef.child(businessId).child(BUSINESS_DEALS);
   }
 
-  public Query getAcquiredDealsOfCustomer(String customerId) {
+  public Query getDealsOfCustomer(String customerId) {
     return mCustomersRef.child(customerId).child(CUSTOMER_DEALS).orderByChild("deal/endValidity");
+  }
+
+  public Query getDealsOfBusiness(String businessId) {
+    return mBusinessesRef.child(businessId).child(BUSINESS_DEALS);
+  }
+
+  public Query getCustomerIdsOfDeal(String dealId) {
+    return mDealsRef.child(dealId).child(DEAL_CUSTOMERS).orderByChild("acquisitionDate");
   }
 
   /*----------------------------------------------------------------------------------------------*
@@ -277,5 +286,9 @@ public class DatabaseManager {
 
   public interface SimpleCallback {
     void call();
+  }
+
+  public interface OnDbCompleteListener {
+    void onComplete();
   }
 }

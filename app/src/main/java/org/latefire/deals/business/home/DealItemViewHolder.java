@@ -1,4 +1,4 @@
-package org.latefire.deals.adapters;
+package org.latefire.deals.business.home;
 
 import android.app.Activity;
 import android.content.Context;
@@ -8,9 +8,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import org.latefire.deals.R;
-import org.latefire.deals.activity.DealDetailsActivity;
-import org.latefire.deals.utils.StringUtils;
+import org.latefire.deals.customer.home.AbsItemViewHolder;
+import org.latefire.deals.customer.home.DealDetailsActivity;
 import org.latefire.deals.database.Deal;
+import org.latefire.deals.utils.StringUtils;
 
 /**
  * ViewHolder for a deal item in a list of deals, as shown on the HomeActivityCustomer
