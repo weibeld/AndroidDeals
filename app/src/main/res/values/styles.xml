@@ -9,7 +9,7 @@
   </style>
 
   <!-- Base application theme. -->
-  <style name="AppThemeNoActionBar" parent="Theme.AppCompat.Light.NoActionBar">
+  <style name="AppTheme.NoActionBar" parent="Theme.AppCompat.Light.NoActionBar">
     <item name="android:textColorPrimary">@android:color/black</item>
     <item name="android:windowTranslucentStatus" tools:targetApi="19">true</item>
 

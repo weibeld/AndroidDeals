@@ -1,5 +1,6 @@
 package org.latefire.deals.adapters;
 
+import android.app.Activity;
 import android.content.Context;
 import android.text.SpannableStringBuilder;
 import android.view.View;
@@ -33,12 +34,16 @@ public class DealItemViewHolder extends AbsItemViewHolder<Deal> {
     tvDealPrice = (TextView) itemView.findViewById(R.id.tv_deal_price);
   }
 
+  @Override public void setViewHolderFields(Deal model, Context context) {
+
+  }
+
   // To be called by populateViewHolder of an adapter using this ViewHolder
-  public void setViewHolderFields(Deal deal, Context c) {
+  public void setViewHolderFields(Deal deal, Activity activity) {
     // Title
     tvDealTitle.setText(deal.getTitle());
     // Photo
-    Glide.with(c)
+    Glide.with(activity)
         .load(deal.getPhoto())
         .asBitmap()
         .placeholder(R.drawable.placeholder)
@@ -48,12 +53,12 @@ public class DealItemViewHolder extends AbsItemViewHolder<Deal> {
     // Deal price and regular price
     String regularPrice = String.valueOf(deal.getRegularPrice());
     String dealPrice = String.valueOf(deal.getDealPrice());
-    SpannableStringBuilder price = StringUtils.makePriceText(c, regularPrice, dealPrice);
+    SpannableStringBuilder price = StringUtils.makePriceText(activity, regularPrice, dealPrice);
     tvDealPrice.setText(price, TextView.BufferType.EDITABLE);
     tvDealDate.setText(deal.getBeginValidity() + " - " + deal.getEndValidity());
     tvDealLocation.setText(deal.getLocationName());
     itemView.setOnClickListener(v -> {
-      DealDetailsActivity.start(c, deal);
+      DealDetailsActivity.start(activity, deal, imgDealPhoto);
     });
   }
 

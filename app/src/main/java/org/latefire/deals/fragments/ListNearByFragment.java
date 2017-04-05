@@ -55,7 +55,7 @@ public class ListNearByFragment extends BaseFrament {
     rvDealList.setAdapter(
         new FirebaseRecyclerAdapter<Deal, DealItemViewHolder>(Deal.class, R.layout.deal_list_item, DealItemViewHolder.class, mgr.getDealsRef()) {
           @Override protected void populateViewHolder(DealItemViewHolder viewHolder, Deal model, int position) {
-            viewHolder.setViewHolderFields(model, getContext());
+            viewHolder.setViewHolderFields(model, getActivity());
           }
         });
     //
