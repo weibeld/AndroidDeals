@@ -33,9 +33,9 @@ public class DealDetailsActivity extends BaseActivity {
   public static void start(Activity activity, Deal deal, ImageView imgDeal) {
     Intent intent = new Intent(activity, DealDetailsActivity.class);
     intent.putExtra(ARG_DEAL, deal);
-    ActivityOptionsCompat options = ActivityOptionsCompat.
-        makeSceneTransitionAnimation(activity, imgDeal, activity.getString(R.string.deal));
-    activity.startActivity(intent, options.toBundle());
+    //ActivityOptionsCompat options = ActivityOptionsCompat.
+    //    makeSceneTransitionAnimation(activity, (View)imgDeal, activity.getString(R.string.deal));
+    activity.startActivity(intent/*, options.toBundle()*/);
   }
 
   @TargetApi(Build.VERSION_CODES.LOLLIPOP) @Override
