@@ -184,28 +184,12 @@ public class CreateDealActivity extends BaseActivity {
     StorageReference imageRef = rootRef.child(System.currentTimeMillis() + ".jpg");
 
     // Transform the image to a byte array
-    b.imgDeal.setDrawingCacheEnabled(true);
-    b.imgDeal.buildDrawingCache();
-    Bitmap bitmap = b.imgDeal.getDrawingCache();
-    // Create a reference to 'images/mountains.jpg'
-    StorageReference mountainImagesRef = storageRef.child("images/" + imageName + ".jpg");
-
-    // While the file names are the same, the references point to different files
-    mountainsRef.getName().equals(mountainImagesRef.getName());    // true
-    mountainsRef.getPath().equals(mountainImagesRef.getPath());    // false
-
-    // Get the data from an ImageView as bytes
-    //b.imgDeal.setDrawingCacheEnabled(true);
-    //b.imgDeal.buildDrawingCache();
-    //Bitmap bitmap = b.imgDeal.getDrawingCache();
     ByteArrayOutputStream baos = new ByteArrayOutputStream();
-    bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
-    byte[] bytes = baos.toByteArray();
     mBitmapImageDeal.compress(Bitmap.CompressFormat.JPEG, 100, baos);
     byte[] data = baos.toByteArray();
 
     // Upload the data to Firebase Storage
-    imageRef.putBytes(bytes)
+    imageRef.putBytes(data)
       .addOnFailureListener(exception -> dismissProgress())
       .addOnSuccessListener(taskSnapshot -> createDeal(taskSnapshot.getDownloadUrl()));
   }
@@ -219,21 +203,6 @@ public class CreateDealActivity extends BaseActivity {
     mDeal.setLocation(b.etLocation.getText().toString());
     mDeal.setBusinessId(AuthManager.getInstance().getCurrentUserId());
     mDatabaseManager.createDeal(mDeal, () -> {
-    UploadTask uploadTask = mountainsRef.putBytes(data);
-    uploadTask.addOnFailureListener(exception -> {
-      // Handle unsuccessful uploads
-      dismissProgress();
-    }).addOnSuccessListener(taskSnapshot -> {
-      // taskSnapshot.getMetadata() contains file metadata such as size, content-type, and download URL.
-      Uri downloadUrl = taskSnapshot.getDownloadUrl();
-      mDeal.setPhoto(downloadUrl.toString());
-      mDeal.setTitle(b.etTitle.getText().toString());
-      mDeal.setDescription(b.etDescription.getText().toString());
-      mDeal.setRegularPrice(Double.parseDouble(b.etPrice.getText().toString()));
-      mDeal.setDealPrice(Double.parseDouble(b.etDealPrice.getText().toString()));
-      mDeal.setLocation(b.etLocation.getText().toString());
-      mDeal.setBusinessId(AuthManager.getInstance().getCurrentUserId());
-      mDatabaseManager.createDeal(mDeal);
       dismissProgress();
       startActivity(new Intent(mActivity, HomeActivityBusiness.class));
       finish();

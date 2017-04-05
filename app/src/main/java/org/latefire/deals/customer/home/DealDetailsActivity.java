@@ -2,6 +2,7 @@ package org.latefire.deals.customer.home;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.graphics.Bitmap;
@@ -31,12 +32,12 @@ public class DealDetailsActivity extends BaseActivity {
   private DealDetailsActivity mActivity;
   private Deal mDeal;
 
-  public static void start(Activity activity, Deal deal, ImageView imgDeal) {
-    Intent intent = new Intent(activity, DealDetailsActivity.class);
+  public static void start(Context context, Deal deal) {
+    Intent intent = new Intent(context, DealDetailsActivity.class);
     intent.putExtra(ARG_DEAL, deal);
     //ActivityOptionsCompat options = ActivityOptionsCompat.
     //    makeSceneTransitionAnimation(activity, (View)imgDeal, activity.getString(R.string.deal));
-    activity.startActivity(intent/*, options.toBundle()*/);
+    context.startActivity(intent/*, options.toBundle()*/);
   }
 
   @TargetApi(Build.VERSION_CODES.LOLLIPOP) @Override

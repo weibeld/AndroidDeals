@@ -1,5 +1,6 @@
 package org.latefire.deals.customer.home;
 
+import android.app.Activity;
 import android.content.Context;
 import android.text.SpannableStringBuilder;
 import android.view.View;
@@ -58,6 +59,10 @@ public class DealItemViewHolder extends AbsItemViewHolder<Deal> {
     itemView.setOnClickListener(v -> {
       DealDetailsActivity.start(c, deal);
     });
+  }
+
+  @Override public void setViewHolderFields(Deal model, Activity context) {
+
   }
 
   public Object getTag() {

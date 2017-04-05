@@ -59,7 +59,7 @@ public class DealItemViewHolder extends AbsItemViewHolder<Deal> {
     tvDealDate.setText(deal.getBeginValidity() + " - " + deal.getEndValidity());
     tvDealLocation.setText(deal.getLocationName());
     itemView.setOnClickListener(v -> {
-      DealDetailsActivity.start(activity, deal, imgDealPhoto);
+      DealDetailsActivity.start(activity, deal);
     });
   }
 
