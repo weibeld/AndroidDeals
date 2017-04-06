@@ -163,7 +163,6 @@
                 android:paddingLeft="14dp"
                 android:paddingRight="10dp"
                 android:paddingTop="10dp"
-                android:text='@{deal.beginValidity + " - " + deal.endValidity}'
                 android:textColor="@color/secondaryText"
                 android:textSize="13sp"
                 />

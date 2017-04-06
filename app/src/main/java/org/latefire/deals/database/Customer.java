@@ -34,4 +34,7 @@ public class Customer extends AbsUser {
     this.lastName = lastName;
   }
 
+  public String getName() {
+    return firstName + " " + lastName;
+  }
 }

@@ -23,6 +23,7 @@ import org.latefire.deals.auth.CurrentUserManager;
 import org.latefire.deals.database.DatabaseManager;
 import org.latefire.deals.database.Deal;
 import org.latefire.deals.databinding.ActivityDealDetailsBinding;
+import org.latefire.deals.ui.FormatManager;
 import org.latefire.deals.utils.MiscUtils;
 
 public class DealDetailsActivity extends BaseActivity {
@@ -52,6 +53,10 @@ public class DealDetailsActivity extends BaseActivity {
     mActivity = this;
     mDeal = (Deal) getIntent().getSerializableExtra(ARG_DEAL);
     b.setDeal(mDeal);
+
+    String beginValidity = FormatManager.getInstance().formatTimestamp(mDeal.getBeginValidity());
+    String endValidity = FormatManager.getInstance().formatTimestamp(mDeal.getEndValidity());
+    b.tvDealDate.setText(beginValidity + " - " + endValidity);
 
     b.btnGetDeal.setOnClickListener(v -> CurrentUserManager.getInstance()
         .getCurrentUser(user -> acquireDeal(user.getId(), mDeal.getId())));

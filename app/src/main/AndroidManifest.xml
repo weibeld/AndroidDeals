@@ -51,7 +51,7 @@
         android:value="@string/map_key" />
 
     <activity
-        android:name=".base.SampleShowCustomerActivity"
+        android:name=".base.UserProfileActivity"
         android:screenOrientation="portrait" />
     <activity
         android:name=".customer.home.DealDetailsActivity"

@@ -6,6 +6,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.makeramen.roundedimageview.RoundedImageView;
+import jp.wasabeef.glide.transformations.BlurTransformation;
 import org.latefire.deals.R;
 import org.latefire.deals.database.Business;
 import org.latefire.deals.database.DatabaseManager;
@@ -76,6 +77,20 @@ public class BindingUtils {
         .placeholder(R.drawable.placeholder)
         .error(R.drawable.image_not_found)
         .into(roundedImageView);
+  }
+  @BindingAdapter("imgUserAvatarBlur")
+  public static void showUserAvatarBlur(ImageView imageView, String imgUrl) {
+    if (imgUrl == null || imgUrl.isEmpty()) {
+      imageView.setImageResource(R.drawable.img_no_avatar_man);
+      return;
+    }
+    Glide.with(imageView.getContext())
+        .load(imgUrl)
+        .asBitmap()
+        .placeholder(R.drawable.placeholder)
+        .error(R.drawable.image_not_found)
+        .transform(new BlurTransformation(imageView.getContext(), 10))
+        .into(imageView);
   }
 }
 

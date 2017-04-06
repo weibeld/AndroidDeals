@@ -24,13 +24,15 @@ import org.latefire.deals.R;
 import org.latefire.deals.auth.AuthActivity;
 import org.latefire.deals.auth.CurrentUserManager;
 import org.latefire.deals.base.BaseActivity;
+import org.latefire.deals.base.UserProfileActivity;
 import org.latefire.deals.customer.home.DealItemViewHolder;
 import org.latefire.deals.database.Business;
 import org.latefire.deals.database.Deal;
 import org.latefire.deals.databinding.ActivityHomeBusinessBinding;
 
 public class HomeActivityBusiness extends BaseActivity
-    implements NavigationView.OnNavigationItemSelectedListener, GoogleApiClient.OnConnectionFailedListener {
+    implements NavigationView.OnNavigationItemSelectedListener,
+    GoogleApiClient.OnConnectionFailedListener {
 
   private static final String LOG_TAG = HomeActivityBusiness.class.getSimpleName();
 
@@ -45,10 +47,10 @@ public class HomeActivityBusiness extends BaseActivity
     setSupportActionBar(b.toolbarInclude.toolbar);
 
     // For Google sign out
-    mGoogleApiClient = new GoogleApiClient.Builder(this)
-        .enableAutoManage(this /* FragmentActivity */, this /* OnConnectionFailedListener */)
-        .addApi(Auth.GOOGLE_SIGN_IN_API)
-        .build();
+    mGoogleApiClient =
+        new GoogleApiClient.Builder(this).enableAutoManage(this /* FragmentActivity */, this /* OnConnectionFailedListener */)
+            .addApi(Auth.GOOGLE_SIGN_IN_API)
+            .build();
 
     // FloatingActionButton for creating a new deal
     b.fab.setOnClickListener(view -> startActivity(new Intent(this, CreateDealActivity.class)));
@@ -68,8 +70,9 @@ public class HomeActivityBusiness extends BaseActivity
   }
 
   private void setUpNavigationDrawer() {
-    ActionBarDrawerToggle hamburger = new ActionBarDrawerToggle(this, b.drawerLayout, b.toolbarInclude.toolbar,
-        R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+    ActionBarDrawerToggle hamburger =
+        new ActionBarDrawerToggle(this, b.drawerLayout, b.toolbarInclude.toolbar,
+            R.string.navigation_drawer_open, R.string.navigation_drawer_close);
     b.drawerLayout.setDrawerListener(hamburger);
     hamburger.syncState();
     b.navViewInclude.navViewBusiness.setNavigationItemSelectedListener(this);
@@ -88,6 +91,11 @@ public class HomeActivityBusiness extends BaseActivity
         .placeholder(R.drawable.placeholder)
         .error(R.drawable.image_not_found)
         .into(ivAvatar);
+
+    ivAvatar.setOnClickListener(v1 -> {
+      b.drawerLayout.closeDrawer(GravityCompat.START);
+      UserProfileActivity.start(this);
+    });
   }
 
   @Override public boolean onNavigationItemSelected(@NonNull MenuItem item) {

@@ -42,4 +42,9 @@
   <string name="error_upload_image">Please upload an image!</string>
   <string name="get_deal">Get Deal</string>
   <string name="deal">deal</string>
+  <string name="edit">Edit</string>
+  <string name="done">Done</string>
+  <string name="address">Address</string>
+  <string name="email">Email</string>
+  <string name="mobile">Mobile</string>
 </resources>

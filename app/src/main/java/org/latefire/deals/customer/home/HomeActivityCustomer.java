@@ -25,12 +25,12 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.firebase.auth.FirebaseAuth;
 import org.latefire.deals.R;
-import org.latefire.deals.base.BaseActivity;
-import org.latefire.deals.business.home.CreateDealActivity;
-import org.latefire.deals.base.SampleShowCustomerActivity;
 import org.latefire.deals.auth.AuthActivity;
 import org.latefire.deals.auth.AuthManager;
 import org.latefire.deals.auth.CurrentUserManager;
+import org.latefire.deals.base.BaseActivity;
+import org.latefire.deals.base.UserProfileActivity;
+import org.latefire.deals.business.home.CreateDealActivity;
 import org.latefire.deals.customer.deals.CustomerDealsActivity;
 import org.latefire.deals.database.AbsUser;
 import org.latefire.deals.database.Business;
@@ -43,7 +43,8 @@ import org.latefire.deals.databinding.ActivityHomeCustomerBinding;
  */
 
 public class HomeActivityCustomer extends BaseActivity
-    implements NavigationView.OnNavigationItemSelectedListener, GoogleApiClient.OnConnectionFailedListener {
+    implements NavigationView.OnNavigationItemSelectedListener,
+    GoogleApiClient.OnConnectionFailedListener {
 
   private static final String LOG_TAG = HomeActivityCustomer.class.getSimpleName();
 
@@ -64,21 +65,22 @@ public class HomeActivityCustomer extends BaseActivity
     b = DataBindingUtil.setContentView(this, R.layout.activity_home_customer);
     ButterKnife.bind(this);
     setSupportActionBar(viewPager.getToolbar());
-    ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, b.drawerLayout, viewPager.getToolbar(),
-        R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+    ActionBarDrawerToggle toggle =
+        new ActionBarDrawerToggle(this, b.drawerLayout, viewPager.getToolbar(),
+            R.string.navigation_drawer_open, R.string.navigation_drawer_close);
     b.drawerLayout.setDrawerListener(toggle);
     toggle.syncState();
 
-    mGoogleApiClient = new GoogleApiClient.Builder(this)
-        .enableAutoManage(this /* FragmentActivity */, this /* OnConnectionFailedListener */)
-        .addApi(Auth.GOOGLE_SIGN_IN_API)
-        .build();
+    mGoogleApiClient =
+        new GoogleApiClient.Builder(this).enableAutoManage(this /* FragmentActivity */, this /* OnConnectionFailedListener */)
+            .addApi(Auth.GOOGLE_SIGN_IN_API)
+            .build();
 
     NavigationView navView = b.navViewInclude.navViewCustomer;
     navView.setNavigationItemSelectedListener(this);
     mTvName = (TextView) navView.getHeaderView(0).findViewById(R.id.nav_header_tv_name);
-    mTvEmail = (TextView)  navView.getHeaderView(0).findViewById(R.id.nav_header_tv_email);
-    mIvAvatar = (ImageView)  navView.getHeaderView(0).findViewById(R.id.nav_header_iv_avatar);
+    mTvEmail = (TextView) navView.getHeaderView(0).findViewById(R.id.nav_header_tv_email);
+    mIvAvatar = (ImageView) navView.getHeaderView(0).findViewById(R.id.nav_header_iv_avatar);
 
     mDatabaseManager = DatabaseManager.getInstance();
     mAuthManager = AuthManager.getInstance();
@@ -141,6 +143,10 @@ public class HomeActivityCustomer extends BaseActivity
           .placeholder(R.drawable.placeholder)
           .error(R.drawable.image_not_found)
           .into(mIvAvatar);
+      mIvAvatar.setOnClickListener(v1 -> {
+        b.drawerLayout.closeDrawer(GravityCompat.START);
+        UserProfileActivity.start(this);
+      });
     } else if (user instanceof Business) {
       Business business = (Business) user;
       mTvName.setText(business.getBusinessName() + " (Business)");
@@ -169,7 +175,7 @@ public class HomeActivityCustomer extends BaseActivity
         startActivity(new Intent(this, CreateDealActivity.class));
         return true;
       case R.id.action_sample_show_customer:
-        Intent intent = new Intent(this, SampleShowCustomerActivity.class);
+        Intent intent = new Intent(this, UserProfileActivity.class);
         intent.putExtra(getString(R.string.extra_customer_id), "dummy-customer");
         startActivity(intent);
         return true;
@@ -185,8 +191,7 @@ public class HomeActivityCustomer extends BaseActivity
     }).addApi(Auth.GOOGLE_SIGN_IN_API).build();
   }
 
-  @Override
-  public boolean onNavigationItemSelected(MenuItem item) {
+  @Override public boolean onNavigationItemSelected(MenuItem item) {
     b.drawerLayout.closeDrawer(GravityCompat.START);
     switch (item.getItemId()) {
       case R.id.action_sign_out:

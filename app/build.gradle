@@ -67,6 +67,10 @@ dependencies {
   compile 'com.android.support:support-v4:25.3.0'
   testCompile 'junit:junit:4.12'
   annotationProcessor 'com.jakewharton:butterknife-compiler:8.1.0'
+
+  compile 'jp.wasabeef:glide-transformations:2.0.2'
+  // If you want to use the GPU Filters
+  compile 'jp.co.cyberagent.android.gpuimage:gpuimage-library:1.4.1'
 }
 
 apply plugin: 'com.google.gms.google-services'
