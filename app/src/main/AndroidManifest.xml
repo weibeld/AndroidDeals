@@ -63,6 +63,7 @@
     <activity
         android:name=".customer.deals.CustomerDealsActivity"
         android:label="@string/title_activity_customer_deals"
+        android:parentActivityName=".customer.home.HomeActivityCustomer"
         android:screenOrientation="portrait" />
     <activity
         android:name=".customer.redeem.RedemptionActivity"
