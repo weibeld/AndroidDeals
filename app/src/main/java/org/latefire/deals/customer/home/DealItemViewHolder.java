@@ -61,10 +61,6 @@ public class DealItemViewHolder extends AbsItemViewHolder<Deal> {
     });
   }
 
-  @Override public void setViewHolderFields(Deal model, Activity context) {
-
-  }
-
   public Object getTag() {
     return tag;
   }

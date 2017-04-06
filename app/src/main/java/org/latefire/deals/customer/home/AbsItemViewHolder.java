@@ -1,6 +1,5 @@
 package org.latefire.deals.customer.home;
 
-import android.app.Activity;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -20,8 +19,6 @@ public abstract class AbsItemViewHolder<T extends AbsModel> extends RecyclerView
 
   // Called by populateViewHolder of the corresponding RecyclerView.Adapter
   public abstract void setViewHolderFields(T model, Context context);
-
-  public abstract void setViewHolderFields(T model, Activity context);
 
   public Object getTag() {
     return tag;
