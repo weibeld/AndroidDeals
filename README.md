@@ -26,7 +26,7 @@
 
 ## Wireframes
 
-[Click here](http://htmlpreview.github.io/?https://github.com/weibeld/Deals-Wireframes/blob/master/Mockplus/Deals/index.html)
+[Click here](http://htmlpreview.github.io/?https://github.com/weibeld/AndroidDealsWireframes/blob/master/Mockplus/Deals/index.html)
 
 
 ## Video Walkthrough
